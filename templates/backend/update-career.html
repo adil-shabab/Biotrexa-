@@ -1,0 +1,123 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Biotrexa | Update Career
+{% endblock title %}
+    
+
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'careers' %}">Careers > </a>  </li>
+                <li class="breadcrumb-item active ms-1"><a href="#"> Update Career</a></li>
+            </ol>
+        </div>
+        <form method="post" class="row w-100 bg-white p-4" style="border-radius: 4px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Job Title :</label>
+                    {{ form.job_title }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Department :</label>
+                    {{ form.department }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Experience :</label>
+                    {{ form.experience }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Salary :</label>
+                    {{ form.salary }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Qualification :</label>
+                    {{ form.qualifications }}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Job Summary :</label>
+                    {{form.job_summary}}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Skills Required :</label>
+                    {{form.skills}}
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Responsibilities :</label>
+                    {{form.responsibilities}}
+                </div>
+            </div>
+
+            
+           
+
+            
+           
+
+
+            <div class="col-md-6">
+                <ul class="radio-switch">
+                    <li class="radio-switch__item">
+                        <input class="radio-switch__input ri5-sr-only" type="radio" name="status" id="radio-1" value="active" {% if form.status.value == "active" %}checked{% endif %}>
+                        <label class="radio-switch__label" for="radio-1">Active</label>
+                    </li>
+                    <li class="radio-switch__item">
+                        <input class="radio-switch__input ri5-sr-only" type="radio" name="status" id="radio-2" value="inactive" {% if form.status.value == "inactive" %}checked{% endif %}>
+                        <label class="radio-switch__label" for="radio-2">Inactive</label>
+                        <div aria-hidden="true" class="radio-switch__marker"></div>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="submit___btns">
+                <button type="submit">Update Career</button>
+                <a href="{% url 'careers' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+    
+
+
+
+
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: "textarea#id_skills",
+    });
+    tinymce.init({
+        selector: "textarea#id_job_summary",
+    });
+    tinymce.init({
+        selector: "textarea#id_responsibilities",
+    });
+</script>
+
+
+{% endblock script %}
+    

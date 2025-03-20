@@ -1,0 +1,70 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Create Patient | NGR
+{% endblock title %}
+    
+
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'patients' %}">Departments > </a>  </li>
+                <li class="breadcrumb-item active ms-1"><a href="#"> Create Patient</a></li>
+            </ol>
+        </div>
+        <form method="post" class="row w-100 bg-white p-4" style="border-radius: 4px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Full Name :</label>
+                    {{ form.name }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Email :</label>
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Phone Number :</label>
+                    {{ form.phone_number }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Disease :</label>
+                    {{ form.disease }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Gender :</label>
+                    {{ form.gender }}
+                </div>
+            </div>
+
+
+
+            <div class="submit___btns">
+                <button type="submit">Create Patient</button>
+                <a href="{% url 'patients' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+
+{% endblock script %}
+    

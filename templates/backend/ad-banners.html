@@ -1,0 +1,160 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+   Ad Banners | NGR
+{% endblock title %}
+    
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'ad_banners' %}"> Ad Banners</a></li>
+        </ol>
+    </div>
+    <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+        <div class="input-group search-area d-inline-flex me-2">
+            <input type="text" id="search-input" class="form-control" placeholder="Search here">
+            <div class="input-group-append">
+                <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+            </div>
+        </div>
+        <div class="ms-auto">
+            <a href="{% url 'create_adbanner' %}" class="btn btn-primary btn-rounded add-appointment" >+ Create New Ad Banner</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+
+                                    <th>SI</th>
+                                    <th>Department</th>
+                                    <th>Doctor Name</th>
+                                    <th>Banner Image</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for banner in ad_banners %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        {% if banner.department %}
+                                        <td><span class="">{{banner.department.title}}</span></td>
+                                        {% else %}                                        
+                                        <td class="button_txt">Not Selected</td>
+                                        {% endif %}
+                                        {% if banner.doctor %}
+                                        <td><span class="show-6">Dr. {{banner.doctor.name}}</span></td>
+                                        {% else %}  
+                                        <td><span class="show-6">Not Selected</span></td>
+                                        {% endif %}
+                                        <td><img src="{{banner.image.url}}" style="width: 95px" /><img src="{{banner.image_for_mobile.url}}" style="width: 35px" /></td>
+                                        <td>{{ banner.created_at|date:"F j, Y" }}</td>
+                                        <td class="text-primary">
+                                            {% if banner.status == 'active' %}
+                                            <span class="acti_ve">Active</span>
+                                            {% else %}
+                                            <span class="in_acti_ve">Inactive</span>
+                                        {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'update_adbanner' banner.slug %}" class="edit-appointment"><i class="fa fa-pencil fs-18 " aria-hslugden="true"></i></a>
+                                            </span>	
+                                            <span> 
+                                                <a href="#" onclick="deleteBanner('{{ banner.slug }}')">
+                                                    <i class="fa fa-trash fs-18 text-danger" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="empty-view" class="empty_view d-none">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Ad Banners Found</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+    
+
+<script>
+    function deleteBanner(slug) {
+        const deleteUrlTemplate = "{% url 'delete_adbanner' 0 %}";
+        const deleteUrl = deleteUrlTemplate.replace('0', slug);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `${deleteUrl}`;
+            }
+        });
+    }
+
+    function updateEmptyView() {
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        const emptyView = document.getElementById('empty-view');
+        const anyVisible = Array.from(rows).some(row => row.style.display !== 'none');
+        if (anyVisible) {
+            emptyView.classList.add('d-none');
+        } else {
+            emptyView.classList.remove('d-none');
+        }
+    }
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        rows.forEach(row => {
+            const heading = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const description = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const buttonText = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            if (heading.includes(filter) || description.includes(filter) || buttonText.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        updateEmptyView();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateEmptyView();
+    });
+</script>
+
+{% endblock script %}
+    

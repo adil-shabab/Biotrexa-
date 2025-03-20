@@ -1,0 +1,155 @@
+{% extends 'hr/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Biotrexa | Departments
+{% endblock title %}
+    
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'departments' %}"> Departments</a></li>
+        </ol>
+    </div>
+    <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+        <div class="input-group search-area d-inline-flex me-2">
+            <input type="text" id="search-input" class="form-control" placeholder="Search here">
+            <div class="input-group-append">
+                <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+            </div>
+        </div>
+        <div class="ms-auto">
+            <a href="{% url 'create_department' %}" class="btn btn-primary btn-rounded add-appointment" >+ Create New Department</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>Job Title</th>
+                                    <th>Qualification</th>
+                                    <th>Department</th>
+                                    <th>Salary</th>
+                                    <th>Application</th>
+                                    <th>Upload Date</th>
+                                    <th>Status</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for career in careers %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td><span class="show-4">{{career.job_title}}</span></td>
+                                        <td>{{career.qualifications}}</td>
+                                        <td>{{career.department}}</td>
+                                        <td>Upto {{career.salary}} LPA</td>
+                                        <td><a href="{% url 'hr_view_career_applications' career.slug %}"><span class="acti_ve">View Applications</span></a></td>
+                                        <td>{{ career.created_at|date:"F j, Y" }}</td>
+                                        <td>
+                                        {% if career.status == 'active' %}
+                                            <span class="acti_ve">Active</span>
+                                            {% else %}
+                                            <span class="in_acti_ve">Inactive</span>
+                                        {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'hr_update_career' career.slug %}" class="edit-appointment"><i class="fa fa-pencil fs-18 " aria-hidden="true"></i></a>
+                                            </span>	
+                                            <span> 
+                                                <a href="#" onclick="deleteCareer('{{ career.id }}')">
+                                                    <i class="fa fa-trash fs-18 text-danger" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="empty-view" class="empty_view d-none">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Careers Found</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+    
+
+<script>
+    function deleteCareer(id) {
+        const deleteUrlTemplate = "{% url 'hr_delete_career' 0 %}";
+        const deleteUrl = deleteUrlTemplate.replace('0', id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `${deleteUrl}`;
+            }
+        });
+    }
+
+    function updateEmptyView() {
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        const emptyView = document.getElementById('empty-view');
+        const anyVisible = Array.from(rows).some(row => row.style.display !== 'none');
+        if (anyVisible) {
+            emptyView.classList.add('d-none');
+        } else {
+            emptyView.classList.remove('d-none');
+        }
+    }
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        rows.forEach(row => {
+            const heading = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const description = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const buttonText = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            if (heading.includes(filter) || description.includes(filter) || buttonText.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        updateEmptyView();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateEmptyView();
+    });
+</script>
+
+{% endblock script %}
+    

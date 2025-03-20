@@ -1,0 +1,104 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+{% block title %}
+    Message | NGR
+{% endblock title %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock head %}
+    
+
+{% block content %}
+<div class="container-fluid">
+<div class="content">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'messages' %}"> Messages</a></li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div style="max-height: 250px;" class="col-xl-4 d-flex">
+            <div class="card chat-box">
+                <div class="chat-widgets">
+                    <div class="chat-user-group d-flex align-items-center">
+                        <div class="img-users call-user">
+                            <img src="{% static 'images/user.jpg' %}" alt="img" />
+                        </div>
+                        <div class="chat-users user-main">
+                            <div class="user-titles user-head-compse">
+                                <h5>Admin</h5>
+                                <div class="chat-user-time">
+                                    <p>{{now}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="email-menu-blk">
+                        <ul>
+                            <li class="active">
+                                <a href="{% url 'messages' %}"><img src="{% static 'images/inbox.svg' %}" class="me-2" alt="img" />Inbox<span class="comman-flex">{{inbox_count}}</span></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <div class="card chat-box">
+                <div class="mailview-content view-content-bottom">
+                    <a href="javascript:window.history.back();">
+                        <i style="position: absolute; top: 38px; left: 25px; font-size: 19px;" class="fa-solid fa-left-long"></i>
+                    </a>
+                    <div class="mailview-header comman-space-flex ms-5">
+                        <div class="sender-info comman-flex">
+                            <div class="sender-img">
+                                <img alt src="{% static 'images/user.jpg' %}" class="rounded-circle me-2" />
+                            </div>
+                            <div class="send-user send-user-name">
+                                <h4>{{message.name}} <span class="email-market">{{message.phone_number}}</span></h4>
+                                <p>
+                                    <span>From:</span>
+                                    <a href="#">
+                                        {{message.email}}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mailview-inner">
+                        <p>{{message.content}}</p>
+                        <div class="buttons__">
+                            <a href="tel:+91{{message.phone_number}}">
+                                <div class="butn call"><i class="fa-solid fa-phone"></i>Call</div>
+                            </a>
+                            <a href="mailto:{{message.email}}">
+                                <div class="butn mail"><i class="fa-regular fa-envelope"></i>Gmail</div>
+                            </a>
+                            <a href="https://wa.me/+91{{message.phone_number}}">
+                                <div class="butn whatsapp"><i class="fa-brands fa-whatsapp"></i>Whatsapp</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+    <script>
+        document.querySelector('.messages_sidebar').classList.add('active')
+    </script>
+{% endblock script %}

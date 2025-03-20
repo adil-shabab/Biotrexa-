@@ -1,0 +1,105 @@
+{% extends 'hr/base.html' %}
+{% load static %}
+
+{% block title %}
+    HR Dashboard | NGR
+{% endblock title %}
+
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock head %}
+    
+    
+{% block content %}
+<div class="container-fluid">
+<div class="content">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'hr_dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="#"> HR Dashboard </a> </li>
+        </ol>
+    </div>
+
+    <div class="good-morning-blk">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="morning-user">
+                    <h2> <span id="greeting"></span><span style="text-transform: capitalize;">{{request.user.username}}</span></h2>
+                    <p>Have a nice day at work</p>
+                </div>
+            </div>
+            <div class="col-md-6 position-blk">
+                <div class="morning-img">
+                    <img src="{% static 'images/morning-img-01.png' %}" alt />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div class="dash-widget d-flex justify-content-between align-items-center">
+                <div class="dash-boxs comman-flex-center">
+                    <img class="icon_s" src="{% static 'images/career.png' %}" alt />
+                </div>
+                <div class="dash-content dash-count">
+                    <h4 class="mb-0">Job Openings</h4>
+                </div>
+                <div class="dash-content dash-count">
+                    <h2 class="mb-0"><span class="counter-up">{{ job_openings_count }}</span></h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+            <div class="dash-widget d-flex justify-content-between align-items-center">
+                <div class="dash-boxs comman-flex-center">
+                    <img class="icon_s" src="{% static 'images/blog.png' %}" alt />
+                </div>
+                <div class="dash-content dash-count">
+                    <h4 class="mb-0">Total Application</h4>
+                </div>
+                <div class="dash-content dash-count">
+                    <h2 class="mb-0"><span class="counter-up">{{ application_count }}</span></h2>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+
+</div>
+</div>
+{% endblock content %}
+
+
+
+
+
+{% block script %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+        document.querySelector('.dashboard_hr_sidebar').classList.add('active')
+
+        // Get the current time
+        var now = new Date();
+        var currentHour = now.getHours();
+
+        // Determine the greeting message
+        var greeting;
+        if (5 <= currentHour && currentHour < 12) {
+            greeting = "Good Morning ";
+        } else if (12 <= currentHour && currentHour < 18) {
+            greeting = "Good Afternoon ";
+        } else {
+            greeting = "Good Evening ";
+        }
+
+        // Find the span tag with id "greeting" and set its innerHTML
+        document.getElementById("greeting").innerHTML = greeting;
+    </script>
+{% endblock script %}

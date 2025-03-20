@@ -1,0 +1,324 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Book Appointment | NGR
+{% endblock title %}
+    
+
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'patients' %}">Patients > </a>  </li>
+                <li class="breadcrumb-item active ms-1"><a href="#"> Book Appointment for {{patient.name}}</a></li>
+            </ol>
+        </div>
+        <form id="appointment-form" method="post" class="row w-100 bg-white p-4" style="border-radius: 4px;" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="col-12 col-md-6 col-xl-6 d-none">
+                <div class="input-block local-forms">
+                    <label>Patient Id <span class="login-danger">*</span></label>
+                    <input class="form-control" type="hidden" id="patient_id" name="patient_id" value="{{ patient.id }}" required>
+                </div>
+            </div>
+
+
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Select Department :</label>
+                    <select class="form-control" id="department" name="department" required>
+                        {% for x in departments %}
+                            <option value="{{ x.id }}">{{ x.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Select Doctor :</label>
+                    <select class="form-control" id="selected_doctor" name="selected_doctor" required>
+                        
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Date :</label>
+                    <input class="form-control" type="date" id="date" name="date" required>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Select Time :</label>
+                    <select class="form-control" id="schedule_id" name="schedule_id" required>
+                        <option value="">Select Timings</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Message :</label>
+                    <textarea style="height: 150px;" class="form-control" id="message" name="message"></textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Payment Method :</label>
+                    <select class="form-control" id="payment_method" name="payment_method" required>
+                        <option value="online">Online</option>
+                        <option value="cash">Cash</option>
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Discount (in %) :</label>
+                    <input value="0" class="form-control" type="text" id="discount" name="discount" required>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Total Amount :</label>
+                    <input class="form-control" type="text" readonly id="total_amount" name="total_amount" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <input type="checkbox" name="registration_fee" id="registration_fee">                
+                    <label class="col-form-label">Include Registration Fee ( ₹ 270 ) :</label>
+                </div>
+            </div>
+
+
+
+            <div class="submit___btns">
+                <button type="submit">Book Appointment</button>
+                <a href="{% url 'patients' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    let doctorFee = 0;
+
+    // Function to fetch doctors by department
+    function fetchDoctorsByDepartment(departmentId) {
+        fetch(`/api/doctors/department/?department_id=${departmentId}`)
+            .then(response => response.json())
+            .then(data => {
+                const doctorSelect = document.getElementById('selected_doctor');
+                doctorSelect.innerHTML = '';
+
+                data.forEach(doctor => {
+                    const option = document.createElement('option');
+                    option.value = doctor.id;
+                    option.textContent = doctor.name;
+                    option.dataset.fee = doctor.fee; // Store the doctor's fee in a data attribute
+                    doctorSelect.appendChild(option);
+                });
+                // if(data.length === 0) {
+                //     const option = document.createElement('option');
+                //     option.value = null;
+                //     option.textContent = 'Select doctor';
+                //     option.dataset.fee = null; // Store the doctor's fee in a data attribute
+                //     doctorSelect.appendChild(option);
+                // }
+                // Reattach event listener after updating doctor options
+                doctorSelect.addEventListener('change', updateDoctorFeeAndSchedules);
+                updateDoctorFeeAndSchedules();
+            })
+            .catch(error => console.error('Error fetching doctors:', error));
+    }
+
+    // Event listener for department select change
+    document.getElementById('department').addEventListener('change', function() {
+        const departmentId = this.value;
+        fetchDoctorsByDepartment(departmentId);
+    });
+
+    // Initial fetch of doctors for the selected department
+    fetchDoctorsByDepartment(document.getElementById('department').value);
+
+    document.getElementById('date').addEventListener('change', updateSchedules);
+
+    function updateSchedules() {
+        console.log("Here")
+        const doctorId = document.getElementById('selected_doctor').value;
+        const date = document.getElementById('date').value;
+
+        if (!doctorId || !date) {
+            return;
+        }
+
+        const url = `/api/check-timings/${doctorId}/${date}/`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Available Times", data)
+                const scheduleSelect = document.getElementById('schedule_id');
+                scheduleSelect.innerHTML = '';  // Clear previous options
+
+                console.log(scheduleSelect)
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    const formatTime = time => {
+                        let [hour, minute] = time.split(':');
+                        hour = parseInt(hour, 10);
+                        const ampm = hour >= 12 ? 'PM' : 'AM';
+                        hour = hour % 12 || 12;
+                        minute = minute.padStart(2, '0'); // Ensure minute is two digits
+                        return `${hour}:${minute} ${ampm}`;
+                    };
+
+                    // Process monthly timings
+                    if (data.timings.monthly_timings.length > 0) {
+                        data.timings.monthly_timings.forEach(timing => {
+                            const option = document.createElement('option');
+                            option.value = timing.uuid;
+                            option.textContent = `${formatTime(timing.start_time)} to ${formatTime(timing.end_time)}`;
+                            scheduleSelect.appendChild(option);
+                        });
+                    }
+
+                    // Process weekly timings
+                    if (data.timings.weekly_timings.length > 0) {
+                        data.timings.weekly_timings.forEach(timing => {
+                            const option = document.createElement('option');
+                            option.value = timing.uuid;
+                            option.textContent = `${formatTime(timing.start_time)} to ${formatTime(timing.end_time)}`;
+                            scheduleSelect.appendChild(option);
+                        });
+                    }
+
+                    if (data.timings.monthly_timings.length === 0 && data.timings.weekly_timings.length === 0) {
+                        Swal.fire({
+                            title: "Timing Not found",
+                            text: "No available timings found for this date.",
+                            icon: "error",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching schedules:', error);
+                alert(`An error occurred while fetching schedules: ${error.message}`);
+            });
+    }
+
+    function updateDoctorFeeAndSchedules() {
+        const selectedDoctor = document.getElementById('selected_doctor').selectedOptions[0];
+        doctorFee = parseFloat(selectedDoctor.dataset.fee) || 0;
+        updateTotalAmount();
+        updateSchedules();
+    }
+
+    // Function to calculate and update total amount
+    function updateTotalAmount() {
+        const registrationFeeIncluded = document.getElementById('registration_fee').checked;
+        const discountPercentage = parseFloat(document.getElementById('discount').value) || 0;
+
+        let totalAmount = doctorFee;
+
+        if (registrationFeeIncluded) {
+            totalAmount += 270;
+        }
+
+        const discountAmount = (totalAmount * discountPercentage) / 100;
+        totalAmount -= discountAmount;
+
+        document.getElementById('total_amount').value = `₹ ${totalAmount.toFixed(2)}`;
+    }
+
+    // Event listeners for changes in relevant fields
+    document.getElementById('selected_doctor').addEventListener('change', updateDoctorFeeAndSchedules);
+    document.getElementById('registration_fee').addEventListener('change', updateTotalAmount);
+    document.getElementById('discount').addEventListener('input', updateTotalAmount);
+
+    // Call updateTotalAmount initially to set the initial total amount
+    updateTotalAmount();
+
+    document.getElementById('appointment-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        if (data.payment_method === 'cash') {
+            // Directly create appointment with status 'COMPLETED'
+            data.status = 'COMPLETED';
+            fetch('/api/create-appointment/patient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log(result)
+                if (result.error) {
+                    throw new Error(result.error);
+                }
+                
+                window.location.href = "{% url 'patients' %}";
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+                alert('An error occurred while creating the appointment. Please try again.');
+            });
+        } else {
+            // Process with Razorpay for online payment
+            fetch('/api/create-appointment/patient', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.url) {
+                    // Redirect to the payment URL if available
+                    window.location.href = data.url;
+                } else if (data.error) {
+                    console.error("Error:", data.error);
+                    alert(data.error); // Display error message if payment initiation failed
+                }})
+            .catch(error => {
+                console.error('Error:', error.message);
+                Swal.fire({
+                    title: "Error",
+                    text: error.message,
+                    icon: "error",
+                    confirmButtonText: "OK"
+                });
+            });
+        }
+    });
+</script>
+{% endblock script %}
+    

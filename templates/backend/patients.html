@@ -1,0 +1,183 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Patients | NGR
+{% endblock title %}
+    
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'patients' %}"> Patients</a></li>
+        </ol>
+    </div>
+    <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+        <form  method="GET" action="" class="input-group search-area d-inline-flex me-2">
+            <input name="search" type="text" value="{{ search_query }}" id="search-input" class="form-control" placeholder="Search here">
+            <div class="input-group-append">
+                <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+            </div>
+        </form>
+        <div class="ms-auto">
+            <a href="{% url 'create_patient' %}" class="btn btn-primary btn-rounded add-appointment" >+ Create New Patient</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+
+                                    <th>SI</th>
+                                    <th>Full Name</th>
+                                    <th>Phone Number</th>
+                                    <th>Email</th>
+                                    <th>Disease</th>
+                                    <th>Gender</th>
+                                    <th>Appointments</th>
+                                    <th>Joined Date</th>
+                                    <th>book Appointment</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for patient in patients %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+
+                                       <td>{{patient.name}}</td>
+                                       <td>{{patient.phone_number}}</td>
+                                       <td style="text-transform: lowercase !important;">{{ patient.email }}</td>
+                                       <td>{{ patient.disease }}</td>
+                                       <td>{{ patient.gender }}</td>
+
+
+
+
+                                        <td class="appointment_view__btn">
+                                            <a href="{% url 'patient_appointments' patient.id %}" class="py-2 px-3 boo_king">View Appointments</a>
+                                        </td>
+                                        <td>{{ patient.created_at|date:"F d, Y" }}</td>
+                                        <td>
+                                            <a href="{% url 'patient_appointments_create' patient.id %}" class="py-2 px-3 in_acti_ve">Book New Appointments</a>
+                                        </td>
+
+                                        
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'update_patient' patient.id %}" class="edit-appointment"><i class="fa fa-pencil fs-18 " aria-hidden="true"></i></a>
+                                            </span>	
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                
+                {% if patients.has_other_pages %}
+                    <div class="pagination-wrapper">
+                        <span class="step-links">
+                            {% if patients.has_previous %}
+                                <a href="?page=1&search={{ search_query }}">&laquo; first</a>
+                                <a href="?page={{ patients.previous_page_number }}&search={{ search_query }}">previous</a>
+                            {% endif %}
+
+                            <span class="current">
+                                Page {{ patients.number }} of {{ patients.paginator.num_pages }}.
+                            </span>
+
+                            {% if patients.has_next %}
+                                <a href="?page={{ patients.next_page_number }}&search={{ search_query }}">next</a>
+                                <a href="?page={{ patients.paginator.num_pages }}&search={{ search_query }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>
+                {% endif %}
+
+                {% if not patients %}
+                <div id="empty-view" class="empty_view">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Patients Found</h4>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+    
+
+<script>
+    function deleteDepartment(slug) {
+        const deleteUrlTemplate = "{% url 'delete_department' 0 %}";
+        const deleteUrl = deleteUrlTemplate.replace('0', slug);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `${deleteUrl}`;
+            }
+        });
+    }
+
+    function updateEmptyView() {
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        const emptyView = document.getElementById('empty-view');
+        const anyVisible = Array.from(rows).some(row => row.style.display !== 'none');
+        if (anyVisible) {
+            emptyView.classList.add('d-none');
+        } else {
+            emptyView.classList.remove('d-none');
+        }
+    }
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        rows.forEach(row => {
+            const heading = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const description = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const buttonText = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            if (heading.includes(filter) || description.includes(filter) || buttonText.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        updateEmptyView();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateEmptyView();
+    });
+</script>
+
+{% endblock script %}
+    

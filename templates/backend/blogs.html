@@ -1,0 +1,122 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+
+{% block title %}
+    Blogs | NGR
+{% endblock title %}
+    
+
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock head %}
+    
+
+
+{% block content %}
+<div class="container-fluid">
+<div class="content">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'blogs' %}"> Blogs</a></li>
+        </ol>
+    </div>
+    <div class="row">
+        
+        {% for blog in blogs %}
+                   
+            <div class="col-sm-6 col-md-6 col-xl-4">
+                <div class="blog grid-blog">
+                    <div class="blog-image">
+                        <a href="#"><img class="img-fluid" src="{{blog.image.url}}" alt /></a>
+                        <div class="blog-views">
+                            <h5>{{blog.category}}</h5>
+                        </div>
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-grp-blk">
+                            <div class="blog-img-blk">
+                                <a href="#"><img class="img-fluid" src="{% static 'images/user.jpg' %}" alt /></a>
+                                <div class="content-blk-blog ms-2">
+                                    <h4><a href="#">{{blog.author}}</a></h4>
+                                    <h5>{{blog.author_designation}}</h5>
+                                </div>
+                            </div>
+                            <span><i class="feather-calendar me-1"></i>{{ blog.createdAt|date:"F j, Y" }}</span>
+                        </div>
+                        <h3 class="blog-title"><a href="#">{{blog.heading}}</a></h3>
+                        <div class="blog_content">
+                            <p>{{blog.content | safe}}</p>
+                        </div>
+
+                        <div class="buttons__ mt-3">
+                            <a style="width: 49%" href="{% url 'update_blog' blog.slug %}">
+                                <div class="edit__btn" style="width: 100%"><i class="fa-regular fa-pen-to-square"></i>Edit</div>
+                            </a>
+                            <a style="width: 49%" href="#" onclick="deleteBlog('{{ blog.id }}')">
+                                <div class="edit__btn" style="width: 100%"><i class="fa-regular fa-trash-can"></i>Delete</div>
+                            </a>
+                        </div>
+                        <div class="buttons__ mt-2">
+                            <a style="width: 100%;" href="{% url 'view_blog_comments' blog.slug %}">
+                                <div class="edit__btn" style="width: 100%; padding: 11px;"><i class="fa-regular fa-eye"></i>View Comments</div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>     
+        {% endfor %}
+
+
+        
+        {% if blogs %}
+            
+        {% else %}
+            <div id="empty-view" class="empty_view">
+                <img src="{% static 'images/empty.png' %}" alt="">
+                <h4>No Blogs Found</h4>
+            </div>
+        {% endif %}
+            
+
+    </div>
+</div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+    <script>
+        document.querySelector('.blogs_sidebar').classList.add('active')
+        document.querySelector('.blog_txt').classList.add('active')
+    </script>
+
+    <script>
+
+        function deleteBlog(id) {
+            const deleteUrl = `{% url 'delete_blog' 0 %}`.replace('0', id);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `${deleteUrl}`;
+                }
+            });
+        }
+
+    </script>
+
+
+
+{% endblock script %}
+    

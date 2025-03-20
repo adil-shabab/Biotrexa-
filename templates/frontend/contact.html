@@ -1,0 +1,316 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+
+
+{% block title %}
+    <title>Biotrexa | Contact Us</title>
+{% endblock title %}
+    
+
+
+{% block content %}
+    <!-- Page Header Start -->
+	<div class="page-header contact-page-header bg-radius-section parallaxie">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">Contact Us</h1>
+						<nav class="wow fadeInUp">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">contact us</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+    <!-- Page Contact Us Start -->
+    <div class="page-contact-us bg-radius-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <!-- Contact Information Start -->
+                    <div class="contact-information">
+                        <!-- Section Title Start -->
+                        <div class="section-title">
+                            <h3 class="wow fadeInUp">Contact Us</h3>
+                            <h2 class="text-anime-style-3" data-cursor="-opaque">Get In Touch</h2>
+                            <p class="wow fadeInUp" data-wow-delay="0.25s">For inquiries, appointments, or more information about our physiotherapy services, feel free to contact us.</p>
+                        </div>
+                        <!-- Section Title End -->
+
+                        <!-- Contact Information List Start -->
+                        <div class="contact-info-list wow fadeInUp" data-wow-delay="0.5s">
+                            <p>info@domainname.com</p>
+                            <p>+91 9999999999</p>
+                            <a href="#" class="support-btn">contact support</a>
+                        </div>
+                        <!-- Contact Information List End -->
+
+                        <div class="contact-information-box">
+                            <div class="contact-info-item wow fadeInUp" data-wow-delay="0.75s">
+                                <div class="icon-box">
+                                    <img src="{% static 'frontend/images/icon-location-blue.svg' %}" alt="">
+                                </div>
+                                <div class="contact-info-content">
+                                    <h3>hackney london</h3>
+                                    <p>Apt. 654 70246 Maryln Ramp, North Johnville, TX 72520-21</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-info-item wow fadeInUp" data-wow-delay="1s">
+                                <div class="icon-box">
+                                    <img src="{% static 'frontend/images/icon-location-blue.svg' %}" alt="">
+                                </div>
+                                <div class="contact-info-content">
+                                    <h3>california usa</h3>
+                                    <p>Suite 790 Burton Port, West Myleschester, MD 94511-4421</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Contact Information End -->
+                </div>
+
+                <div class="col-lg-6">
+                    <!-- Contact Form Start -->
+                    <div class="contact-us-form">
+                        <!-- Section Title Start -->
+                        <div class="section-title">
+                            <h2 class="text-anime-style-3" data-cursor="-opaque">Contact Us Anytime</h2>
+                            <p class="wow fadeInUp" data-wow-delay="0.25s">For inquiries, appointments, or more information about our physiotherapy services, feel free to contact us.</p>
+                        </div>
+                        <!-- Section Title End -->
+
+                        <form id="contact-form"  method="POST" class="wow fadeInUp" data-wow-delay="0.5s">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="form-group col-md-12 mb-4">
+                                    <input type="text" id="fullname" class="form-control" name="name" placeholder="Full Name" required>
+                                </div>
+
+
+                                <div class="form-group col-md-12 mb-4">
+                                    <input type="email" name ="email" class="form-control" id="email" placeholder="Email" required>
+                                </div>
+
+                                <div class="form-group col-md-12 mb-4">
+                                    <input type="text" name="phone" class="form-control" id="phone" placeholder="Phone No" required>
+                                </div>
+
+                                <div class="form-group col-md-12 mb-4">
+                                    <textarea id="message" class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="contact-form-btn">
+                                        <button  id="submit-button" type="submit" class="btn-default"><span>submit now</span></button>
+                                        <div id="msgSubmit" class="h3 hidden"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Contact Form End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Page Contact Us End -->
+
+    <!-- Google Map Start -->
+	<div class="google-map bg-radius-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Google Map Iframe Start -->
+                    <div class="google-map-iframe">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d96737.10562045308!2d-74.08535042841811!3d40.739265258395164!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sin!4v1703158537552!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <!-- Google Map Iframe End -->
+                </div>
+            </div>
+        </div>
+    </div>
+	<!-- Google Map End -->
+
+    <!-- Contact Faqs Section Start -->
+    <div class="contact-faqs bg-radius-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <!-- Contact Faqs Content Start -->
+                    <div class="contact-faqs-content">
+                        <!-- Section Title Start -->
+                        <div class="section-title">
+                            <h3 class="wow fadeInUp">contact us</h3>
+                            <h2 class="text-anime-style-3" data-cursor="-opaque">Do You Have Any Questions For Us?</h2>
+                            <p class="wow fadeInUp" data-wow-delay="0.25s">We're here to help! If you have any questions about our physiotherapy services, treatments, appointment scheduling, or anything else, don’t hesitate to reach out. This open-ended invitation makes it easier for potential Let me know if you want to add anything else!</p>
+                        </div>
+                        <!-- Section Title End -->
+
+                        <!-- Section Btn Start -->
+                        <div class="section-btn">
+                            <a href="#" class="btn-default"><span>make an appointment</span></a>
+                        </div>
+                        <!-- Section Btn End -->
+                    </div>
+                    <!-- Contact Faqs Content End -->
+                </div>
+
+                <div class="col-lg-6">
+                    <!-- About Faqs Section Start -->
+                    <div class="about-faq-section">
+                        <!-- FAQ Accordion Start -->
+                        <div class="faq-accordion" id="accordion">
+                            <!-- FAQ Item Start -->
+                            <div class="accordion-item wow fadeInUp">
+                                <h2 class="accordion-header" id="heading1">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                        How do I start the landscaping process?
+                                    </button>
+                                </h2>
+                                <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1" data-bs-parent="#accordion">
+                                    <div class="accordion-body">
+                                        <p>Costs depend on the scope of the project. After our consultation, we provide a detailed estimate tailored to your budget and needs.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FAQ Item End -->
+
+                            <!-- FAQ Item Start -->
+                            <div class="accordion-item wow fadeInUp" data-wow-delay="0.2s">
+                                <h2 class="accordion-header" id="heading2">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                                        Can you work with my existing garden features?
+                                    </button>
+                                </h2>
+                                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2" data-bs-parent="#accordion">
+                                    <div class="accordion-body">
+                                        <p>Costs depend on the scope of the project. After our consultation, we provide a detailed estimate tailored to your budget and needs.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FAQ Item End -->
+
+                            <!-- FAQ Item Start -->
+                            <div class="accordion-item wow fadeInUp" data-wow-delay="0.4s">
+                                <h2 class="accordion-header" id="heading3">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                                        How much does garden landscaping cost?
+                                    </button>
+                                </h2>
+                                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3" data-bs-parent="#accordion">
+                                    <div class="accordion-body">
+                                        <p>Costs depend on the scope of the project. After our consultation, we provide a detailed estimate tailored to your budget and needs.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FAQ Item End -->    
+
+                            <!-- FAQ Item Start -->
+                            <div class="accordion-item wow fadeInUp" data-wow-delay="0.6s">
+                                <h2 class="accordion-header" id="heading4">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                                        How do I start the landscaping process?
+                                    </button>
+                                </h2>
+                                <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4" data-bs-parent="#accordion">
+                                    <div class="accordion-body">
+                                        <p>Costs depend on the scope of the project. After our consultation, we provide a detailed estimate tailored to your budget and needs.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FAQ Item End --> 
+                             
+                            <!-- FAQ Item Start -->
+                            <div class="accordion-item wow fadeInUp" data-wow-delay="0.8s">
+                                <h2 class="accordion-header" id="heading5">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5" aria-expanded="false" aria-controls="collapse5">
+                                        Can you work with my existing garden features?
+                                    </button>
+                                </h2>
+                                <div id="collapse5" class="accordion-collapse collapse" aria-labelledby="heading5" data-bs-parent="#accordion">
+                                    <div class="accordion-body">
+                                        <p>Costs depend on the scope of the project. After our consultation, we provide a detailed estimate tailored to your budget and needs.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- FAQ Item End --> 
+                        </div>
+                        <!-- FAQ Accordion End -->
+                    </div>
+                    <!-- About Faqs Section End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact Faqs Section End -->
+{% endblock content %}
+
+
+
+
+{% block script %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    console.log("data", document.getElementById('contact-form'));
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();  // Prevent the default form submission
+        console.log("Form submission intercepted");
+
+        const formData = new FormData(this);
+        const data = {
+            name: formData.get('name').trim(),
+            email: formData.get('email').trim(),
+            phone_number: formData.get('phone').trim(),
+            content: formData.get('message').trim(),
+        };
+
+        console.log('Data to be sent:', data);
+
+        const submitButton = document.getElementById('submit-button');
+        submitButton.querySelector('span').textContent = 'Sending...'
+        submitButton.disabled = true;
+
+        fetch('{% url "contact" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify(data),
+        })
+        .then(async response => {
+            const responseData = await response.json(); // Await the JSON parsing
+            console.log("Response", responseData);
+            if (responseData.success) {
+                swal('Success', 'Message sent successfully!', 'success');
+                this.reset(); // Clear the form after success
+            } else {
+                console.error('Error data:', responseData.errors);
+                swal('Error', 'An error occurred. Please check your input and try again.', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            swal('Error', 'An unexpected error occurred. Please try again later.', 'error');
+        })
+        .finally(() => {
+            submitButton.querySelector('span').textContent = 'Send Message'
+            submitButton.disabled = false;
+        });
+    });
+</script>
+{% endblock script %}
+    

@@ -1,0 +1,559 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+{% block title %}
+    Biotrexa | Add Timing
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+{% endblock head %}
+
+{% block content %}
+<div class="container-fluid">
+<div class="content">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'doctors' %}"> Doctors > </a> </li>
+            <li class="breadcrumb-item active ms-1"><a href="#"> Timings</a></li>
+        </ol>
+    </div>
+
+    <div class="main__tabs">
+        <div id="weekly" class="main__tab active">Weekly</div>
+        <div id="monthly" class="main__tab">Select Date</div>
+    </div>
+
+    <div class="row" id="weekly_view">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-heading">
+                                    <h4>Current Timing of <span style="color: #1E84B5">{{ doctor.name }}</span></h4>
+                                </div>
+
+                                <div class="tabs_day">
+                                    {% for day, day_name in doctor.available_times.model.DAY_CHOICES %}
+                                        <div class="tab_day {% if forloop.first %}active{% endif %}" onclick="openTab('{{ day }}', this)">{{ day_name }}</div>
+                                    {% endfor %}
+                                </div>
+
+
+                                <div class="tab_content_wrapper">
+                                    {% for day, day_name in doctor.available_times.model.DAY_CHOICES %}
+                                        <div class="tab_content {% if forloop.first %}active{% endif %}" id="{{ day }}">
+                                            {% with day_timings=timings|dictsort:"start_time" %}
+                                                {% with has_timings=False %}
+                                                    {% for timing in day_timings %}
+                                                        {% if timing.day == day %}
+                                                            {% with has_timings=True %}
+                                                                <div class="content_s">
+                                                                    {{ timing.start_time }} - {{ timing.end_time }} ({{ timing.slot }} slots)
+                                                                    <a href="#" onclick="deleteTiming('{{ timing.id }}')"><i class="fa-solid fa-xmark ms-2"></i></a>
+                                                                </div>
+                                                            {% endwith %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                {% endwith %}
+                                            {% endwith %}
+                                        </div>
+
+                                    {% endfor %}
+                                    <p class="empty_tag">No Timings Available for this Day</p>
+                                </div>
+                                
+                                                                
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12 mb-3">
+                                                <div class="form-heading">
+                                                    <h4>Generate Timings for <span style="color: #1E84B5">{{ doctor.name }}</span></h4>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12 col-md-3 col-xl-3">
+                                                <div class="input-block local-forms mb-0">
+                                                    <label>Select Day <span class="login-danger">*</span></label>
+                                                    <select id="select_day" class="form-control">
+                                                        {% for day, day_name in doctor.available_times.model.DAY_CHOICES %}
+                                                            <option value="{{ day }}">{{ day_name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12 col-md-3 col-xl-3">
+                                                <div class="input-block local-forms mb-0">
+                                                    <label>Duration (Minutes) <span class="login-danger">*</span></label>
+                                                    <input type="number" id="duration" class="form-control" placeholder="Enter duration in minutes">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12 col-md-3 col-xl-3">
+                                                <div class="input-block local-forms mb-0">
+                                                    <label>Gap (Minutes) <span class="login-danger">*</span></label>
+                                                    <input type="number" id="gap" class="form-control" placeholder="Enter gap in minutes">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12 col-md-3 col-xlg-3 mt-4">
+                                                <button type="button" class="btn__generate" onclick="generateTimeSlots()">Generate Time Slots</button>
+                                            </div>
+                                        </div>
+                        
+                                        <div id="generated_slots" class="row mt-4">
+                                            <!-- Generated time slots will be appended here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <form id="timing_form" method="post" enctype="multipart/form-data" style="margin-top: 32px;">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="form-heading">
+                                    <h4>Add New Timing to <span style="color: #1E84B5">{{ doctor.name }}</span></h4>
+                                </div>
+
+                            </div>
+                            
+
+                            
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">Select Day <span class="login-danger">*</span></label>
+                                    {{ form.day }}
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">How Many Available Slots for this Time <span class="login-danger">*</span></label>
+                                    {{ form.slot }}
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">Starting Time <span class="login-danger">*</span></label>
+                                    {{ form.start_time }}
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">Ending Time <span class="login-danger">*</span></label>
+                                    {{ form.end_time }}
+                                </div>
+                            </div>
+
+                            <div class="submit___btns justify-content-start mt-2">
+                                <button type="submit">Create Timing</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-none" id="monthly_view">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-heading mb-4">
+                                <h4>Current Selected Timing of <span style="color: #1E84B5">{{ doctor.name }}</span></h4>
+                            </div>
+
+                            <div class="d_flex_month">
+                                {% for timing in monthly_timing %}
+                                    <div class="timing_block">
+                                        {{ timing.date|date:"F j" }} | {{ timing.start_time|time:"h:i A" }} to {{ timing.end_time|time:"h:i A" }}
+                                        <a href="#" onclick="deleteTimingMonthly('{{ timing.id }}')"><i class="fa-solid fa-xmark ms-2"></i></a>
+                                    </div>
+                                {% endfor %}
+                            </div>                            
+                        </div>
+                    </div>
+                    <form id="timing_form_2" action="{% url 'create_monthly_timing' doctor.id %}" method="post" enctype="multipart/form-data" style="margin-top: 32px;">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <div class="form-heading">
+                                    <h4>Add New Timing to <span style="color: #1E84B5">{{ doctor.name }}</span></h4>
+                                </div>
+
+                            </div>
+                            
+
+                            
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">Select Date (YYYY-MM-DD) <span class="login-danger">*</span></label>
+                                    {{ form2.date }}
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">How Many Available Slots for this Time <span class="login-danger">*</span></label>
+                                    {{ form2.slot }}
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">Starting Time <span class="login-danger">*</span></label>
+                                    {{ form2.start_time }}
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6 col-xl-6 mb-3">
+                                <div class="input-block local-forms">
+                                    <label class="mb-1">Ending Time <span class="login-danger">*</span></label>
+                                    {{ form2.end_time }}
+                                </div>
+                            </div>
+
+                            <div class="submit___btns justify-content-start mt-2">
+                                <button type="submit">Create Timing</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div> 
+{% endblock content %}
+
+{% block script %}
+<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    flatpickr("#id_start_time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K",
+        time_24hr: false
+    });
+    flatpickr("#id_end_time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "h:i K",
+        time_24hr: false
+    });
+</script>
+
+
+<script>
+function generateTimeSlots() {
+    const day = document.getElementById('select_day').value;
+    const duration = parseInt(document.getElementById('duration').value);
+    const gap = parseInt(document.getElementById('gap').value);
+    const container = document.getElementById('generated_slots');
+    container.innerHTML = '';  // Clear previous slots
+
+    if (!duration || !gap) {
+        alert('Please enter both duration and gap.');
+        return;
+    }
+
+    let startTime = new Date('1970-01-01T09:00:00');  // 9:00 AM
+    let endTime = new Date('1970-01-01T21:00:00');    // 9:00 PM
+
+    while (startTime < endTime) {
+        let slotEndTime = new Date(startTime.getTime() + duration * 60000); // Add duration to start time
+        let nextSlotStartTime = new Date(slotEndTime.getTime() + gap * 60000); // Add gap to end time
+
+        if (slotEndTime > endTime) break; // Stop if slot end time exceeds the working hours
+
+        // Create a slot div
+        const slotDiv = document.createElement('div');
+        slotDiv.classList.add('col-12', 'col-md-2', 'mb-2');
+        slotDiv.innerHTML = `
+            <div class="input-block local-forms mb-0">
+                <label class="check_box_label">
+                    <input type="checkbox" class="check___box" name="selected_slots[]" value="${day} ${startTime.toTimeString().slice(0, 5)}-${slotEndTime.toTimeString().slice(0, 5)}">
+                    ${startTime.toTimeString().slice(0, 5)} - ${slotEndTime.toTimeString().slice(0, 5)}
+                </label>
+            </div>
+        `;
+        container.appendChild(slotDiv);
+
+        startTime = nextSlotStartTime; // Move to the next slot start time
+    }
+
+    const checkboxes = document.querySelectorAll('.check___box');
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('click', handleCheckboxClick);
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+function handleCheckboxClick(event) {
+    const checkbox = event.target;
+    const selectedSlot = checkbox.value;
+    const slotCount = document.querySelector('input[name="slot"]').value || 1;
+
+    console.log("Hello")
+
+    if (checkbox.checked) {
+        fetch(`/api/create-timing/{{doctor.slug}}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                selected_slots: [selectedSlot],
+                slot: slotCount
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                toastr.success("Time Added");
+                checkbox.parentNode.classList.add('active');
+            } else {
+                toastr.error(data.error);
+                checkbox.checked = false;  // Uncheck the checkbox if there was an error
+            }
+        })
+        .catch(error => {
+            Swal.fire("Error", "An error occurred. Please try again.", "error");
+            checkbox.checked = false;  // Uncheck the checkbox if there was an error
+            console.log(error)
+        });
+    } else {
+        // Optional: Handle the case where the checkbox is unchecked, if you want to remove the timing
+    }
+}
+
+
+
+
+</script>
+
+<script>
+    document.getElementById('timing_form').addEventListener('submit', function(e){
+        const timingForm = document.getElementById('timing_form');
+        const startTimeInput = timingForm.querySelector('#id_start_time');
+        const endTimeInput = timingForm.querySelector('#id_end_time');
+
+        const startTime = convertTo24Hour(startTimeInput.value);
+        const endTime = convertTo24Hour(endTimeInput.value);
+
+        startTimeInput.value = startTime;
+        endTimeInput.value = endTime;
+
+        if (new Date(`1970-01-01T${endTime}:00`) < new Date(`1970-01-01T${startTime}:00`)) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Error",
+                text: "Ending Time must be greater than Starting Time",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+
+
+    document.getElementById('timing_form_2').addEventListener('submit', function(e){
+        console.log("Yes coming Here")
+        const timingForm = document.getElementById('timing_form_2');
+        const startTimeInput = timingForm.querySelector('#id_start_time');
+        const endTimeInput = timingForm.querySelector('#id_end_time');
+
+        const startTime = convertTo24Hour(startTimeInput.value);
+        const endTime = convertTo24Hour(endTimeInput.value);
+
+        startTimeInput.value = startTime;
+        endTimeInput.value = endTime;
+
+        console.log(startTime)
+        console.log(endTime)
+
+
+
+        if (new Date(`1970-01-01T${endTime}:00`) < new Date(`1970-01-01T${startTime}:00`)) {
+            e.preventDefault();
+            Swal.fire({
+                title: "Error",
+                text: "Ending Time must be greater than Starting Time",
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+        }
+    });
+
+    function convertTo24Hour(time) {
+        const [timePart, modifier] = time.split(' ');
+        let [hours, minutes] = timePart.split(':');
+
+        if (hours === '12') {
+            hours = '00';
+        }
+
+        if (modifier === 'PM') {
+            hours = parseInt(hours, 10) + 12;
+        }
+
+        return `${hours}:${minutes}`;
+    }
+</script>
+
+<script>
+    document.querySelector('.doctor_sidebar').classList.add('active')
+    document.querySelector('.add_doctor_txt').classList.add('active')
+
+    function openTab(day, element) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tab_content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].classList.remove("active");
+        }
+        tablinks = document.getElementsByClassName("tab_day");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(day).classList.add("active");
+        element.classList.add("active");
+    }
+
+</script>
+
+<script>
+    function deleteTiming(id) {
+        const deleteUrl = `{% url 'delete_timing' 0 %}`.replace('0', id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `${deleteUrl}`;
+            }
+        });
+    }
+
+</script>
+
+
+<script>
+    function deleteTimingMonthly(id) {
+        const deleteUrl = `{% url 'delete_timing_monthly' 0 %}`.replace('0', id);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `${deleteUrl}`;
+            }
+        });
+    }
+
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Function to check if the active tab_content has no children and add the active class to empty_tag
+        function checkEmptyTabContent() {
+            var activeTab = document.querySelector('.tab_content.active');
+            var emptyTag = document.querySelector('.empty_tag');
+
+            console.log(activeTab)
+            console.log(activeTab.children.length)
+            if (activeTab && activeTab.children.length === 0) {
+                emptyTag.classList.add('d__block');
+            } else if (activeTab) {
+                emptyTag.classList.remove('d__block');
+            }
+        }
+
+        function checkEmptyTabContentMonthly() {
+            var activeTab = document.querySelector('.d_flex_month');
+            var emptyTag = document.querySelector('.empty_tag_monthly');
+
+            if (activeTab && activeTab.children.length === 0) {
+                emptyTag.classList.add('d__block');
+            } else if (activeTab) {
+                emptyTag.classList.remove('d__block');
+            }
+        }
+
+        // Initial check
+        checkEmptyTabContent();
+
+        // Recheck whenever a tab is clicked
+        document.querySelectorAll('.tab_day').forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                setTimeout(checkEmptyTabContent, 100); // Delay to allow DOM update
+            });
+        });
+    });
+</script>
+
+<script>
+    const weekly_btn = document.getElementById('weekly')
+    const monthly_btn = document.getElementById('monthly')
+    const weekly_view = document.getElementById('weekly_view')
+    const monthly_view = document.getElementById('monthly_view')
+
+    weekly_btn.addEventListener('click', function(){
+        weekly_view.classList.remove('d-none')
+        monthly_view.classList.add('d-none')
+        weekly_btn.classList.add('active')
+        monthly_btn.classList.remove('active')
+    })
+    monthly_btn.addEventListener('click', function(){
+        monthly_view.classList.remove('d-none')
+        weekly_view.classList.add('d-none')
+        monthly_btn.classList.add('active')
+        weekly_btn.classList.remove('active')
+    })
+</script>
+{% endblock script %}

@@ -1,0 +1,579 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+
+
+{% block title %}
+    <title>Biotrexa | {{doctor.name}}</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+{% endblock title %}
+    
+
+
+{% block content %}
+    <!-- Page Header Start -->
+	<div class="page-header blog-page-header bg-radius-section parallaxie">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">{{doctor.name}}</h1>
+						<nav class="wow fadeInUp">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">home</a></li>
+								<li class="breadcrumb-item active" aria-current="page"> / doctors</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+
+
+
+    <div class="container">
+        <!-- Team Member Details Start -->
+        <div class="team-member-details">
+            <!-- Member Details Header Start -->
+            <div class="member-detail-header">
+                <!-- Member Details Title Start -->
+                <div class="member-detail-title">
+                    <h2 class="text-anime-style-3">Dr. {{doctor.name}}</h2>
+                    <p class="wow fadeInUp">{{doctor.designation}}</p>
+                </div>
+                <!-- Member Details Title End -->
+
+            </div>
+            <!-- Member Details Header End -->
+
+
+            <!-- Member Details Body Start -->
+            <div class="member-detail-body">
+                <!-- Member Detail List Item Start -->
+                <div class="member-detail-list-item wow fadeInUp">
+                    <div class="icon-box">
+                        <img src="{% static 'frontend/images/icon-member-detail-1.svg' %}" alt="">
+                    </div>
+                    <div class="member-detail-list-content">
+                        <h3>position</h3>
+                        <p>{{doctor.designation}}</p>
+                    </div>
+                </div>
+                <!-- Member Detail List Item End -->
+
+                <!-- Member Detail List Item Start -->
+                <div class="member-detail-list-item wow fadeInUp" data-wow-delay="0.25s">
+                    <div class="icon-box">
+                        <img src="{% static 'frontend/images/icon-member-detail-2.svg' %}" alt="">
+                    </div>
+                    <div class="member-detail-list-content">
+                        <h3>experience</h3>
+                        <p>{{doctor.experience_years}} years</p>
+                    </div>
+                </div>
+                <!-- Member Detail List Item End -->
+
+                <!-- Member Detail List Item Start -->
+                <div class="member-detail-list-item wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="icon-box">
+                        <img src="{% static 'frontend/images/icon-member-detail-3.svg' %}" alt="">
+                    </div>
+                    <div class="member-detail-list-content">
+                        <h3>email</h3>
+                        <p>{{doctor.email}}</p>
+                    </div>
+                </div>
+                <!-- Member Detail List Item End -->
+
+                <!-- Member Detail List Item Start -->
+                <div class="member-detail-list-item wow fadeInUp" data-wow-delay="0.75s">
+                    <div class="icon-box">
+                        <img src="{% static 'frontend/images/icon-member-detail-4.svg' %}" alt="">
+                    </div>
+                    <div class="member-detail-list-content">
+                        <h3>phone</h3>
+                        <p>{{doctor.number}}</p>
+                    </div>
+                </div>
+                <!-- Member Detail List Item End -->
+            </div>
+            <!-- Member Details Body End -->
+        </div>
+        <!-- Team Member Details End -->
+    </div>
+
+
+    <!-- Page Team Single Start -->
+    <div class="page-team-single bg-radius-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <!-- Team Member Image Start -->
+                    <div class="team-member-image">
+                        <figure class="image-anime reveal">
+                            <img src="{{doctor.photo.url}}" alt="">
+                        </figure>
+                    </div>
+                    <!-- Team Member Image End -->
+                </div>
+
+                <div class="col-lg-7">
+
+                    <div class="doctor_section">
+
+                        <form id="appointment-form" class="form">
+                            <!-- Progress Bar -->
+                            <div class="progress-bar">
+                                <div class="progress" id="progress"></div>
+                                <div class="progress-step active" data-title="Doctor"></div>
+                                <div class="progress-step" data-title="Date & Time"></div>
+                                <div class="progress-step" data-title="Patient Details"></div>
+                                <div class="progress-step" data-title="Summary"></div>
+                            </div>
+                
+                            <!-- Steps -->
+                            <div class="form-step active">
+                                <h3>Doctor Information</h3>
+                                <div class="input-group">
+                                    <label for="full-name">Full Name</label>
+                                    <input readonly value="{{doctor.name}}" type="text" name="full-name" id="full-name">
+                                </div>
+                
+                                <div class="input-group">
+                                    <label for="department">Department</label>
+                                    <input type="text" readonly value="{{doctor.department.title}}" name="department_id" id="department">
+                                </div>
+                                <div class="input-group d-none">
+                                    <label for="department">Department</label>
+                                    <input hidden type="text" readonly value="{{doctor.department.id}}" name="department" id="department">
+                                </div>
+                                <div class="input-group">
+                                    <label for="fee">Fee</label>
+                                    <input type="text" readonly value="₹{{doctor.fee}}" name="fee" id="fee">
+                                </div>
+                                <div class="input-group d-none">
+                                    <label for="fee">Fee</label>
+                                    <input type="text" hidden readonly value="{{doctor.id}}" name="selected_doctor" id="fee">
+                                </div>
+                                
+                                <div class="checkbox_view">
+                                    <div class="inp__ut">
+                                        <input type="checkbox" name="registration_fee" id="registration_fee">
+                                        <h6>Pay ₹270 for Initial Registration (Only Once)</h6>
+                                    </div>
+                                    <p><span>Terms and Conditions:</span> An additional charge of Rs. 270/- is applicable for patients registering for the first time. If a patient chooses not to register online for the first time, the Rs. 270/- fee will be collected at the hospital.</p>
+                                </div>
+                                
+                                <a class="w-100">
+                                    <p class="btn___next btn-next">Next: Select Date</p>
+                                </a>
+                            </div>
+                            <div class="form-step">
+                                <h3>Date & Time</h3>
+                                <div class="input-group w-100">
+                                    <div class="ui calendar w-100" id="date-picker">
+                                        <div class="ui input left icon w-100">
+                                            <i class="calendar icon"></i>
+                                            <input type="text" id="selected-date" name="" class="w-100" placeholder="Select a Date" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Hidden input to display the selected date in date format -->
+                                <input type="date" id="hidden-date-input" name="date" hidden>
+                
+                                <div class="timings" id="timing-options">
+                                    <!-- Timing options will be populated dynamically -->
+                                </div>
+                                <p id="no-timings-message" class="text-danger" style="display: none;">No available timings found for this date.</p>
+                
+                                <input type="hidden" id="selectedTime" name="schedule_id">
+                                <input type="hidden" id="selectedTimeFormatted" name="selected_time_formatted">
+                
+                                <div class="btn-group">
+                                    <a class="btn_prev btn-prev">Previous</a>
+                                    <a class="btn_next btn-next">Next: Patient Details</a>
+                                </div>
+                            </div>
+                            <div class="form-step">
+                                <h3>Patient Details</h3>
+                                <div class="experiences-group">
+                                    <div class="experience-item">
+                                        <div class="input-group">
+                                            <label for="name">Full Name</label>
+                                            <input type="text" name="name" id="name" required>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="number">Phone Number</label>
+                                            <input type="text" name="phone_number" id="number" required>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" name="email" id="email" required>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="gender">Gender</label>
+                                            <select id="gender" name="gender" required>
+                                                <option value="">Select Gender</option>
+                                                <option value="male">Male</option>
+                                                <option value="female">Female</option>
+                                                <option value="other">Other</option>
+                                            </select><br><br>
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="disease">Disease</label>
+                                            <input type="text" name="disease" id="disease">
+                                        </div>
+                                        <div class="input-group">
+                                            <label for="description">Description</label>
+                                            <textarea name="message" id="description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                
+                                <div class="btn-group">
+                                    <a class="btn_prev btn-prev">Previous</a>
+                                    <a class="btn_next btn-next">Next: Summary</a>
+                                </div>
+                            </div>
+                            <div class="form-step">
+                                <h3>Summary</h3>
+                
+                                <div class="selected_doctor">
+                                    <img src="{{doctor.photo.url}}" alt="">
+                                    <div class="txt">
+                                        <h3>Dr. {{doctor.name}}</h3>
+                                        <h6>{{doctor.department.title}}</h6>
+                                    </div>
+                                </div>
+                
+                                <div class="date__time">
+                                    <div class="p-3 d-flex justify-content-center align-items-center">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                    </div>
+                                    <div class="txt">
+                                        <h4 id="summary-date"></h4>
+                                        <h6 id="summary-time"></h6>
+                                    </div>
+                                </div>
+                
+                                <div class="patient_detail">
+                                    <div class="p-3 d-flex justify-content-center align-items-center">
+                                        <i class="fa-regular fa-user"></i>
+                                    </div>
+                                    <div class="txt">
+                                        <h5 id="summary-name"></h5>
+                                        <p id="summary-email"></p>
+                                        <p id="summary-number"></p>
+                                    </div>
+                                </div>
+                
+                                <div class="btn-group">
+                                    <a class="btn-prev btn_prev">Previous</a>
+                                    <button type="submit" id="checkout-button" class="btn-complete btn_next">Proceed to Checkout</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                
+                </div>
+                <!-- team member details end -->
+            </div>               
+        </div>
+    </div>
+    <!-- Page Team Single End -->
+
+
+
+
+    <div class="content__view">
+        <div class="container">
+            {{doctor.description|safe}}
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+
+
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+<script>
+    // Function to format the date to YYYY-MM-DD
+    function formatDateToYYYYMMDD(date) {
+        const d = new Date(date);
+        let month = '' + (d.getMonth() + 1);
+        let day = '' + d.getDate();
+        const year = d.getFullYear();
+
+        if (month.length < 2) month = '0' + month;
+        if (day.length < 2) day = '0' + day;
+
+        return [year, month, day].join('-');
+    }
+
+    // Function to format time
+    const formatTime = time => {
+        let [hour, minute] = time.split(':');
+        hour = parseInt(hour, 10);
+        const ampm = hour >= 12 ? 'PM' : 'AM';
+        hour = hour % 12 || 12;
+        minute = minute.padStart(2, '0'); // Ensure minute is two digits
+        return `${hour}:${minute} ${ampm}`;
+    };
+
+    // Initialize Flatpickr
+    flatpickr("#date-picker input", {
+        dateFormat: "Y-m-d",
+        minDate: "today",  // Disable dates before today
+        onChange: function(selectedDates, dateStr) {
+            document.getElementById('selected-date').value = dateStr;
+            document.getElementById('selectedTime').value = ''; // Clear selected time if date changes
+            document.getElementById('selectedTimeFormatted').value = ''; // Clear formatted time
+            fetchTimings(dateStr);
+            document.getElementById('hidden-date-input').value = dateStr;
+        }
+    });
+
+
+    // Function to fetch available timings
+    function fetchTimings(date) {
+        const doctorId = {{ doctor.id }};
+        const url = `/api/check-timings/${doctorId}/${date}/`;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const timingOptionsContainer = document.getElementById('timing-options');
+                timingOptionsContainer.innerHTML = '';  // Clear previous options
+                const noTimingsMessage = document.getElementById('no-timings-message');
+                noTimingsMessage.style.display = 'none';
+
+                // Process monthly timings
+                if (data.timings.monthly_timings.length > 0) {
+                    data.timings.monthly_timings.forEach(timing => {
+                        const div = document.createElement('div');
+                        div.className = 'timing-option';
+                        div.dataset.value = timing.uuid;
+                        div.dataset.time = `${formatTime(timing.start_time)} to ${formatTime(timing.end_time)}`;
+                        div.innerText = div.dataset.time;
+                        div.addEventListener('click', () => selectTiming(div));
+                        timingOptionsContainer.appendChild(div);
+                    });
+                }
+
+                // Process weekly timings
+                if (data.timings.weekly_timings.length > 0) {
+                    data.timings.weekly_timings.forEach(timing => {
+                        const div = document.createElement('div');
+                        div.className = 'timing-option';
+                        div.dataset.value = timing.uuid;
+                        div.dataset.time = `${formatTime(timing.start_time)} to ${formatTime(timing.end_time)}`;
+                        div.innerText = div.dataset.time;
+                        div.addEventListener('click', () => selectTiming(div));
+                        timingOptionsContainer.appendChild(div);
+                    });
+                }
+
+                if (data.timings.monthly_timings.length === 0 && data.timings.weekly_timings.length === 0) {
+                    noTimingsMessage.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching timings:', error);
+            });
+    }
+
+    // Function to select timing
+    function selectTiming(element) {
+        const timingOptions = document.querySelectorAll('.timing-option');
+        const selectedTimeInput = document.getElementById('selectedTime');
+        const selectedTimeFormattedInput = document.getElementById('selectedTimeFormatted');
+
+        timingOptions.forEach(option => option.classList.remove('active'));
+        element.classList.add('active');
+        selectedTimeInput.value = element.dataset.value; // Store UUID
+        selectedTimeFormattedInput.value = element.dataset.time; // Store formatted time for display
+    }
+
+    // Form step handling
+    const form = document.getElementById('appointment-form');
+    const prevBtns = document.querySelectorAll(".btn-prev");
+    const nextBtns = document.querySelectorAll(".btn-next");
+    const progress = document.getElementById("progress");
+    const formSteps = document.querySelectorAll(".form-step");
+    const progressSteps = document.querySelectorAll(".progress-step");
+    const registrationFee = document.getElementById('registration_fee');
+    const checkoutButton = document.getElementById('checkout-button');
+
+    let formStepsNum = 0;
+    const doctorFee = {{ doctor.fee }};
+    const initialRegistrationFee = 270; // Registration fee amount
+
+    function updateCheckoutButtonLabel() {
+        const totalAmount = doctorFee + (registrationFee.checked ? initialRegistrationFee : 0);
+        checkoutButton.innerHTML = `Proceed to Checkout (₹${totalAmount})`;
+    }
+
+    registrationFee.addEventListener('change', updateCheckoutButtonLabel);
+
+    nextBtns.forEach(btn => {
+        btn.addEventListener("click", function () {
+            const currentStep = formSteps[formStepsNum];
+
+            if (formStepsNum === 1) {
+                const selectedDate = document.getElementById('selected-date').value;
+                const selectedTime = document.getElementById('selectedTime').value;
+
+                if (!selectedDate) {
+                    toastr.error("Please select a date");
+                    return;
+                }
+
+                if (!selectedTime) {
+                    toastr.error("Please select a time");
+                    return;
+                }
+            }
+
+            if (formStepsNum === 2) {
+                const inputs = currentStep.querySelectorAll('input[required], select[required], textarea[required]');
+                let allFilled = true;
+                let errorMsg = "";
+
+                inputs.forEach(input => {
+                    if (!input.value) {
+                        allFilled = false;
+                        errorMsg = `${input.previousElementSibling.innerText} is required`;
+                        input.classList.add('invalid');
+                        input.addEventListener('input', () => input.classList.remove('invalid'));
+                    }
+                });
+
+                if (!allFilled) {
+                    toastr.error(errorMsg);
+                    return;
+                }
+
+                const phoneNumber = document.getElementById('number').value;
+                const email = document.getElementById('email').value;
+
+                const phoneRegex = /^\+?\d{10,14}$/;
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (!phoneRegex.test(phoneNumber)) {
+                    toastr.error("Enter a valid phone number");
+                    return;
+                }
+
+                if (!emailRegex.test(email)) {
+                    toastr.error("Enter a valid email");
+                    return;
+                }
+            }
+
+            formStepsNum++;
+            updateFormSteps();
+            updateProgressBar();
+        });
+    });
+
+    prevBtns.forEach(btn => {
+        btn.addEventListener("click", function () {
+            formStepsNum--;
+            updateFormSteps();
+            updateProgressBar();
+        });
+    });
+
+    function updateFormSteps() {
+        formSteps.forEach(formStep => formStep.classList.contains("active") && formStep.classList.remove("active"));
+        formSteps[formStepsNum].classList.add("active");
+
+        if (formStepsNum === formSteps.length - 1) {
+            // Fill summary data
+            document.getElementById('summary-date').innerText = document.getElementById('selected-date').value;
+            document.getElementById('summary-time').innerText = document.getElementById('selectedTimeFormatted').value;
+            document.getElementById('summary-name').innerText = document.getElementById('name').value;
+            document.getElementById('summary-email').innerText = document.getElementById('email').value;
+            document.getElementById('summary-number').innerText = document.getElementById('number').value;
+            updateCheckoutButtonLabel(); // Ensure button label is updated with the correct amount
+        }
+    }
+
+    function updateProgressBar() {
+        progressSteps.forEach((progressStep, idx) => {
+            if (idx < formStepsNum + 1) {
+                progressStep.classList.add("active");
+            } else {
+                progressStep.classList.remove("active");
+            }
+        });
+
+        const progressActive = document.querySelectorAll(".progress-step.active");
+        progress.style.width = ((progressActive.length - 1) / (progressSteps.length - 1)) * 100 + '%';
+    }
+
+    // Form submission and payment handling
+    document.getElementById('appointment-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        // Add total amount to data
+        const totalAmount = doctorFee + (registrationFee.checked ? initialRegistrationFee : 0);
+        data.total_amount = totalAmount;
+
+        // Disable the checkout button and show a loading spinner
+        checkoutButton.disabled = true;
+        checkoutButton.innerHTML = '<span class="spinner-border"></span> Processing...';
+
+        // Process with Razorpay for online payment
+        fetch('/api/create-appointment/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+            },
+            body: JSON.stringify(data)
+        })
+        
+        .then(response => response.json())
+        .then(data => {
+            if (data.url) {
+                // Redirect to the payment URL if available
+                window.location.href = data.url;
+            } else if (data.error) {
+                console.error("Error:", data.error);
+                alert(data.error); // Display error message if payment initiation failed
+            }})
+        .catch(error => {
+            console.error('Error:', error.message);
+            Swal.fire({
+                title: "Error",
+                text: error.message,
+                icon: "error",
+                confirmButtonText: "OK"
+            });
+            // Re-enable the checkout button and reset text
+            checkoutButton.disabled = false;
+            updateCheckoutButtonLabel();
+        });
+    });
+</script>
+{% endblock script %}
+    

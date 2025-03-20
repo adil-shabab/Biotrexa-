@@ -1,0 +1,153 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+{{plan.title}} | NGR
+{% endblock title %}
+    
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="#"> Appointments for {{plan.title}} </a> </li>
+        </ol>
+    </div>
+
+
+
+
+
+
+
+
+    <div id="" class="row">
+
+        <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+            <form class="input-group search-area d-inline-flex me-2">
+                <input id="search-input" type="text" name="search_upcoming" class="form-control" placeholder="Search here" value="{{ search_upcoming }}" />                <div class="input-group-append">
+                    <button type="submit" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+
+                                    <th>SI</th>
+                                    <th>Plan Title</th>
+                                    <th>Full Name</th>
+                                    <th>Mobile</th>
+                                    <th>Email</th>
+                                    <th>Amount</th>
+                                    <th>Date</th>
+                                    <th>Payment Status</th>
+                                    <th>View</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in appointments %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td><span>{{appointment.plan.title}}</span></td>
+                                        <td>{{ appointment.patient.name}}</td>
+                                        <td>{{ appointment.patient.phone_number}}</td>
+                                        <td class="email" style="text-transform: lowercase !important;">{{ appointment.patient.email}}</td>
+                                        <td>₹ {{ appointment.plan.price}}</td>
+                                        <td>{{appointment.created_at}}</td>
+                                        <td>
+                                            
+                                            {% if appointment.is_without_payment %}
+                                                <span class="in_acti_ve">Not Paid</span>
+                                            {% else %}
+                                            {% if appointment.status == 'COMPLETED' %}
+                                                <span class="acti_ve">Paid</span>
+                                            {% else %}
+                                                <span class="in_acti_ve">Not Paid</span>
+                                            {% endif %}
+                                            {% endif %}
+                                                
+                                        </td>
+
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'view_checkup_appointment' appointment.id %}" class="edit-appointment"><i class="fa-regular fa-eye fs-18"></i></a>
+                                            </span>	
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+                {% if not appointments %}
+                <div id="empty-view" class="empty_view">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Checkup Booking Found</h4>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+    
+
+<script>
+
+
+    function updateEmptyView() {
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        const emptyView = document.getElementById('empty-view');
+        const anyVisible = Array.from(rows).some(row => row.style.display !== 'none');
+        if (anyVisible) {
+            emptyView.classList.add('d-none');
+        } else {
+            emptyView.classList.remove('d-none');
+        }
+    }
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        rows.forEach(row => {
+            const heading = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const description = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const buttonText = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            if (heading.includes(filter) || description.includes(filter) || buttonText.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        updateEmptyView();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateEmptyView();
+    });
+</script>
+
+{% endblock script %}
+    

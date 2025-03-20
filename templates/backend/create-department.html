@@ -1,0 +1,194 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Biotrexa | Create Department
+{% endblock title %}
+    
+
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'departments' %}">Departments > </a>  </li>
+                <li class="breadcrumb-item active ms-1"><a href="#"> Create Department</a></li>
+            </ol>
+        </div>
+        <form method="post" class="row w-100 bg-white p-4" style="border-radius: 4px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Department Title :</label>
+                    {{ form.title }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Speciality Type :</label>
+                    {{ form.speciality_type }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Opening Hours :</label>
+                    {{ form.opening_hours }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Priority :</label>
+                    {{ form.priority }}
+                </div>
+            </div>
+
+
+
+
+            <div class="col-md-6 mb-3 col-12">
+                <label class="col-form-label">Image :</label>
+                <img class="img__preview" id="img-preview" src="{% static 'images/upload.png' %}"/>
+                <div>
+                    {{form.banner}}
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-3 col-12">
+                <label class="col-form-label">Icon Image :</label>
+                <div class="img__preview d-flex justify-content-center align-items-center">
+                    <img class="img-fluid w-100 img__preview" id="img-preview-3" src="{% static 'images/upload.png' %}"/>
+                </div>
+                <div>
+                    {{form.icon}}
+                </div>
+            </div>
+            <div class="col-md-12 mb-3 col-12">
+                <label class="col-form-label">Banner Image :</label>
+                <img class="img__preview" id="img-preview-2" src="{% static 'images/upload.png' %}"/>
+                <div>
+                    {{form.breadcamp}}
+                </div>
+            </div>
+
+
+            <div class="col-md-6 mt-2">
+                <div class="form-group">
+                    <label class="col-form-label" style="margin-top: -5px;">Show on Homepage :</label>
+                    {{form.show_on_homepage}}
+                </div>
+            </div>
+
+
+            <div class="col-md-12 mb-3">
+                <label class="col-form-label" style="margin-top: -5px;">Description :</label>
+                <div>
+                    {{form.description}}
+                </div>
+            </div>
+           
+
+            <div class="col-md-6">
+                <ul class="radio-switch">
+                    <li class="radio-switch__item">
+                        <input class="radio-switch__input ri5-sr-only" type="radio" name="status" id="radio-1" value="active" {% if form.status.value == "active" %}checked{% endif %}>
+                        <label class="radio-switch__label" for="radio-1">Active</label>
+                    </li>
+                    <li class="radio-switch__item">
+                        <input class="radio-switch__input ri5-sr-only" type="radio" name="status" id="radio-2" value="inactive" {% if form.status.value == "inactive" %}checked{% endif %}>
+                        <label class="radio-switch__label" for="radio-2">Inactive</label>
+                        <div aria-hidden="true" class="radio-switch__marker"></div>
+                    </li>
+                </ul>
+            </div>
+            
+
+
+            <div class="submit___btns">
+                <button type="submit">Create Department</button>
+                <a href="{% url 'departments' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+        selector: "textarea#id_description",
+    });
+</script>
+
+
+
+<script>
+
+    function readURL2(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+            $("#img-preview-2").attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $("#img-preview-2").attr("src", noimage);
+        }
+    }
+
+</script>
+
+
+<script>
+
+    function readURL3(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $("#img-preview-3").attr("src", e.target.result);
+                $("#img-preview-3").attr("class", 'w-25');
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $("#img-preview-3").attr("src", noimage);
+        }
+    }
+
+</script>
+
+<script>
+    //Change this to your no-image file
+    let noimage =
+    "{% static 'images/upload.png' %}";
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+            $("#img-preview").attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+
+
+        } else {
+            $("#img-preview").attr("src", noimage);
+        }
+    }
+
+    var imgElement = document.getElementById('img-preview');
+    imgElement.classList.add('object-contain');
+
+
+
+</script>
+
+{% endblock script %}
+    

@@ -1,0 +1,170 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+{% block title %}
+    Notifications | NGR
+{% endblock title %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock head %}
+    
+{% block content %}
+<div class="container-fluid">
+<div class="content">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'notifications' %}"> Notifications</a></li>
+        </ol>
+    </div>
+
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card chat-box mb-2">
+                <div class="w-100 chat-search-group">
+                    <div class="w-100 chat-user-group mb-0 d-flex align-items-center">
+                        <div class="w-100 top-liv-search top-chat-search top-action-search">
+                            <form class="w-100">
+                                <div class="w-100 chat-search mb-0">
+                                    <div class="w-100 input-block me-2 mb-0">
+                                        <input id="searchInput" type="text" class="w-100 form-control" placeholder="Search here" />
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="email-content my-4">
+                    <div class="table-responsive">
+                        <table class="table table-inbox table-hover">
+                            <tbody id="inboxTableBody">
+                                {% for notification in notifications %}
+                                <tr class="unread clickable-row" data-href="#">
+                                    <td class="name">
+                                        <a href="{{notification.redirection_url}}">
+                                            <div class="email-img-blk">
+                                                <div class="email-img">
+                                                    <img src="{% static 'images/user.jpg' %}" alt="img" />
+                                                </div>
+                                                <div class="send-user">
+                                                    <h4>{{notification.message}}</h4>
+                                                    
+                                                    {% if notification.first_read_by %}
+                                                    <p class="message-content">Read by {{ notification.first_read_by }}</p>
+                                                    {% endif %}
+                                                        
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="mail-date" data-created-at="{{ notification.created_at|date:'c' }}"></td>                            
+                                </tr>
+                                {% endfor %}
+    
+                                <div id="empty-view" class="empty_view" style="display:none;">
+                                    <img src="{% static 'images/empty.png' %}" alt="">
+                                    <h4>No Notification Found</h4>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const messageElement = document.querySelectorAll('.message-content');
+            messageElement.forEach((item)=>{
+                const fullText = item.innerText;
+                const words = fullText.split(' ');
+    
+                if (words.length > 24) {
+                    const truncatedText = words.slice(0, 8).join(' ') + '...';
+                    item.innerText = truncatedText;
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Function to calculate "time ago"
+            function timeAgo(date) {
+                const now = new Date();
+                const secondsPast = (now.getTime() - date.getTime()) / 1000;
+
+                if (secondsPast < 60) {
+                    return `${Math.floor(secondsPast)} seconds ago`;
+                }
+                if (secondsPast < 3600) {
+                    return `${Math.floor(secondsPast / 60)} minutes ago`;
+                }
+                if (secondsPast <= 86400) {
+                    return `${Math.floor(secondsPast / 3600)} hours ago`;
+                }
+                if (secondsPast <= 2592000) { // 30 days
+                    return `${Math.floor(secondsPast / 86400)} days ago`;
+                }
+                if (secondsPast <= 31104000) { // 12 months
+                    return `${Math.floor(secondsPast / 2592000)} months ago`;
+                }
+                return `${Math.floor(secondsPast / 31104000)} years ago`;
+            }
+
+            // Update the mail date
+            const mailDateElements = document.querySelectorAll('.mail-date');
+            mailDateElements.forEach((item) => {
+                const createdAtString = item.getAttribute('data-created-at');
+                const createdAt = new Date(createdAtString); // ISO 8601 format
+
+                item.innerText = timeAgo(createdAt);
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const searchInput = document.getElementById('searchInput');
+            const inboxTableBody = document.getElementById('inboxTableBody');
+            const emptyView = document.getElementById('empty-view');
+
+            function updateEmptyView() {
+                const visibleRows = inboxTableBody.querySelectorAll('tr:not([style*="display: none"])').length;
+                if (visibleRows === 0) {
+                    emptyView.style.display = 'flex';
+                } else {
+                    emptyView.style.display = 'none';
+                }
+            }
+
+            searchInput.addEventListener('keyup', () => {
+                const searchValue = searchInput.value.toLowerCase();
+                const rows = inboxTableBody.querySelectorAll('tr');
+
+                rows.forEach((row) => {
+                    const messageName = row.querySelector('.send-user h4').innerText.toLowerCase();
+                    if ( messageName.includes(searchValue)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                updateEmptyView();
+            });
+
+            updateEmptyView();  // Initial check in case the inbox is initially empty
+        });
+    </script>
+{% endblock script %}

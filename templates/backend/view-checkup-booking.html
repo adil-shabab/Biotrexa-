@@ -1,0 +1,86 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+{{ detailed_appointment.appointment.patient.name }}'s Appointment | VSH
+{% endblock title %}
+    
+
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'health_checkup_plans' %}">Health Checkup > </a>  </li>
+                <li class="breadcrumb-item active ms-1"><a href="#"> View {{ detailed_appointment.appointment.patient.name }}'s Appointment</a></li>
+            </ol>
+        </div>
+        <form method="post" class="row w-100 bg-white p-4" style="border-radius: 4px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Checkup Name :</label>
+                    <input class="form-control" type="text" id="name" name="name" value="{{ detailed_appointment.appointment.plan.title }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Patient Name :</label>
+                    <input class="form-control" type="text" id="name" name="name" value="{{ detailed_appointment.appointment.patient.name }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Phone Number :</label>
+                    <input class="form-control" type="text" id="phone_number" name="phone_number" value="{{ detailed_appointment.appointment.patient.phone_number }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Email :</label>
+                    <input class="form-control" type="email" id="email" name="email" value="{{ detailed_appointment.appointment.patient.email }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Date :</label>
+                    <input class="form-control" type="text" id="date" name="date" value="{{ detailed_appointment.appointment.created_at }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Amount :</label>
+                    <input class="form-control" type="email" id="email" name="email" value="{{ detailed_appointment.appointment.plan.price }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="col-form-label">Payment Status :</label>
+                    {% if detailed_appointment.appointment.is_without_payment %}
+                        <input class="form-control" type="email" id="email" name="email" value="Not Paid" readonly>
+                    {% else %}
+                        <input class="form-control" type="email" id="email" name="email" value="Paid" readonly>
+                    {% endif %}
+                        
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Message :</label>
+                    <textarea style="height: 150px;" class="form-control" id="message" name="message" readonly>{{ detailed_appointment.appointment.message }}</textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+
+{% endblock script %}
+    

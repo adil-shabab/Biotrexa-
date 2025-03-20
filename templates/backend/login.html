@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="h-100">
+
+<head>
+    <!-- Title -->
+    <title>Biotrexa | Login</title>
+
+    
+    <!-- Mobile Specific -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon icon -->
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    
+    <!-- Bootstrap Select CSS -->
+    <link href="{% static 'vendor/bootstrap-select/css/bootstrap-select.min.css' %}" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body class="vh-100" style="min-height: 100vh;">
+    <div class="authincation" style="height: 100vh;">
+        <div class="container" style="height: 100vh;">
+            <div class="row justify-content-center h-100 align-items-center">
+                <div class="col-md-6">
+                    <div class="authincation-content">
+                        <div class="row no-gutters">
+                            <div class="col-xl-12">
+                                <div class="auth-form">
+                                    <div class="text-center mb-3">
+                                        <a href="{% url 'dashboard' %}"><img src="{% static 'images/logo.png' %}" style="width: 35%;" alt=""></a>
+                                    </div>
+                                    <h4 class="text-center mb-4">Sign in your account</h4>
+                                    <form method="post" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="form-group">
+                                            <label class="form-label">Username</label>
+                                            <input type="text" name="username" class="form-control" placeholder="helloworld@gmail.com">
+                                        </div>
+                                        <label class="form-label">Password</label>
+                                        <div class="mb-3 position-relative">
+                                            <input type="password" name="password" id="dz-password" class="form-control" placeholder="****">
+                                            <span class="show-pass eye">
+                                                <i class="fa fa-eye-slash"></i>
+                                                <i class="fa fa-eye"></i>
+                                            </span>
+                                        </div>
+ 
+                                        <div class="text-center">
+                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Required vendors -->
+    <script src="{% static 'vendor/global/global.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'js/custom.min.js' %}"></script>
+    <script src="{% static 'js/deznav-init.js' %}"></script>
+    <script src="{% static 'js/demo.js' %}"></script>
+    <script src="{% static 'js/styleSwitcher.js' %}"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        
+    <!-- Include the SweetAlert script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            {% if messages %}
+                {% for message in messages %}
+                    Swal.fire({
+                        title: "{{ message.tags|capfirst }}",
+                        text: "{{ message }}",
+                        icon: "{{ message.tags }}",
+                        confirmButtonText: "OK"
+                    });
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
+</body>
+
+</html>

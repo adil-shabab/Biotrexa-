@@ -1,0 +1,102 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Biotrexa | Update Ad Banner
+{% endblock title %}
+    
+
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'ad_banners' %}">Ad Banners > </a>  </li>
+                <li class="breadcrumb-item active ms-1"><a href="#"> Update Ad banner</a></li>
+            </ol>
+        </div>
+        <form method="post" class="row w-100 bg-white p-4" style="border-radius: 4px;" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="col-md-6">
+                <div class="input-block local-forms">
+                    <label class="mb-2">Department <span class="login-danger">*</span></label>
+                    {{ form.department }}
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="input-block local-forms">
+                    <label class="mb-2">Doctor <span class="login-danger">*</span></label>
+                    {{ form.doctor }}
+                </div>
+            </div>
+            
+
+
+            <div class="col-md-6 mb-3 col-12">
+                <label class="col-form-label">Image :</label>
+                <img class="img__preview" id="img-preview" src="{{banner.image.url}}"/>
+                <div>
+                    {{form.image}}
+                </div>
+            </div>
+
+
+            <div class="col-md-12 mt-3">
+                <ul class="radio-switch">
+                    <li class="radio-switch__item">
+                        <input class="radio-switch__input ri5-sr-only" type="radio" name="status" id="radio-1" value="active" {% if form.status.value == "active" %}checked{% endif %}>
+                        <label class="radio-switch__label" for="radio-1">Active</label>
+                    </li>
+                    <li class="radio-switch__item">
+                        <input class="radio-switch__input ri5-sr-only" type="radio" name="status" id="radio-2" value="inactive" {% if form.status.value == "inactive" %}checked{% endif %}>
+                        <label class="radio-switch__label" for="radio-2">Inactive</label>
+                        <div aria-hidden="true" class="radio-switch__marker"></div>
+                    </li>
+                </ul>
+            </div>
+            
+
+
+            <div class="submit___btns">
+                <button type="submit">Update Ad Banner</button>
+                <a href="{% url 'ad_banners' %}">Cancel</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+
+<script>
+    document.getElementById('id_image').removeAttribute('required')
+</script>
+
+<script>
+    //Change this to your no-image file
+    let noimage1 =
+    "{{banner.image.url}}";
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+            $("#img-preview").attr("src", e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        } else {
+            $("#img-preview").attr("src", noimage1);
+        }
+    }
+
+</script>
+
+
+{% endblock script %}
+    

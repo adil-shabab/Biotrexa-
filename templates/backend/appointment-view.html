@@ -1,0 +1,131 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Book Appointment | NGR
+{% endblock title %}
+    
+
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="page-titles">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'appointments' %}">Appointments > </a>  </li>
+                <li class="breadcrumb-item active ms-1"><a href="#"> View {{ detailed_appointment.appointment.patient.name }}'s Appointment</a></li>
+            </ol>
+        </div>
+        <form id="appointment-form" class="row w-100 bg-white p-4" style="border-radius: 4px;" action="{#  #}">
+            {% csrf_token %}
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Patient Name :</label>
+                    <input class="form-control" type="text" id="name" name="name" value="{{ detailed_appointment.appointment.patient.name }}" readonly>                
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Disease :</label>
+                    <input class="form-control" type="text" id="disease" name="disease" value="{{ detailed_appointment.appointment.patient.disease }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Phone Number :</label>
+                    <input class="form-control" type="text" id="phone_number" name="phone_number" value="{{ detailed_appointment.appointment.patient.phone_number }}" readonly>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Email :</label>
+                    <input class="form-control" type="email" id="email" name="email" value="{{ detailed_appointment.appointment.patient.email }}" readonly>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Select Department :</label>
+                    <input class="form-control" type="text" id="department" name="department" value="{{ detailed_appointment.appointment.selected_doctor.department.title }}" readonly>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Select Doctor :</label>
+                    <input class="form-control" type="text" id="selected_doctor" name="selected_doctor" value="{{ detailed_appointment.appointment.selected_doctor.name }}" readonly>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Gender :</label>
+                    <input class="form-control" type="text" id="gender" name="gender" value="{{ detailed_appointment.appointment.patient.gender }}" readonly>              
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Date :</label>
+                    <input class="form-control" type="text" id="date" name="date" value="{{ detailed_appointment.formatted_date }}" readonly>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Select Time :</label>
+                    <input class="form-control" type="text" id="time" name="time" value="{{ detailed_appointment.timing_details }}" readonly>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Message :</label>
+                    <textarea style="height: 150px;" class="form-control" id="message" name="message" readonly>{{ detailed_appointment.appointment.message }}</textarea>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Payment Method :</label>
+                    <input class="form-control" type="text" id="payment_method" name="payment_method" value="{{ detailed_appointment.appointment.payment_method }}" readonly>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Discount (in %) :</label>
+                    <input class="form-control" type="text" id="discount" name="discount" value="{{ detailed_appointment.appointment.discount }} %" readonly>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="col-form-label">Total Amount :</label>
+                    <input class="form-control" type="text" readonly id="total_amount" value="{{ detailed_appointment.payment_details.amount }}" name="total_amount" required>
+                </div>
+            </div>
+
+        </form>
+    </div>
+{% endblock content %}
+    
+
+
+
+
+
+{% block script %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let totalAmountElement = document.getElementById('total_amount');
+        let amountInPaisa = parseInt(totalAmountElement.value, 10);
+        let amountInRupees = (amountInPaisa / 100).toFixed(2);  // Converts to rupees and formats to 2 decimal places
+        totalAmountElement.value = `₹ ${amountInRupees}`;
+    });
+</script>
+{% endblock script %}

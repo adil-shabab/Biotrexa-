@@ -1,0 +1,111 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+{% block title %}
+    Blog Comments | NGR
+{% endblock title %}
+
+
+{% block head %}
+    <link rel="stylesheet" href="{% static 'css/message.css' %}">
+{% endblock head %}
+    
+
+{% block content %}
+<div class="container-fluid">
+<div class="content">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'blogs' %}"> Blog > </a> </li>
+            <li class="breadcrumb-item active ms-1"><a href="#"> {{blog.heading}} > Comments </a> </li>
+        </ol>
+    </div>
+
+    <div class="row">
+        <div style="max-height: 250px;" class="col-xl-4 d-flex">
+            <div class="card chat-box">
+                <div class="chat-widgets">
+                    <div class="chat-user-group d-flex align-items-center">
+                        <div class="img-users call-user">
+                            <img src="{% static 'images/user.jpg' %}" alt="img" />
+                        </div>
+                        <div class="chat-users user-main">
+                            <div class="user-titles user-head-compse">
+                                <h5>Admin</h5>
+                                <div class="chat-user-time">
+                                    <p>{{now}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="email-menu-blk">
+                        <ul>
+                            <li class="active">
+                                <a href="{% url 'view_blog_comments' blog.slug %}"><img src="{% static 'images/inbox.svg' %}" class="me-2" alt="img" />Application for {{blog.heading}}<span class="comman-flex">{{comments_count}}</span></a>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8">
+            <div class="card chat-box">
+                <div class="mailview-content view-content-bottom">
+                    <a href="javascript:window.history.back();">
+                        <i style="position: absolute; top: 38px; left: 25px; font-size: 19px;" class="fa-solid fa-left-long"></i>
+                    </a>
+                    <div class="mailview-header comman-space-flex ms-5">
+                        <div class="sender-info comman-flex">
+                            <div class="sender-img">
+                                <img alt src="{% static 'images/user.jpg' %}" class="rounded-circle me-2" />
+                            </div>
+                            <div class="send-user send-user-name">
+                                <h4>{{comment.name}}</h4>
+                                <p>
+                                    <span>From:</span>
+                                    <a href="#">
+                                        {{comment.email}}
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mailview-inner">
+                        <!-- Display the rating with stars -->
+                        <div class="rating mb-3">
+                            {% for i in rating_range %}
+                                {% if i <= comment.rating %}
+                                    <i class="filled fa-solid fa-star"></i>
+                                {% else %}
+                                    <i class="unfilled fa-regular fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    
+                        <p>{{ comment.message }}</p>
+                        
+                        <div class="buttons__">
+                            <a href="mailto:{{ comment.email }}">
+                                <div class="butn mail"><i class="fa-regular fa-envelope"></i>Gmail</div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock content %}
+
+
+{% block script %}
+
+{% endblock script %}

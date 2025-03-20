@@ -1,0 +1,168 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Biotrexa | Doctors
+{% endblock title %}
+    
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'doctors' %}"> Doctors</a></li>
+        </ol>
+    </div>
+    <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+        <div class="input-group search-area d-inline-flex me-2">
+            <input type="text" id="search-input" class="form-control" placeholder="Search here">
+            <div class="input-group-append">
+                <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+            </div>
+        </div>
+        <div class="ms-auto">
+            <a href="{% url 'create_doctor' %}" class="btn btn-primary btn-rounded add-appointment" >+ Create New Doctor</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+
+                                    <th>SI</th>
+                                    <th>Doctor Name</th>
+                                    <th>Fee</th>
+                                    <th>Leave</th>
+                                    <th>Timing</th>
+                                    <th>View Appointments</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for doctor in doctors %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td class="patient-info ps-0">
+                                            <span>
+                                                <img style="width: 32px; object-position: top; height: 32px; object-fit: cover;" src="{{doctor.photo.url}}" alt="">
+                                                {{doctor.name}}
+                                            </span>
+                                        </td>
+                                        <td>₹{{doctor.fee}}</td>
+                                        <td class="leave_request_btn">
+                                            <a href="{% url 'create_leave' doctor.slug %}">
+                                                Leave Request
+                                            </a>
+                                        </td>
+                                        <td class="timing__btn">
+                                            <a href="{% url 'create_timing' doctor.slug %}" class="py-2 px-3">Update Timing</a>
+                                        </td>
+                                        <td class="appointment_view__btn">
+                                            <a href="{% url 'doctor_appointments' doctor.id %}" class="py-2 px-3  boo_king">View Appointments</a>
+                                        </td>
+                                        
+                                        <td class="text-primary">
+                                            {% if doctor.status == 'active' %}
+                                            <span class="acti_ve">Active</span>
+                                            {% else %}
+                                            <span class="in_acti_ve">Inactive</span>
+                                        {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'update_doctor' doctor.slug %}" class="edit-appointment"><i class="fa fa-pencil fs-18 " aria-hidden="true"></i></a>
+                                            </span>	
+                                            <span> 
+                                                <a href="#" onclick="deleteDoctor('{{ doctor.slug }}')">
+                                                    <i class="fa fa-trash fs-18 text-danger" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="empty-view" class="empty_view d-none">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Doctors Found</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+    
+
+<script>
+    function deleteDoctor(slug) {
+        const deleteUrlTemplate = "{% url 'delete_doctor' 0 %}";
+        const deleteUrl = deleteUrlTemplate.replace('0', slug);
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = `${deleteUrl}`;
+            }
+        });
+    }
+
+    function updateEmptyView() {
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        const emptyView = document.getElementById('empty-view');
+        const anyVisible = Array.from(rows).some(row => row.style.display !== 'none');
+        if (anyVisible) {
+            emptyView.classList.add('d-none');
+        } else {
+            emptyView.classList.remove('d-none');
+        }
+    }
+
+    document.getElementById('search-input').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#example5 tbody tr');
+        rows.forEach(row => {
+            const heading = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const description = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const buttonText = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            if (heading.includes(filter) || description.includes(filter) || buttonText.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+        updateEmptyView();
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateEmptyView();
+    });
+</script>
+
+{% endblock script %}
+    

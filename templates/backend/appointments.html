@@ -1,0 +1,398 @@
+{% extends 'backend/base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Appointments | NGR
+{% endblock title %}
+    
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="page-titles">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard > </a>  </li>
+            <li class="breadcrumb-item active ms-1"><a href="{% url 'appointments' %}"> Appointments </a> </li>
+        </ol>
+    </div>
+
+
+
+
+    <div class="tab_s">
+        <div class="tab_ upcoming {% if active_tab == 'upcoming' %}active{% endif %}">
+            <a href="?tab=upcoming&search={{ search_query }}">Upcoming</a>
+        </div>
+        <div class="tab_ completed {% if active_tab == 'completed' %}active{% endif %}">
+            <a href="?tab=completed&search={{ search_query }}">Completed</a>
+        </div>
+        <div class="tab_ cancelled {% if active_tab == 'cancelled' %}active{% endif %}">
+            <a href="?tab=cancelled&search={{ search_query }}">Cancelled</a>
+        </div>
+    </div>
+
+
+
+
+    <div id="upcoming__appointment" class="row {% if active_tab != 'upcoming' %}d-none{% endif %}">
+
+        <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+            <form method="GET" action="" class="input-group search-area d-inline-flex me-2">
+                <input type="hidden" name="tab" value="upcoming">
+                <input id="search-upcoming-input" name="search_upcoming" type="text" class="form-control" placeholder="Search here" value="{{ search_upcoming }}" />                <div class="input-group-append">
+                    <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+
+                                    <th>SI</th>
+                                    <th>Doctor</th>
+                                    <th>Patient</th>
+                                    <th>Mobile </th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Timing</th>
+                                    <th>Payment Status</th>
+                                    <th>Payment Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in upcoming_appointments  %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td class="patient-info ps-0">
+                                            <span>
+                                                <img style="width: 25px; border-radius: 0px; height: 25px; object-fit: cover;" src="{{detail.appointment.selected_doctor.photo.url}}" alt="">
+                                                {{detail.appointment.selected_doctor.name}}
+                                            </span>
+                                        </td>
+                                        <td>{{ detail.appointment.patient.name }}</td>
+                                        <td>{{ detail.appointment.patient.phone_number }}</td>
+                                        <td class="email">{{ detail.appointment.patient.email }}</td>
+                                        <td>{{ detail.appointment.date }}</td>
+                                        <td>
+                                            <span class="timing_view__btn">{{ detail.related_object.start_time|date:"h:i A" }} - {{ detail.related_object.end_time|date:"h:i A" }}</span>
+                                        </td>
+                                        <td>
+                                            {% if detail.payment_details and detail.payment_details.status == 'COMPLETED' %}
+                                                <span class="acti_ve">Paid</span>
+                                            {% else %}
+                                                <span class="in_acti_ve">Not Paid</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="{% if  detail.payment_details.payment_method == 'online' %}bg-online{% elif  detail.payment_details.payment_method == 'cash' %}bg-cash{% endif %}"><span>{{  detail.payment_details.payment_method }}</span></td>
+
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'view_appointment' detail.appointment.id %}" class="edit-appointment"><i class="fa-regular fa-eye fs-18"></i></a>
+                                            </span>	
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {% if upcoming_appointments.has_other_pages %}
+                <div class="pagination-wrapper">
+                    <span class="step-links">
+                        {% if upcoming_appointments.has_previous %}
+                            <a href="?page_upcoming=1&tab=upcoming&search={{ search_query }}">&laquo; first</a>
+                            <a href="?page_upcoming={{ upcoming_appointments.previous_page_number }}&tab=upcoming&search={{ search_query }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ upcoming_appointments.number }} of {{ upcoming_appointments.paginator.num_pages }}.
+                        </span>
+
+                        {% if upcoming_appointments.has_next %}
+                            <a href="?page_upcoming={{ upcoming_appointments.next_page_number }}&tab=upcoming&search={{ search_query }}">next</a>
+                            <a href="?page_upcoming={{ upcoming_appointments.paginator.num_pages }}&tab=upcoming&search={{ search_query }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% endif %}
+
+                {% if not upcoming_appointments %}
+                <div id="empty-view" class="empty_view">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Upcoming Appointments Found</h4>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div id="completed__appointment" class="row {% if active_tab != 'completed' %}d-none{% endif %}">
+
+        <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+            <form method="GET" action="" class="input-group search-area d-inline-flex me-2">
+                <input type="hidden" name="tab" value="completed">
+                <input id="search-completed-input" name="search_completed" type="text" class="form-control" placeholder="Search here" value="{{ search_completed }}" />
+                <div class="input-group-append">
+                    <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+
+                                    <th>SI</th>
+                                    <th>Doctor</th>
+                                    <th>Patient</th>
+                                    <th>Mobile </th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Timing</th>
+                                    <th>Payment Status</th>
+                                    <th>Payment Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in past_appointments   %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td class="patient-info ps-0">
+                                            <span>
+                                                <img style="width: 25px; border-radius: 0px; height: 25px; object-fit: cover;" src="{{detail.appointment.selected_doctor.photo.url}}" alt="">
+                                                {{detail.appointment.selected_doctor.name}}
+                                            </span>
+                                        </td>
+                                        <td>{{ detail.appointment.patient.name }}</td>
+                                        <td>{{ detail.appointment.patient.phone_number }}</td>
+                                        <td class="email">{{ detail.appointment.patient.email }}</td>
+                                        <td>{{ detail.appointment.date }}</td>
+                                        <td>
+                                            <span class="timing_view__btn">{{ detail.related_object.start_time|date:"h:i A" }} - {{ detail.related_object.end_time|date:"h:i A" }}</span>
+                                        </td>
+                                        <td>
+                                            {% if detail.payment_details and detail.payment_details.status == 'COMPLETED' %}
+                                                <span class="acti_ve">Paid</span>
+                                            {% else %}
+                                                <span class="in_acti_ve">Not Paid</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="{% if  detail.payment_details.payment_method == 'online' %}bg-online{% elif  detail.payment_details.payment_method == 'cash' %}bg-cash{% endif %}"><span>{{  detail.payment_details.payment_method }}</span></td>
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'view_appointment' detail.appointment.id %}" class="edit-appointment"><i class="fa-regular fa-eye fs-18"></i></a>
+                                            </span>	
+                                            <span>
+                                                <a href="{% url 'cancel_appointment' detail.appointment.id %}">
+                                                    <span>Cancel</span>
+                                                </a>    
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {% if past_appointments.has_other_pages %}
+                <div class="pagination-wrapper">
+                    <span class="step-links">
+                        {% if past_appointments.has_previous %}
+                            <a href="?page_upcoming=1&tab=upcoming&search={{ search_query }}">&laquo; first</a>
+                            <a href="?page_upcoming={{ past_appointments.previous_page_number }}&tab=upcoming&search={{ search_query }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ past_appointments.number }} of {{ past_appointments.paginator.num_pages }}.
+                        </span>
+
+                        {% if past_appointments.has_next %}
+                            <a href="?page_upcoming={{ past_appointments.next_page_number }}&tab=upcoming&search={{ search_query }}">next</a>
+                            <a href="?page_upcoming={{ past_appointments.paginator.num_pages }}&tab=upcoming&search={{ search_query }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% endif %}
+
+                {% if not past_appointments  %}
+                <div id="empty-view" class="empty_view">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Completed Appointments Found</h4>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    <div id="cancelled__appointment" class="row {% if active_tab != 'cancelled' %}d-none{% endif %}">
+
+        <div class="form-head d-flex mb-3 mb-md-4 align-items-center">
+            <form method="GET" action="" class="input-group search-area d-inline-flex me-2">
+                <input type="hidden" name="tab" value="cancelled">
+                <input id="search-cancelled-input" name="search_cancelled" type="text" class="form-control" placeholder="Search here" value="{{ search_cancelled }}" />
+                <div class="input-group-append">
+                    <button type="button" class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
+                            <thead>
+                                <tr>
+
+                                    <th>SI</th>
+                                    <th>Doctor</th>
+                                    <th>Patient</th>
+                                    <th>Mobile </th>
+                                    <th>Email</th>
+                                    <th>Date</th>
+                                    <th>Timing</th>
+                                    <th>Payment Status</th>
+                                    <th>Payment Method</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for detail in cancelled_appointments   %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td class="patient-info ps-0">
+                                            <span>
+                                                <img style="width: 25px; border-radius: 0px; height: 25px; object-fit: cover;" src="{{detail.appointment.selected_doctor.photo.url}}" alt="">
+                                                {{detail.appointment.selected_doctor.name}}
+                                            </span>
+                                        </td>
+                                        <td>{{ detail.appointment.patient.name }}</td>
+                                        <td>{{ detail.appointment.patient.phone_number }}</td>
+                                        <td class="email">{{ detail.appointment.patient.email }}</td>
+                                        <td>{{ detail.appointment.date }}</td>
+                                        <td>
+                                            <span class="timing_view__btn">{{ detail.related_object.start_time|date:"h:i A" }} - {{ detail.related_object.end_time|date:"h:i A" }}</span>
+                                        </td>
+                                        <td>
+                                            {% if detail.payment_details and detail.payment_details.status == 'COMPLETED' %}
+                                                <span class="acti_ve">Paid</span>
+                                            {% else %}
+                                                <span class="in_acti_ve">Not Paid</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="{% if  detail.payment_details.payment_method == 'online' %}bg-online{% elif  detail.payment_details.payment_method == 'cash' %}bg-cash{% endif %}"><span>{{  detail.payment_details.payment_method }}</span></td>
+                                        <td>
+                                            <span class="me-3">
+                                                <a href="{% url 'view_appointment' detail.appointment.id %}" class="edit-appointment"><i class="fa-regular fa-eye fs-18"></i></a>
+                                            </span>	
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                {% if cancelled_appointments.has_other_pages %}
+                <div class="pagination-wrapper">
+                    <span class="step-links">
+                        {% if cancelled_appointments.has_previous %}
+                            <a href="?page_upcoming=1&tab=upcoming&search={{ search_query }}">&laquo; first</a>
+                            <a href="?page_upcoming={{ cancelled_appointments.previous_page_number }}&tab=upcoming&search={{ search_query }}">previous</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Page {{ cancelled_appointments.number }} of {{ cancelled_appointments.paginator.num_pages }}.
+                        </span>
+
+                        {% if cancelled_appointments.has_next %}
+                            <a href="?page_upcoming={{ cancelled_appointments.next_page_number }}&tab=upcoming&search={{ search_query }}">next</a>
+                            <a href="?page_upcoming={{ cancelled_appointments.paginator.num_pages }}&tab=upcoming&search={{ search_query }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+                {% endif %}
+
+                {% if not cancelled_appointments  %}
+                <div id="empty-view" class="empty_view">
+                    <img src="{% static 'images/empty.png' %}" alt="">
+                    <h4>No Cancelled Appointments Found</h4>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% endblock content %}
+    
+
+
+
+
+{% block script %}
+    
+
+<script>
+    const upcoming_btn = document.querySelector('.tab_s .upcoming')
+    const completed_btn = document.querySelector('.tab_s .completed')
+    const cancelled_btn = document.querySelector('.tab_s .cancelled')
+
+    const completed_view = document.getElementById('completed__appointment')
+    const upcoming_view = document.getElementById('upcoming__appointment')
+    const cancelled_view = document.getElementById('cancelled__appointment')
+
+    upcoming_btn.addEventListener('click', function() {
+        window.location.href = '?tab=upcoming&search={{ search_query }}';
+    })
+    completed_btn.addEventListener('click', function() {
+        window.location.href = '?tab=completed&search={{ search_query }}';
+    })
+    cancelled_btn.addEventListener('click', function() {
+        window.location.href = '?tab=cancelled&search={{ search_query }}';
+    })
+
+    function updateEmptyView(tableId, emptyViewId) {
+        const rows = document.querySelectorAll(`#${tableId} tbody tr`);
+        const emptyView = document.getElementById(emptyViewId);
+        const anyVisible = Array.from(rows).some(row => row.style.display !== 'none');
+        if (anyVisible) {
+            emptyView.classList.add('d-none');
+        } else {
+            emptyView.classList.remove('d-none');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        updateEmptyView('upcoming-table', 'upcoming-empty-view');
+        updateEmptyView('completed-table', 'completed-empty-view');
+        updateEmptyView('cancelled-table', 'cancelled-empty-view');
+    });
+</script>
+
+{% endblock script %}
+    
