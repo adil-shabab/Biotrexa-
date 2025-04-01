@@ -47,13 +47,7 @@ import requests
 import uuid
 from django.conf import settings
 from django.shortcuts import render, redirect
-from phonepe.sdk.pg.payments.v1.models.request.pg_pay_request import PgPayRequest
-from phonepe.sdk.pg.env import Env
 import requests, hashlib, base64, json
-
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.backends import default_backend
-
 
 
 payment_url_phonephe = "https://api.phonepe.com/apis/hermes/pg/v1/pay"
