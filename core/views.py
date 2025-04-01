@@ -47,7 +47,6 @@ import requests
 import uuid
 from django.conf import settings
 from django.shortcuts import render, redirect
-from phonepe.sdk.pg.payments.v1.payment_client import PhonePePaymentClient
 from phonepe.sdk.pg.payments.v1.models.request.pg_pay_request import PgPayRequest
 from phonepe.sdk.pg.env import Env
 import requests, hashlib, base64, json
@@ -3361,117 +3360,8 @@ class CreateAppointmentAPIView(APIView):
 
 @csrf_exempt
 def handle_payment(request):
-    # Retrieve transaction ID from session
-    merchant_transaction_id = request.session.get("merchantTransactionId")
-    appointment_id = request.session.get("appointmentId")
-    print(appointment_id)
+    print("Hellog World")
 
-    print("Merchant Transaction ID:", merchant_transaction_id)
-    print("Appointment ID:", appointment_id)
-
-    if not merchant_transaction_id:
-       return redirect('payment_failure_account')
-
-    if not appointment_id:
-        return redirect('payment_failure_account')
-
-    # PhonePe client setup
-    merchant_id = merchant_id_phonephe 
-    salt_key = salt_key_phonephe
-    salt_index = salt_index_phonephe  # Replace with your actual salt index
-    env = phonephe_Env  # Assuming UAT for sandbox environment
-    should_publish_events = True
-    phonepe_client = PhonePePaymentClient(merchant_id, salt_key, salt_index, env, should_publish_events)
-
-
-    print("Hello")
-    # Check status
-    response = phonepe_client.check_status(merchant_transaction_id)
-
-    print(response)
-
-    # Manually parse PhonePeResponse and PgTransactionStatusResponse data
-    if hasattr(response, 'success') and response.success:
-        print("Coming")
-        response_data = {
-            "success": response.success,
-            "code": response.code,
-            "message": response.message,
-            "data": {
-                "merchant_id": response.data.merchant_id,
-                "merchant_transaction_id": response.data.merchant_transaction_id,
-                "transaction_id": response.data.transaction_id,
-                "amount": response.data.amount,
-                "response_code": response.data.response_code,
-                "state": response.data.state,
-                "payment_instrument": {
-                    "type": response.data.payment_instrument.type.value,  # Assuming Enum type with .value for NETBANKING, etc.
-                    "pg_transaction_id": response.data.payment_instrument.pg_transaction_id,
-                    "pg_service_transaction_id": response.data.payment_instrument.pg_service_transaction_id,
-                    "bank_transaction_id": response.data.payment_instrument.bank_transaction_id,
-                    "bank_id": response.data.payment_instrument.bank_id,
-                }
-            }
-        }
-        
-
-        print(appointment_id)
-        appointment = get_object_or_404(Appointment, payment_id=merchant_transaction_id, id=appointment_id)
-        print(appointment)
-        appointment.status = 'COMPLETED'
-        appointment.save()
-
-
-        # Update RazorpayPaymentDetails with the payment status and signature
-        payment_details = get_object_or_404(RazorpayPaymentDetails, appointment=appointment)
-        payment_details.status = 'COMPLETED'
-        payment_details.signature = merchant_transaction_id
-        payment_details.payment_id = merchant_transaction_id
-        payment_details.order_id = merchant_transaction_id
-        payment_details.save()
-
-
-        # # Inside the successful payment verification block
-        if not request.user.is_superuser:
-            Notification.objects.create(
-                message=f"{appointment.patient.name} booked an appointment with {appointment.selected_doctor.name} for ₹ {payment_details.amount / 100}",
-                read_status=False,
-                redirection_url=reverse('view_appointment', args=[appointment.id]),
-                object_id=appointment.id,
-                type = 'appointment'
-            )
-        
-
-        
-
-        # # Decrement the remaining slots
-        content_type = appointment.content_type
-        related_object = content_type.get_object_for_this_type(id=appointment.object_id)
-
-        if isinstance(related_object, MonthlyTiming):
-            related_object.remaining_slots -= 1
-            related_object.save()
-        elif isinstance(related_object, AvailableTime):
-            appointments_on_same_day = Appointment.objects.filter(
-                date=appointment.date,
-                content_type=content_type,
-                object_id=appointment.object_id
-            ).count()
-            if appointments_on_same_day <= related_object.slot:
-                related_object.save()
-
-            return redirect('payment_success_account', appointment_id=appointment.id)
-    else:
-        # Handle unsuccessful response or unexpected format
-        response_data = {
-            "success": False,
-            "message": "Failed to retrieve payment status",
-            "details": getattr(response, 'message', 'Unknown error')
-        }
-        return redirect('payment_failure_account')
-
-    # Return as JsonResponse
-    return redirect('payment_failure_account')
 
     
 
@@ -3823,110 +3713,8 @@ class HandleHealthCheckupPaymentAPIView(APIView):
 
 @csrf_exempt
 def handle_health_checkup_payment(request):
-    # Retrieve transaction ID from session
-    merchant_transaction_id = request.session.get("merchantTransactionId")
-    booking_id = request.session.get("bookingId")
-    print(booking_id)
-
-    print("Merchant Transaction ID:", merchant_transaction_id)
-    print("Appointment ID:", booking_id)
-
-    if not merchant_transaction_id:
-       return redirect('health_checkup_payment_failure')
-
-    if not booking_id:
-        return redirect('health_checkup_payment_failure')
-
-    # PhonePe client setup
-    merchant_id = merchant_id_phonephe 
-    salt_key = salt_key_phonephe
-    salt_index = salt_index_phonephe  # Replace with your actual salt index
-    env = phonephe_Env  # Assuming UAT for sandbox environment
-    should_publish_events = True
-    phonepe_client = PhonePePaymentClient(merchant_id, salt_key, salt_index, env, should_publish_events)
-
-
-    print("Hello")
-    # Check status
-    response = phonepe_client.check_status(merchant_transaction_id)
-
-    print(response)
-
-    # Manually parse PhonePeResponse and PgTransactionStatusResponse data
-    if hasattr(response, 'success') and response.success:
-        print("Coming")
-        response_data = {
-            "success": response.success,
-            "code": response.code,
-            "message": response.message,
-            "data": {
-                "merchant_id": response.data.merchant_id,
-                "merchant_transaction_id": response.data.merchant_transaction_id,
-                "transaction_id": response.data.transaction_id,
-                "amount": response.data.amount,
-                "response_code": response.data.response_code,
-                "state": response.data.state,
-                "payment_instrument": {
-                    "type": response.data.payment_instrument.type.value,  # Assuming Enum type with .value for NETBANKING, etc.
-                    "pg_transaction_id": response.data.payment_instrument.pg_transaction_id,
-                    "pg_service_transaction_id": response.data.payment_instrument.pg_service_transaction_id,
-                    "bank_transaction_id": response.data.payment_instrument.bank_transaction_id,
-                    "bank_id": response.data.payment_instrument.bank_id,
-                }
-            }
-        }
-        
-
-        appointment = get_object_or_404(HealthCheckupBooking, payment_id=merchant_transaction_id, id=booking_id)
-        print(appointment)
-        appointment.status = 'COMPLETED'
-        appointment.save()
-
-
-        # Update RazorpayPaymentDetails with the payment status and signature
-        payment_details = get_object_or_404(RazorpayPaymentDetails, booking=appointment)
-        payment_details.status = 'COMPLETED'
-        payment_details.signature = merchant_transaction_id
-        payment_details.payment_id = merchant_transaction_id
-        payment_details.order_id = merchant_transaction_id
-        payment_details.save()
-
-        # Create a notification for successful booking
-        booking = HealthCheckupBooking.objects.get(id=booking_id)
-        if booking.home_sample_collection:
-            if not request.user.is_superuser:
-                Notification.objects.create(
-                    message=f"{appointment.patient.name} booked a health checkup {appointment.plan.title} for ₹ {payment_details.amount / 100}",
-                    read_status=False,
-                    redirection_url=reverse('view_checkup_appointment', args=[appointment.id]),
-                    object_id=booking_id,
-                    type='checkup'
-                )
-        else:
-            if not request.user.is_superuser:
-                Notification.objects.create(
-                    message=f"{appointment.patient.name} booked a health checkup {appointment.plan.title} for ₹ {payment_details.amount / 100} (Home Sample Collection)",
-                    read_status=False,
-                    redirection_url=reverse('view_checkup_appointment', args=[appointment.id]),
-                    object_id=booking_id,
-                    type='checkup'
-                )
-
-        return redirect('health_checkup_payment_success', booking_id=booking_id)
-    else:
-        # Handle unsuccessful response or unexpected format
-        response_data = {
-            "success": False,
-            "message": "Failed to retrieve payment status",
-            "details": getattr(response, 'message', 'Unknown error')
-        }
-        return redirect('health_checkup_payment_failure')
-
-    # Return as JsonResponse
-    return redirect('health_checkup_payment_failure')
-
-    
-
+   
+    print("hello World")
 
 
 
