@@ -1,0 +1,76 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+
+
+{% block title %}
+    <title>Biotrexa | Login</title>
+    <style>
+        .otp-container {
+            max-width: 500px;
+            margin: 50px auto 100px;
+            padding: 20px;
+
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        @media screen and (max-width: 400px) {
+            .otp-container {
+                max-width: 95%;
+            }
+        }
+    </style>
+{% endblock title %}
+    
+
+
+{% block content %}
+
+    <!-- Page Header Start -->
+	<div class="page-header about-page-header bg-radius-section parallaxie" style="padding: 125px 0px 30px 0px">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">Login</h1>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+
+    <div class="otp-container">
+        <h2 class="text-center mb-4">Verify OTP</h2>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <p class="text-center">Enter the OTP sent to <strong>{{ request.session.phone_number }}</strong></p>
+        <form method="post" action="{% url 'otp_verify' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="otp" class="form-label">OTP</label>
+                <input style="padding: 12px;" type="text" class="form-control" id="otp" name="otp" placeholder="Enter 6-digit OTP" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Verify OTP</button>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{% url 'otp_send' %}" class="text-muted">Resend OTP</a>
+        </div>
+    </div>
+
+
+{% endblock content %}
+
+
+
+
+

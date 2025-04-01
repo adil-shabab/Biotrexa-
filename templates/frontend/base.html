@@ -107,15 +107,14 @@
                                     <ul class="sub-menu">
                                         <li class="nav-item"><a class="nav-link" href="{% url 'frontend_blogs' %}">Blogs</a></li>                                                               
                                         <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="">Career</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="">Testimonials</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'specialities' %}">Specialities</a></li>
                                     </ul>
                                 </li>     
                             </ul>
                         </div>
                         <!-- Let’s Start Button Start -->
                         <div class="header-btn d-inline-flex">
-                            <a href="tel:+919999999999" class="btn-default"><span>+91 9999999999</span></a>
+                            <a href="{% url 'otp_send' %}" class="btn-default"><span>Download Report</span></a>
                         </div>
                         <!-- Let’s Start Button End -->
 					</div>
@@ -273,6 +272,7 @@
 
 
     
+
     <!-- Jquery Library File -->
     <script src="{% static 'frontend/js/jquery-3.7.1.min.js' %}"></script>
     <!-- Bootstrap js file -->

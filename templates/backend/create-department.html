@@ -25,18 +25,7 @@
                     {{ form.title }}
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="col-form-label">Speciality Type :</label>
-                    {{ form.speciality_type }}
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label class="col-form-label">Opening Hours :</label>
-                    {{ form.opening_hours }}
-                </div>
-            </div>
+
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="col-form-label">Priority :</label>
@@ -55,25 +44,9 @@
                 </div>
             </div>
 
-            <div class="col-md-6 mb-3 col-12">
-                <label class="col-form-label">Icon Image :</label>
-                <div class="img__preview d-flex justify-content-center align-items-center">
-                    <img class="img-fluid w-100 img__preview" id="img-preview-3" src="{% static 'images/upload.png' %}"/>
-                </div>
-                <div>
-                    {{form.icon}}
-                </div>
-            </div>
-            <div class="col-md-12 mb-3 col-12">
-                <label class="col-form-label">Banner Image :</label>
-                <img class="img__preview" id="img-preview-2" src="{% static 'images/upload.png' %}"/>
-                <div>
-                    {{form.breadcamp}}
-                </div>
-            </div>
 
 
-            <div class="col-md-6 mt-2">
+            <div class="col-md-12 mt-2">
                 <div class="form-group">
                     <label class="col-form-label" style="margin-top: -5px;">Show on Homepage :</label>
                     {{form.show_on_homepage}}
@@ -119,49 +92,11 @@
 
 {% block script %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
-<script>
-    tinymce.init({
-        selector: "textarea#id_description",
-    });
-</script>
 
 
 
-<script>
-
-    function readURL2(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-            $("#img-preview-2").attr("src", e.target.result);
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            $("#img-preview-2").attr("src", noimage);
-        }
-    }
-
-</script>
 
 
-<script>
-
-    function readURL3(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $("#img-preview-3").attr("src", e.target.result);
-                $("#img-preview-3").attr("class", 'w-25');
-            };
-
-            reader.readAsDataURL(input.files[0]);
-        } else {
-            $("#img-preview-3").attr("src", noimage);
-        }
-    }
-
-</script>
 
 <script>
     //Change this to your no-image file

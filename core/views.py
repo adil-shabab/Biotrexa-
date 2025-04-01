@@ -1410,6 +1410,55 @@ def health_checkup_appointments(request, slug):
 
 
 @login_required(login_url='login')  
+def checkup_bookings(request):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    appointments = HealthCheckupBooking.objects.filter(status='COMPLETED').order_by('-created_at')
+    
+    context = {
+        'appointments': appointments
+    }
+    return render(request, 'backend/checkup-bookings.html', context)
+
+
+
+
+@login_required(login_url='login')  
+def collect_cash_checkup(request, pk):
+    booking = get_object_or_404(HealthCheckupBooking, id=pk)
+    payment = RazorpayPaymentDetails.objects.filter(booking=booking).first()
+
+    if not payment:
+        msg.error(request, "No payment record found for this booking.")
+        return redirect('some_view_name')  # Redirect to a relevant page
+
+    # Mark payment as completed
+    payment.status = 'COMPLETED'
+    payment.order_id = str(uuid.uuid4())  # Generates a unique order ID
+    payment.payment_id = str(uuid.uuid4())  # Generates a unique payment ID
+    payment.save()
+
+
+    booking.payment_id = str(uuid.uuid4())
+    booking.save()
+
+    msg.success(request, "Payment marked as completed successfully!")
+    return redirect('checkup_bookings')  # Redirect to a relevant page
+
+
+@login_required(login_url='login')  
 def home_sample_dashboard(request):
     
     try:
@@ -1433,13 +1482,11 @@ def home_sample_dashboard(request):
     return render(request, 'backend/home-sample-collection.html', context)
 
 
-
 def view_checkup_appointment(request, pk):
-    
     try:
         profile = Summary.objects.get(user=request.user)
     except ObjectDoesNotExist:
-        msg.error(request,'Profile does not exist. You cannot access here.')
+        msg.error(request, 'Profile does not exist. You cannot access here.')
         return redirect('login')
 
     if profile:
@@ -1447,17 +1494,25 @@ def view_checkup_appointment(request, pk):
             return redirect('hr_dashboard')
         elif profile.role not in ['admin']:
             return redirect('homepage')
-    else: 
+    else:
         return redirect('homepage')
+
     appointment = get_object_or_404(HealthCheckupBooking, id=pk)
+    print(appointment.home_sample_collection)
     payment_details = RazorpayPaymentDetails.objects.filter(booking=appointment).first()
     detailed_appointment = {
         'appointment': appointment,
         'payment_details': payment_details,
     }
 
-    return render(request, 'backend/view-checkup-booking.html', {'detailed_appointment': detailed_appointment})
 
+    if request.method == "POST" and request.FILES.get("report"):
+        appointment.report = request.FILES["report"]
+        appointment.save()
+        msg.success(request, "Report uploaded successfully!")
+        return redirect('view_checkup_appointment', pk=appointment.id)  # Stay on the same page
+
+    return render(request, 'backend/view-checkup-booking.html', {'detailed_appointment': detailed_appointment})
 
 
 
@@ -3567,121 +3622,105 @@ def payment_failure_account(request):
 
 
 
-
 class CreateHealthCheckupBookingAPIView(APIView):
     def post(self, request, *args, **kwargs):
+        # Extract data from request
         plan_id = request.data.get('plan_id')
         name = request.data.get('name')
         email = request.data.get('email')
         number = request.data.get('number')
         message = request.data.get('message')
         address = request.data.get('address')
+        payment_method = request.data.get('payment')  # 'online' or 'pay_at_hospital'
+        is_home_collection = request.data.get('home_collection', False) == 'on'  # Checkbox value
 
-
+        # Validate required fields
+        if not all([plan_id, name, email, number]):
+            return Response(
+                {"error": "Missing required fields"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
         # Validate plan
         plan = get_object_or_404(HealthCheckupPlan, id=plan_id)
 
-        # Create or get the patient
+        # Create or get patient
         patient, created = Patient.objects.get_or_create(
             email=email,
             defaults={'name': name, 'phone_number': number}
         )
 
+        # Create booking with conditional home collection
+        booking_data = {
+            'plan': plan,
+            'patient': patient,
+            'message': message,
+            'is_home_sample_collection': is_home_collection,
+        }
+        
+        if payment_method != 'online':
+            booking_data['is_without_payment'] = True
+            booking_data['status'] = 'COMPLETED'
+        else: 
+            booking_data['is_without_payment'] = False
+            
 
-        if address:
-            print("Yes")
-            booking = HealthCheckupBooking.objects.create(
-                plan=plan,
-                patient=patient,
-                message=message,
-                is_home_sample_collection = True,
-                home_sample_collection = address
+        if is_home_collection and address:
+            booking_data['home_sample_collection'] = address
+        elif is_home_collection and not address:
+            return Response(
+                {"error": "Address is required for home sample collection"},
+                status=status.HTTP_400_BAD_REQUEST
             )
-        else:
-            print("No")
-            booking = HealthCheckupBooking.objects.create(
-                plan=plan,
-                patient=patient,
-                message=message,
-            )
-        # Create booking
 
+        booking = HealthCheckupBooking.objects.create(**booking_data)
 
+        # Handle payment
         amount = int(plan.price * 100)  # Convert to paise
 
+        # Generate random IDs for Razorpay (you'll replace these with actual Razorpay IDs later)
+        payment_id = str(uuid.uuid4())
+        order_id = str(uuid.uuid4())
 
+        # Create Razorpay payment details based on payment method
+        payment_status = 'PENDING'
+        
+        if payment_method == 'online':
+            # For "Pay Now" - prepare for payment gateway integration
+            pass
+        else:  # pay_at_hospital
+            payment_details = RazorpayPaymentDetails.objects.create(
+                payment_id=payment_id,
+                order_id=order_id,
+                signature='',
+                amount=amount,
+                currency='INR',
+                payment_method='pay_at_hospital',
+                status='PENDING',
+                payment_for='CHECKUP',
+                booking=booking,
+            )
 
-        merchant_transaction_id = str(uuid.uuid4())  # Generates a unique UUID string
-        request.session['merchantTransactionId'] = merchant_transaction_id  # Store in session for later use
-        request.session['bookingId'] = booking.id  # Store in session for later use
-        print("booking ID", booking.id)
+            Notification.objects.create(
+                message=f"{name} booked a health checkup {plan.title} ",
+                read_status=False,
+                redirection_url=reverse('view_checkup_appointment', args=[booking.id]),
+                object_id=plan.id,
+                type='checkup'
+            )
             
-        payload = {
-            "merchantId": merchant_id_phonephe,  # Ensure this is the correct sandbox merchant ID
-            "merchantTransactionId": merchant_transaction_id,
-            "merchantUserId": "MUID123",
-            "amount": amount,
-            "redirectUrl": "https://ngrhealthcare.com/api/handle-health-checkup-payment/",
-            "redirectMode": "REDIRECT",
-            "callbackUrl": "https://ngrhealthcare.com/api/handle-health-checkup-payment/",
-            "mobileNumber": patient.phone_number,
-            "paymentInstrument": {"type": "PAY_PAGE"}
-        }
-
-        # Encode payload to Base64
-        payload_str = json.dumps(payload)
-        base64_payload = base64.b64encode(payload_str.encode()).decode()
-
-        # Compute the checksum
-        salt_key = salt_key_phonephe  # M ake sure this is the correct sandbox salt key
-        salt_index = "1"  # Ensure this matches PhonePe's sandbox configuration
-        checksum_str = f"{base64_payload}/pg/v1/pay{salt_key}"
-        checksum = hashlib.sha256(checksum_str.encode()).hexdigest() + "###" + salt_index
-
-        # Headers
-        headers = {
-            "accept": "application/json",
-            "Content-Type": "application/json",
-            "X-VERIFY": checksum
+            response_data = {
+                'booking_id': booking.id,
+                'payment_id': payment_id,
+                'order_id': order_id,
+                'amount': amount,
+                'status': 'PENDING'
             }
 
-        # Send the request
-        response = requests.post(payment_url_phonephe, json={"request": base64_payload}, headers=headers)
-            
-        try:
-            response_data = response.json()
-            print(response_data)
-            if response_data.get("success"):
-                print("Coming Here inside response")
-                # Update appointment with Razorpay order ID
-                booking.payment_id = merchant_transaction_id
-                booking.save()
-                payment_url = response_data["data"]["instrumentResponse"]["redirectInfo"]["url"]
-                print("URL", payment_url)
-
-
-                # Save Razorpay payment details
-                RazorpayPaymentDetails.objects.create(
-                    payment_id=merchant_transaction_id,
-                    order_id=merchant_transaction_id,
-                    signature='',  # This will be filled after payment verification
-                    amount=amount,
-                    currency='INR',
-                    payment_method='online',
-                    status='PENDING',  # Initial status
-                    payment_for='CHECKUP',
-                    booking=booking,
-                )
-                return JsonResponse({'url':payment_url}) 
-            else:
-                return JsonResponse({"error": "Failed to initiate payment", "details": response_data})
-        except ValueError:
-            return JsonResponse({"error": "Non-JSON response", "details": response.text})
-
-
-
-
+        return Response(
+            response_data,
+            status=status.HTTP_201_CREATED
+        )
 
 
 class CreateHealthCheckupBookingDoneAPIView(APIView):
@@ -4251,3 +4290,140 @@ def create_home_sample_collection_view(request):
     # Pass available plans to the template
     plans = HealthCheckupPlan.objects.filter(is_home_sample_available=True)
     return render(request, "frontend/home-sample.html", {"plans": plans})
+
+
+
+
+
+
+
+
+
+from django.views import View
+import requests
+import random
+
+
+API_KEY = "adcf6991-063b-11f0-8b17-0200cd936042"  # Replace with your 2Factor.in API key
+
+# OTP Send View
+class OTPSendView(View):
+    def get(self, request):
+        return render(request, 'frontend/login.html')
+
+    def post(self, request):
+        phone_number = request.POST.get('phone_number')
+        
+        if not phone_number or not phone_number.isdigit() or len(phone_number) != 10:
+            msg.error(request, "Please enter a valid 10-digit phone number.")
+            return redirect('otp_send')
+
+        # Send OTP request to 2Factor.in
+        url = f"https://2factor.in/API/V1/{API_KEY}/SMS/{phone_number}/AUTOGEN"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("Status") == "Success":
+                # Store phone number and SessionId in session
+                request.session['phone_number'] = phone_number
+                request.session['otp_session_id'] = data.get("Details")  # SessionId from 2Factor.in
+                request.session.set_expiry(300)  # 5-minute expiry
+                msg.success(request, "OTP has been sent to your phone number.")
+                return redirect('otp_verify')
+            else:
+                msg.error(request, "Failed to send OTP. Please try again.")
+                return redirect('otp_send')
+        else:
+            msg.error(request, "Error connecting to SMS service. Please try again.")
+            return redirect('otp_send')
+
+# OTP Verify View
+class OTPVerifyView(View):
+    def get(self, request):
+        if 'phone_number' not in request.session or 'otp_session_id' not in request.session:
+            return redirect('otp_send')
+        return render(request, 'frontend/otp_verify.html')
+
+    def post(self, request):
+        entered_otp = request.POST.get('otp').strip()  # Remove any whitespace
+        session_id = request.session.get('otp_session_id')
+        phone_number = request.session.get('phone_number')
+
+        if not phone_number or not session_id:
+            msg.error(request, "Session expired. Please start again.")
+            return redirect('otp_send')
+
+        # Verify OTP with 2Factor.in
+        url = f"https://2factor.in/API/V1/{API_KEY}/SMS/VERIFY/{session_id}/{entered_otp}"
+        response = requests.get(url)
+        
+        if response.status_code == 200:
+            data = response.json()
+            if data.get("Status") == "Success" and data.get("Details") == "OTP Matched":
+                try:
+                    patient = Patient.objects.filter(phone_number=phone_number).first()
+                    bookings = HealthCheckupBooking.objects.filter(patient=patient)
+                    request.session['verified_phone_number'] = phone_number
+                    del request.session['otp_session_id']  # Clear session ID after verification
+                    return redirect('view_bookings')
+                except Patient.DoesNotExist:
+                    msg.info(request, "No bookings found for this phone number.")
+                    return redirect('view_bookings')
+                    
+            else:
+                msg.error(request, "Invalid OTP. Please try again.")
+                return redirect('otp_verify')
+        else:
+            msg.error(request, "Error verifying OTP. Please try again.")
+            return redirect('otp_verify')
+
+
+
+def view_bookings(request):
+    phone_number = request.session.get('verified_phone_number')
+    if not phone_number:
+        return redirect('otp_send')
+    
+    try:
+        patient = Patient.objects.filter(phone_number=phone_number).first()
+        if patient:
+            bookings = HealthCheckupBooking.objects.filter(patient=patient).prefetch_related('payment_details')  # Use correct related_name
+        else:
+            bookings = []
+        
+        return render(request, 'frontend/booking_list.html', {
+            'bookings': bookings,
+            'phone_number': phone_number
+        })
+    except Patient.DoesNotExist:
+        return render(request, 'frontend/booking_list.html', {
+            'bookings': [],
+            'phone_number': phone_number
+        })
+
+
+def logout(request):
+    request.session.flush()  # Clear all session data
+    msg.success(request, "You have been logged out successfully.")
+    return redirect('otp_send')  # Redirect to the login/OTP send page
+
+
+
+def specialities(request):
+    specialities = Department.objects.filter(status = 'active')
+    context = {
+        'specialities': specialities
+    }
+    return render(request, 'frontend/specialities.html', context)
+
+def speciality_detail(request, slug):
+    speciality = Department.objects.get(slug=slug)
+    specialities = Department.objects.filter(status = 'active')
+
+    context = {
+        'speciality': speciality,
+        'specialities': specialities
+        
+    }
+    return render(request, 'frontend/speciality.html', context)

@@ -107,7 +107,7 @@ class AdBannerForm(forms.ModelForm):
 class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
-        fields = ['title', 'breadcamp', 'priority', 'icon', 'show_on_homepage', 'speciality_type', 'banner', 'opening_hours', 'description', 'status']
+        fields = ['title',  'priority', 'show_on_homepage', 'banner', 'description', 'status']
 
         widgets = {
 
@@ -117,19 +117,10 @@ class DepartmentForm(forms.ModelForm):
                 'onchange' : "readURL(this)",
                 "accept": "image/*"
             }),
-            'opening_hours': forms.TextInput(attrs={
-                'placeholder': 'Eg: 8:00 AM to 5:00 PM'
-            }),
             'breadcamp': forms.FileInput(attrs={
                 'class': 'file__input',
                 'required': 'required',
                 'onchange' : "readURL2(this)",
-                "accept": "image/*"
-            }),
-            'icon': forms.FileInput(attrs={
-                'class': 'file__input',
-                'required': 'required',
-                'onchange' : "readURL3(this)",
                 "accept": "image/*"
             }),
             
@@ -138,9 +129,8 @@ class DepartmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['title'].widget.attrs['class'] = 'form-control'
-        self.fields['speciality_type'].widget.attrs['class'] = 'form-control'
-        self.fields['opening_hours'].widget.attrs['class'] = 'form-control'
         self.fields['priority'].widget.attrs['class'] = 'form-control'
+        self.fields['description'].widget.attrs['class'] = 'form-control'
         self.fields['show_on_homepage'].widget.attrs['class'] = 'form-check-input'  # Added this line
 
 

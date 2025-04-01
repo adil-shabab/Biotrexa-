@@ -1,19 +1,15 @@
 {% extends 'backend/base.html' %}
 {% load static %}
 
-
 {% block title %}
 {{ detailed_appointment.appointment.patient.name }}'s Appointment | VSH
 {% endblock title %}
-    
-
-
 
 {% block content %}
     <div class="container-fluid">
         <div class="page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'health_checkup_plans' %}">Health Checkup > </a>  </li>
+                <li class="breadcrumb-item"><a href="{% url 'health_checkup_plans' %}">Health Checkup > </a></li>
                 <li class="breadcrumb-item active ms-1"><a href="#"> View {{ detailed_appointment.appointment.patient.name }}'s Appointment</a></li>
             </ol>
         </div>
@@ -28,7 +24,7 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label class="col-form-label">Patient Name :</label>
-                    <input class="form-control" type="text" id="name" name="name" value="{{ detailed_appointment.appointment.patient.name }}" readonly>
+                    <input class="form-control" type="text" id="patient_name" name="patient_name" value="{{ detailed_appointment.appointment.patient.name }}" readonly>
                 </div>
             </div>
             <div class="col-md-6">
@@ -52,20 +48,37 @@
             <div class="col-md-4">
                 <div class="form-group">
                     <label class="col-form-label">Amount :</label>
-                    <input class="form-control" type="email" id="email" name="email" value="{{ detailed_appointment.appointment.plan.price }}" readonly>
+                    <input class="form-control" type="text" id="amount" name="amount" value="{{ detailed_appointment.appointment.plan.price }}" readonly>
                 </div>
             </div>
             <div class="col-md-2">
                 <div class="form-group">
                     <label class="col-form-label">Payment Status :</label>
-                    {% if detailed_appointment.appointment.is_without_payment %}
-                        <input class="form-control" type="email" id="email" name="email" value="Not Paid" readonly>
+                    {% if detailed_appointment.payment_details.status == 'COMPLETED' %}
+                    <input class="form-control" type="text" id="payment_status" name="payment_status" value="Paid" readonly>
                     {% else %}
-                        <input class="form-control" type="email" id="email" name="email" value="Paid" readonly>
+                    <input class="form-control" type="text" id="payment_status" name="payment_status" value="Not Paid" readonly>
                     {% endif %}
-                        
                 </div>
             </div>
+            <!-- Add Home Sample Collection Status -->
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="col-form-label">Home Sample Collection :</label>
+                    <input class="form-control" type="text" id="home_collection" name="home_collection" 
+                           value="{% if detailed_appointment.appointment.is_home_sample_collection %}Yes{% else %}No{% endif %}" readonly>
+                </div>
+            </div>
+            <!-- Add Address Field (shown only if home collection is Yes) -->
+            {% if detailed_appointment.appointment.is_home_sample_collection %}
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Collection Address :</label>
+                    <textarea style="height: 150px;" class="form-control" id="address" name="address" readonly>{{ detailed_appointment.appointment.home_sample_collection }}</textarea>
+                </div>
+            </div>
+            {% endif %}
+            <!-- Message Field -->
             <div class="col-md-12">
                 <div class="form-group">
                     <label class="col-form-label">Message :</label>
@@ -73,14 +86,28 @@
                 </div>
             </div>
         </form>
+
+        
+        {% if detailed_appointment.appointment.report %}
+            <div class="row w-100 bg-white p-4" style="border-radius: 4px;" >
+                <a href="{{detailed_appointment.appointment.report.url}}" target="_blank">
+                    <button type="submit" class="btn btn-primary">View Report</button>
+                </a>
+            </div>
+        {% else %}
+            <form class="row w-100 bg-white p-4" style="border-radius: 4px;"  method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Upload PDF Report:</label>
+                    <input type="file" name="report" class="form-control" accept=".pdf" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Upload</button>
+            </form>
+            
+        {% endif %}
+            
     </div>
 {% endblock content %}
-    
-
-
-
 
 {% block script %}
-
 {% endblock script %}
-    

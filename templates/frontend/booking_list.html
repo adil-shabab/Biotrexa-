@@ -1,0 +1,73 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+
+
+
+{% block title %}
+    <title>Biotrexa | My Bookings</title>
+{% endblock title %}
+    
+
+
+{% block content %}
+
+    <!-- Page Header Start -->
+	<div class="page-header about-page-header bg-radius-section parallaxie" style="padding: 125px 0px 30px 0px">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">My Bookings</h1>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+    <div class="my__bookings">
+        <div class="container">
+            <div class="row">
+                
+
+                
+                {% if bookings %}
+                    {% for x in bookings %}
+                        <div class="col-md-4">
+                            <div class="book__box">
+                                <div class="img___box">
+                                    <img src="{{x.plan.image.url}}" alt="">
+                                    <div>
+                                        <h5>{{x.plan.title}}</h5>
+                                        <p class="mb-2 para">Patient : {{x.patient.name}}</p>
+
+                                        <div class="header-btn d-inline-flex">
+                                            <a href="{{x.report.url}}" download="" class="btn-default"><span>Download Report</span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                    
+                            </div>
+                        </div>
+                    {% endfor %}
+                
+                {% else %}
+                    <p>No bookings found for this phone number.</p>
+                {% endif %}
+                    
+                    
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+
+
+
+
+

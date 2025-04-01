@@ -18,32 +18,20 @@ STATUS_CHOICES = [
 
 # Create your models here.
 class Department(models.Model):
-    SPECIALITY_CHOICES = [
-        ('super_speciality', 'Super Speciality'),
-        ('other_speciality', 'Other Speciality'),
-    ]
 
 
     title = models.CharField(max_length=200)
-    speciality_type = models.CharField(max_length=20, choices=SPECIALITY_CHOICES)
     banner = models.FileField(upload_to='departments', null=True, blank=True)
-    icon = models.FileField(upload_to='dep-icons', default='static/images/default.png')  # Default icon path
-    breadcamp = models.FileField(upload_to='dep-banner', default='static/images/default.png')
-    opening_hours = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active')    
     slug = models.SlugField(unique=True)
-    description = HTMLField()
+    description = models.TextField(null=True, blank=True)
     priority = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
     show_on_homepage = models.BooleanField(default=False)  # Control homepage display
 
     def __str__(self):
         return self.title
-
-
-    def get_absolute_url(self):
-        return reverse('service', args=[self.slug])
 
 
 
@@ -557,7 +545,7 @@ class HealthCheckupBooking(models.Model):
     is_home_sample_collection = models.BooleanField(default=False)
     home_sample_collection = models.TextField(null=True, blank=True)
     is_without_payment = models.BooleanField(default=False, null=True, blank=True)
-    
+    report = models.FileField(upload_to='reports/', null=True, blank=True)  # New field for PDF report
 
     def __str__(self):
         return f"{self.patient.name} - {self.plan.title}"
@@ -604,11 +592,13 @@ class RazorpayPaymentDetails(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     appointment = models.OneToOneField(Appointment, on_delete=models.CASCADE, related_name='razorpay_payment_details', null=True, blank=True)
     payment_for = models.CharField(max_length=12, choices=PAYMENT_FOR, default='APPOINTMENT')
-    booking = models.OneToOneField(HealthCheckupBooking, on_delete=models.CASCADE, related_name='razorpay_payment_details', null=True, blank=True)
+    booking = models.OneToOneField(HealthCheckupBooking, on_delete=models.CASCADE, related_name='payment_details', null=True, blank=True)
 
     
 
     def __str__(self):
         return f'Payment {self.payment_id} for Appointment {self.payment_for}'
+    
+    
     
     

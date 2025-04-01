@@ -47,7 +47,7 @@ urlpatterns = [
     path('account/health-checkup/update/<slug:slug>', views.update_health_checkup_plans, name='update_health_checkup_plans'), 
     path('account/health-checkup/appointments/<slug:slug>', views.health_checkup_appointments, name='health_checkup_appointments'), 
     path('account/health-checkup/delete/<slug:slug>', views.delete_health_checkup_plan, name='delete_health_checkup_plan'), 
-    path('account/health-checkup/appointment/<str:pk>', views.view_checkup_appointment, name='view_checkup_appointment'), 
+    path('account/health-checkup/appointment/<str:pk>/', views.view_checkup_appointment, name='view_checkup_appointment'), 
     path('account/home-sample-checkup/appointment/<str:pk>', views.view_home_sample_appointment, name='view_home_sample_appointment'), 
 
 
@@ -114,6 +114,8 @@ urlpatterns = [
     path('account/payments/', PaymentListView.as_view(), name='payments'),
     path('account/home-sample-collections/', views.home_sample_dashboard, name='home_sample_dashboard'),
 
+    path('account/bookings/', views.checkup_bookings, name='checkup_bookings'), 
+    path('collect-cash-checkup/<int:pk>/', collect_cash_checkup, name='collect_cash_checkup'),
     
     path('account/patients/', views.patients, name='patients'), 
     path('account/patients/<int:patient_id>/appointments/', views.patient_appointments, name='patient_appointments'),
@@ -158,6 +160,8 @@ urlpatterns = [
     path('checkups/', views.checkups, name='checkups'),
     path('checkups/<slug:slug>', views.single_checkup, name='single_checkup'),
     path('services/', views.services, name='services'),
+    path('specialities/', views.specialities, name='specialities'),
+    path('specialities/<slug:slug>/', views.speciality_detail, name='speciality_detail'),
     path('services/<slug:slug>', views.service, name='service'),
     path('careers/', views.frontend_careers, name='frontend_careers'),
     path('careers/<slug:slug>', views.single_career, name='single_career'),
@@ -169,4 +173,8 @@ urlpatterns = [
 
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 
+    path('otp/send/', OTPSendView.as_view(), name='otp_send'),
+    path('otp/verify/', OTPVerifyView.as_view(), name='otp_verify'),
+    path('bookings/', view_bookings, name='view_bookings'),
+    path('logout/', logout, name='logout'),  # Add logout URL pattern
 ]

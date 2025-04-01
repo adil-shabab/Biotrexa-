@@ -35,11 +35,8 @@
                         <table id="example5" class="table table-striped patient-list mb-4 dataTablesCard fs-14">
                             <thead>
                                 <tr>
-
-                                    <th>Icon</th>
+                                    <th>SI</th>
                                     <th>Department Title</th>
-                                    <th>Opening Hours</th>
-                                    <th>Speciality</th>
                                     <th>Upload Date</th>
                                     <th>Status</th>
                                     <th>Action</th>
@@ -48,20 +45,8 @@
                             <tbody>
                                 {% for department in departments %}
                                     <tr>
-                                        <td class="patient-info ps-0">
-                                            <span>
-                                                <img style="width: 25px; border-radius: 0px; height: 25px; object-fit: cover;" src="{{department.icon.url}}" alt="">
-                                            </span>
-                                        </td>
+                                        <td>{{forloop.counter}}</td>
                                         <td class="text-primary">{{department.title}}</td>
-                                        <td>{{department.opening_hours}}</td>
-                                        <td>
-                                            {% if department.speciality_type == 'super_speciality' %}
-                                                Super Speciality
-                                            {% else %}
-                                                Other Speciality
-                                            {% endif %}
-                                        </td>
                                         <td>{{ department.created_at|date:"F j, Y" }}</td>
                                         <td class="text-primary">
                                             {% if department.status == 'active' %}

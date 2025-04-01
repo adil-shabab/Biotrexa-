@@ -676,7 +676,7 @@ header.main-header .header-sticky.active{
 }
 
 .header-btn .btn-default::before{
-	background-image: url('../images/-icon-phone-header-btn.svg');
+	background-image: url('../images/arrow-blue.svg');
 	width: 15px;
 	height: 15px;
 }
@@ -684,6 +684,25 @@ header.main-header .header-sticky.active{
 	background-image: url('../images/arrow-blue.svg');
 	width: 15px;
 	height: 15px;
+}
+
+.my__bookings{
+	margin: 50px 0px 100px;
+}
+.my__bookings .book__box{
+	border: 1px solid rgba(224, 224, 224, 0.847);
+	padding: 15px;
+	border-radius: 5px;
+}
+.my__bookings .book__box .img___box{
+	display: flex;
+	gap: 10px;
+}
+.my__bookings .book__box .img___box img{
+	width: 110px;
+	height: 110px;
+	border-radius: 5px;
+	object-fit: cover;
 }
 
 .responsive-menu,
@@ -2558,6 +2577,13 @@ footer.main-footer{
 
 .page-about-us .container-fluid{
 	padding: 0;
+}
+.btn-primary{
+	background-color: #164e92 !important;
+	padding: 12px ;
+}
+.alert-error{
+	background-color: rgba(237, 65, 65, 0.342);
 }
 
 .page-about-content{
