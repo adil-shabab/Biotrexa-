@@ -1,0 +1,425 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load text_filters %}
+
+
+{% block title %}
+    <title>Biotrexxa | Packages</title>
+{% endblock title %}
+    
+
+
+{% block content %}
+    <!-- Page Header Start -->
+	<div class="page-header service-page-header bg-radius-section parallaxie">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">Packages</h1>
+						<nav class="wow fadeInUp">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">home</a></li>
+								<li class="breadcrumb-item active" aria-current="page"> / Packages</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+    <!-- Page Services Section Start -->
+    <div class="page-services bg-radius-section">
+        <div class="container">
+            <div class="row section-row align-items-center">
+                <div class="col-lg-12">
+                    <!-- Section Title Start -->
+                    <div class="section-title">
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Packages</h2>
+                    </div>
+                    <!-- Section Title End -->
+                </div>
+            </div>
+
+            <div class="row">
+                
+                {% for x in checkups %}                        
+                    <div class="col-lg-4 col-md-6">
+                        <!-- Service Item Start -->
+                        <div class="service-item wow fadeInUp">
+                            <!-- Service Item Image Start -->
+                            <div class="service-item-image">
+                                <figure>
+                                    <a href="{% url 'single_checkup' x.slug %}">
+                                        <img src="{{x.image.url}}" alt="">
+                                    </a>
+                                </figure>
+                            </div>
+                            <!-- Service Item Image End -->
+
+
+                            <!-- Service Body Start -->
+                            <div class="service-body">
+
+                                <!-- Service Btn Start -->
+                                <div class="service-btn mb-4">
+                                    <a href="{% url 'single_checkup' x.slug %}"><img src="{% static 'frontend/images/arrow-readmore-btn.svg' %}" alt=""></a>
+                                </div>
+                                <!-- Service Btn End -->
+                                <!-- Service Content Start -->
+                                <div class="service-content">
+                                    <a href="{% url 'single_checkup' x.slug %}">
+                                        <h3>{{x.title}}</h3>
+                                        <p>{{ x.description|safe|truncate_text:70 }}</p>
+                                    </a>
+                                </div>
+                                <!-- Service Content End -->
+
+
+                            </div>
+                            <!-- Service Body End -->
+                        </div>
+                        <!-- Service Item End -->
+                    </div>
+                {% endfor %}
+
+                
+            </div>
+        </div>
+    </div>
+    <!-- Page Services Section End -->
+
+    <!-- Diagnostic Process Section Start -->
+    <div class="service-process bg-radius-section">
+        <div class="container">
+            <div class="row align-items-center">
+
+                
+                <div class="col-lg-4 col-md-6 order-lg-1 order-md-2 order-3">
+                    <!-- Service Process List Start -->
+                    <div class="service-process-list">
+                        <!-- Service Process List Item Start -->
+                        <div class="service-process-list-item wow fadeInUp">
+                            <div class="icon-box">
+                                <img src="{% static 'frontend/images/icon-service-list-dot.svg' %}" alt="">
+                            </div>
+                            <div class="service-process-content">
+                                <div class="service-process-content-body">
+                                    <div class="service-process-title">
+                                        <h3>Book an Appointment</h3>
+                                    </div>
+                                    <div class="service-process-btn">
+                                        <a href="#"><img src="{% static 'frontend/images/arrow-long-white.svg' %}" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="service-process-footer">
+                                    <p>Schedule your test by calling us or booking online through our website.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service Process List Item End -->
+
+                        <!-- Service Process List Item Start -->
+                        <div class="service-process-list-item wow fadeInUp" data-wow-delay="0.25s">
+                            <div class="icon-box">
+                                <img src="{% static 'frontend/images/icon-service-list-dot.svg' %}" alt="">
+                            </div>
+                            <div class="service-process-content">
+                                <div class="service-process-content-body">
+                                    <div class="service-process-title">
+                                        <h3>Test Preparation</h3>
+                                    </div>
+                                    <div class="service-process-btn">
+                                        <a href="#"><img src="{% static 'frontend/images/arrow-long-white.svg' %}" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="service-process-footer">
+                                    <p>Once confirmed, you’ll receive guidelines to follow on the test day, ensuring accurate results.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service Process List Item End -->
+
+                        <!-- Service Process List Item Start -->
+                        <div class="service-process-list-item wow fadeInUp" data-wow-delay="0.5s">
+                            <div class="icon-box">
+                                <img src="{% static 'frontend/images/icon-service-list-dot.svg' %}" alt="">
+                            </div>
+                            <div class="service-process-content">
+                                <div class="service-process-content-body">
+                                    <div class="service-process-title">
+                                        <h3>Diagnostic Test</h3>
+                                    </div>
+                                    <div class="service-process-btn">
+                                        <a href="#"><img src="{% static 'frontend/images/arrow-long-white.svg' %}" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="service-process-footer">
+                                    <p>Our specialists will guide you through the sample collection or scan in a comfortable setting.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service Process List Item End -->
+
+                        <!-- Service Process List Item Start -->
+                        <div class="service-process-list-item wow fadeInUp" data-wow-delay="0.5s">
+                            <div class="icon-box">
+                                <img src="{% static 'frontend/images/icon-service-list-dot.svg' %}" alt="">
+                            </div>
+                            <div class="service-process-content">
+                                <div class="service-process-content-body">
+                                    <div class="service-process-title">
+                                        <h3>Results & Analysis </h3>
+                                    </div>
+                                    <div class="service-process-btn">
+                                        <a href="#"><img src="{% static 'frontend/images/arrow-long-white.svg' %}" alt=""></a>
+                                    </div>
+                                </div>
+                                <div class="service-process-footer">
+                                    <p>As a polyclinic, Biotrexxa Global Health Caare offers on-site specialist consultations for result interpretation and further care.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Service Process List Item End -->
+                    </div> 
+                    <!-- Service Process List End -->
+                </div>
+
+                <div class="col-lg-4 order-lg-2 order-md-3 order-2">
+                    <!-- Service Process Image Start -->
+                    <div class="service-process-img">
+                        <figure class="image-anime reveal">
+                            <img src="{% static 'frontend/images/service-process-image.jpg' %}" alt="">
+                        </figure>
+                    </div>
+                    <!-- Service Process Image End -->
+                </div>
+
+                <div class="col-lg-4 col-md-6 order-lg-3 order-md-1 order-1">
+                    <!-- Service Process Box Content Start -->
+                    <div class="service-process-box-content">
+                        <div class="section-title">
+                            <h2 class="text-anime-style-3" data-cursor="-opaque">Step-by-Step Diagnosis Process</h2>
+                            <p class="wow fadeInUp" data-wow-delay="0.25s">At Biotrexxa Global Health Caare, patient comfort is our priority. Our streamlined process ensures accuracy while considering the patient’s condition and well-being. </p>
+                        </div>
+                        <div class="section-btn wow fadeInUp" data-wow-delay="0.5s">
+                            <a href="{% url 'frontend_doctors' %}" class="btn-default"><span>Book an Appointment</span></a>
+                        </div>
+                    </div>  
+                    <!-- Service Process Box Content End -->                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Diagnostic Process Section End -->
+
+
+
+    <!-- Our Testimonials Section Start -->
+    <div class="our-testimonial bg-radius-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-5">
+                    <div class="testimonial-content">
+                        <!-- Section Title Start -->
+                        <div class="section-title">
+                            <h3 class="wow fadeInUp">patient feedback</h3>
+                            <h2 class="text-anime-style-3" data-cursor="-opaque">Patient Testimonials</h2>
+                            <p class="wow fadeInUp" data-wow-delay="0.25s">At Biotrexxa, we excel in delivering top-notch diagnostic services that yield precise outcomes. See what our patients say about their experiences.</p>
+                        </div>
+                        <!-- Section Title End -->
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <!-- Testimonial Slider Start -->
+                    <div class="testimonial-slider">
+                        <div class="swiper">
+                            <div class="swiper-wrapper" data-cursor-text="Drag">
+                                <!-- Testimonial Slide Start -->
+                                <div class="swiper-slide">
+                                    <div class="testimonial-item">
+                                        <div class="testimonial-header">
+                                            <div class="testimonial-rating">
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div class="testimonial-content">
+                                                <p>Biotrexxa’s quick scans gave me clear answers about my recovery. The tailored diagnostic approach was outstanding.</p>									
+                                            </div>
+                                        </div>
+                                        <div class="testimonial-body">       
+                                            <div class="author-content">
+                                                <h3>Harish Reddy</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Testimonial Slide End -->
+                
+                                <!-- Testimonial Slide Start -->
+                                <div class="swiper-slide">
+                                    <div class="testimonial-item">
+                                        <div class="testimonial-header">
+                                            <div class="testimonial-rating">
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div class="testimonial-content">
+                                                <p>I’ve visited many labs, but Biotrexxa stands out. Their team is expert, efficient, and truly focused on patient needs.</p>	
+                                            </div>
+                                        </div>
+                                        <div class="testimonial-body">
+        
+                                            <div class="author-content">
+                                                <h3>Anurag</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Testimonial Slide End -->
+
+                                <!-- Testimonial Slide Start -->
+                                <div class="swiper-slide">
+                                    <div class="testimonial-item">
+                                        <div class="testimonial-header">
+                                            <div class="testimonial-rating">
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                                <i class="fa-solid fa-star"></i>
+                                            </div>
+                                            <div class="testimonial-content">
+                                                <p>Biotrexxa’s precise imaging after my fall was a lifesaver for me. Post-injury, I got clarity and could resume work fast.</p>	
+                                            </div>
+                                        </div>
+                                        <div class="testimonial-body">          
+                                            <div class="author-content">
+                                                <h3>Kavitha</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Testimonial Slide End -->
+
+
+                            </div>
+                            <div class="testimonial-btn">
+                                <div class="testimonial-button-prev"></div>
+                                <div class="testimonial-button-next"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Testimonial Slider End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Our Testimonials Section End -->
+
+
+
+    <!-- Care Diagnostics Section Start -->
+    <div class="care-rehabilitation bg-radius-section">
+        <div class="container">
+            <div class="row section-row align-items-center">
+                <div class="col-lg-5">
+                    <!-- Section Title Start -->
+                    <div class="section-title">
+                        <h3 class="wow fadeInUp">diagnostics</h3>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Advanced Diagnostic Tools</h2>
+                    </div>
+                    <!-- Section Title End -->
+                </div>
+
+                <div class="col-lg-7">
+                    <!-- Section Btn Start -->
+                    <div class="section-btn wow fadeInUp">
+                        <a href="{% url 'frontend_doctors' %}" class="btn-default"><span>Make an Appointment</span></a>
+                    </div>
+                    <!-- Section Btn End -->
+                </div>
+            </div>
+
+            <div class="row">
+
+
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <!-- Rehab Benefits Item Start -->
+                    <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="0.5s">
+                        <div class="icon-box">
+                            <img src="{% static 'frontend/images/cell.png' %}" alt="">
+                        </div>
+                        <div class="rehab-benefits-content">
+                            <h3>Flow cytometry</h3>
+                        </div>
+                    </div>
+                    <!-- Rehab Benefits Item End -->
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <!-- Rehab Benefits Item Start -->
+                    <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="0.75s">
+                        <div class="icon-box">
+                            <img src="{% static 'frontend/images/biology.png' %}" alt="">
+                        </div>
+                        <div class="rehab-benefits-content">
+                            <h3>Molecular Microbiology</h3>
+                        </div>
+                    </div>
+                    <!-- Rehab Benefits Item End -->
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <!-- Rehab Benefits Item Start -->
+                    <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="1s">
+                        <div class="icon-box">
+                            <img src="{% static 'frontend/images/next.png' %}" alt="">
+                        </div>
+                        <div class="rehab-benefits-content">
+                            <h3>Next-Generation Sequencing</h3>
+                        </div>
+                    </div>
+                    <!-- Rehab Benefits Item End -->
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-6">
+                    <!-- Rehab Benefits Item Start -->
+                    <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="1.25s">
+                        <div class="icon-box">
+                            <img src="{% static 'frontend/images/immunology.png' %}" alt="">
+                        </div>
+                        <div class="rehab-benefits-content">
+                            <h3>Immunohistochemistry</h3>
+                        </div>
+                    </div>
+                    <!-- Rehab Benefits Item End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Care Diagnostics Section End -->
+
+
+{% endblock content %}
+
+
+
+{% block script %}
+<script>
+    document.getElementById('services___link').classList.add('active')
+</script>
+{% endblock script %}
+    

@@ -107,7 +107,7 @@ class AdBannerForm(forms.ModelForm):
 class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
-        fields = ['title',  'priority', 'show_on_homepage', 'banner', 'description', 'status']
+        fields = ['title', 'priority', 'banner', 'status', 'small_description', 'description', 'show_on_homepage']
 
         widgets = {
 
@@ -117,7 +117,68 @@ class DepartmentForm(forms.ModelForm):
                 'onchange' : "readURL(this)",
                 "accept": "image/*"
             }),
-            'breadcamp': forms.FileInput(attrs={
+            
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs['class'] = 'form-control'
+        self.fields['priority'].widget.attrs['class'] = 'form-control'
+        self.fields['small_description'].widget.attrs['class'] = 'form-control'
+        self.fields['priority'].widget.attrs['class'] = 'form-control'
+        self.fields['small_description'].required = True  # Make description required
+
+
+
+
+class FacilityForm(forms.ModelForm):
+    class Meta:
+        model = Facility
+        fields = ['title', 'priority', 'image', 'status', 'small_description', 'description', 'show_on_homepage']
+
+        widgets = {
+
+            'image': forms.FileInput(attrs={
+                'class': 'file__input',
+                'required': 'required',
+                'onchange' : "readURL(this)",
+                "accept": "image/*"
+            }),
+
+            
+        }
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs['class'] = 'form-control'
+        self.fields['priority'].widget.attrs['class'] = 'form-control'
+        self.fields['small_description'].widget.attrs['class'] = 'form-control'
+        self.fields['priority'].widget.attrs['class'] = 'form-control'
+        self.fields['small_description'].required = True  # Make description required
+
+
+
+
+
+
+
+
+
+
+class ConsultationForm(forms.ModelForm):
+    class Meta:
+        model = Consultation
+        fields = ['title', 'priority', 'image', 'status', 'icon', 'description']
+
+        widgets = {
+
+            'image': forms.FileInput(attrs={
+                'class': 'file__input',
+                'required': 'required',
+                'onchange' : "readURL(this)",
+                "accept": "image/*"
+            }),
+            'icon': forms.FileInput(attrs={
                 'class': 'file__input',
                 'required': 'required',
                 'onchange' : "readURL2(this)",
@@ -131,7 +192,14 @@ class DepartmentForm(forms.ModelForm):
         self.fields['title'].widget.attrs['class'] = 'form-control'
         self.fields['priority'].widget.attrs['class'] = 'form-control'
         self.fields['description'].widget.attrs['class'] = 'form-control'
-        self.fields['show_on_homepage'].widget.attrs['class'] = 'form-check-input'  # Added this line
+        self.fields['priority'].widget.attrs['class'] = 'form-control'
+        self.fields['description'].required = True  # Make description required
+
+
+
+
+
+
 
 
 

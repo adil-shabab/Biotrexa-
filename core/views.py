@@ -1782,6 +1782,275 @@ def delete_department(request, slug):
 
 
 
+# department view 
+@login_required(login_url='login')  
+def consultations(request):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    consultations = Consultation.objects.all().order_by('priority')
+    context ={ 'consultations': consultations }
+    return render(request, 'backend/consultations.html', context)
+
+
+
+@login_required(login_url='login')
+def create_consultation(request):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    if request.method == 'POST':
+        form = ConsultationForm(request.POST, request.FILES)
+        if form.is_valid():
+            consultation = form.save(commit=False)
+            original_slug = slugify(consultation.title)
+            unique_slug = original_slug
+            counter = 1
+            while Consultation.objects.filter(slug=unique_slug).exists():
+                unique_slug = f'{original_slug}-{counter}'
+                counter += 1
+            consultation.slug = unique_slug
+            consultation.save()
+            msg.success(request, "Consultation Created Successfully")
+            return redirect('consultation')  # Replace with your redirect URL
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    msg.error(request, f"Error in {field}: {error}")
+    else:
+        form = ConsultationForm()
+    return render(request, 'backend/create-consultation.html', {'form': form})
+
+
+
+@login_required(login_url='login')
+def update_consultation(request, slug):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    consultation = get_object_or_404(Consultation, slug=slug)
+    if request.method == 'POST':
+        form = ConsultationForm(request.POST, request.FILES, instance=consultation)
+        if form.is_valid():
+            consultation = form.save(commit=False)
+            original_slug = slugify(consultation.title)
+            unique_slug = original_slug
+            counter = 1
+            while Consultation.objects.filter(slug=unique_slug).exists():
+                unique_slug = f'{original_slug}-{counter}'
+                counter += 1
+            consultation.slug = unique_slug
+            consultation.save()
+            
+            msg.success(request, "Consultation Updated Successfully")
+            return redirect('consultations')  # Replace with your redirect URL
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    msg.error(request, f"Error in {field}: {error}")
+    else:
+        form = ConsultationForm(instance=consultation)
+    return render(request, 'backend/update-consultation.html', {'form': form, 'consultation': consultation})
+
+
+
+@login_required(login_url='login')
+def delete_consultation(request, slug):
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    try:
+        consultation = Consultation.objects.get(slug=slug)
+        consultation.delete()
+        msg.success(request, 'Consultation deleted successfully.')
+        return redirect('consultations')
+    except Consultation.DoesNotExist:
+        msg.error(request, 'consultation not found.')
+        return redirect('consultation')
+
+
+
+
+
+
+
+
+
+
+
+# department view 
+@login_required(login_url='login')  
+def facilities(request):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    facilities = Facility.objects.all().order_by('priority')
+    context ={ 'facilities': facilities }
+    return render(request, 'backend/facilities.html', context)
+
+
+
+@login_required(login_url='login')
+def create_facility(request):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    if request.method == 'POST':
+        form = FacilityForm(request.POST, request.FILES)
+        if form.is_valid():
+            facility = form.save(commit=False)
+            original_slug = slugify(facility.title)
+            unique_slug = original_slug
+            counter = 1
+            while Facility.objects.filter(slug=unique_slug).exists():
+                unique_slug = f'{original_slug}-{counter}'
+                counter += 1
+            facility.slug = unique_slug
+            facility.save()
+            msg.success(request, "Facility Created Successfully")
+            return redirect('facilities')  # Replace with your redirect URL
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    msg.error(request, f"Error in {field}: {error}")
+    else:
+        form = FacilityForm()
+    return render(request, 'backend/create-facility.html', {'form': form})
+
+
+
+@login_required(login_url='login')
+def update_facility(request, slug):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    facility = get_object_or_404(Facility, slug=slug)
+    if request.method == 'POST':
+        form = FacilityForm(request.POST, request.FILES, instance=facility)
+        if form.is_valid():
+            facility = form.save(commit=False)
+            original_slug = slugify(facility.title)
+            unique_slug = original_slug
+            counter = 1
+            while Facility.objects.filter(slug=unique_slug).exists():
+                unique_slug = f'{original_slug}-{counter}'
+                counter += 1
+            facility.slug = unique_slug
+            facility.save()
+            
+            msg.success(request, "Facility Updated Successfully")
+            return redirect('facilities')  # Replace with your redirect URL
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    msg.error(request, f"Error in {field}: {error}")
+    else:
+        form = FacilityForm(instance=facility)
+    return render(request, 'backend/update-facility.html', {'form': form, 'facility': facility})
+
+
+
+@login_required(login_url='login')
+def delete_facility(request, slug):
+    
+    try:
+        profile = Summary.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        msg.error(request,'Profile does not exist. You cannot access here.')
+        return redirect('login')
+
+    if profile:
+        if profile.role == 'hr':
+            return redirect('hr_dashboard')
+        elif profile.role not in ['admin']:
+            return redirect('homepage')
+    else: 
+        return redirect('homepage')
+    try:
+        facility = Facility.objects.get(slug=slug)
+        facility.delete()
+        msg.success(request, 'Facility deleted successfully.')
+        return redirect('facilities')
+    except Facility.DoesNotExist:
+        msg.error(request, 'facility not found.')
+        return redirect('facilities')
+
 
 
 
@@ -3778,12 +4047,32 @@ def about(request):
     return render(request, 'frontend/about.html', context)
 
 
+
+
+
 def services(request):
     departments = Department.objects.filter(status='active').order_by('priority')
     context = {
         'departments': departments,
     }
     return render(request, 'frontend/services.html', context)
+
+
+
+def facilities_frontend(request):
+    facilities = Facility.objects.filter(status='active').order_by('priority')
+    context = {
+        'facilities': facilities,
+    }
+    return render(request, 'frontend/facilities.html', context)
+
+
+def facility_frontend(request, slug):
+    facility = Facility.objects.get(slug=slug)
+    context = {
+        'facility': facility,
+    }
+    return render(request, 'frontend/facility.html', context)
 
 
 def service(request, slug):
@@ -3899,7 +4188,7 @@ def checkups(request):
         'checkups': checkups,
         'categories': categories,
     }
-    return render(request, 'frontend/services.html', context)
+    return render(request, 'frontend/checkups.html', context)
 
 
 
@@ -3911,7 +4200,7 @@ def single_checkup(request, slug):
         'checkups': checkups,
     }
     
-    return render(request, 'frontend/service.html', context)
+    return render(request, 'frontend/checkup.html', context)
 
 
 

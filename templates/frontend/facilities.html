@@ -1,0 +1,107 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load text_filters %}
+
+
+{% block title %}
+    <title>Biotrexxa | Facilities</title>
+{% endblock title %}
+    
+
+
+{% block content %}
+    <!-- Page Header Start -->
+	<div class="page-header service-page-header bg-radius-section parallaxie">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">Facilities</h1>
+						<nav class="wow fadeInUp">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">home</a></li>
+								<li class="breadcrumb-item active" aria-current="page"> / Facilities</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+    <!-- Page Services Section Start -->
+    <div class="page-services bg-radius-section">
+        <div class="container">
+            <div class="row section-row align-items-center">
+                <div class="col-lg-12">
+                    <!-- Section Title Start -->
+                    <div class="section-title">
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Facilities</h2>
+                    </div>
+                    <!-- Section Title End -->
+                </div>
+            </div>
+
+            <div class="row">
+                
+                {% for x in facilities %}                        
+                    <div class="col-lg-4 col-md-6">
+                        <!-- Service Item Start -->
+                        <div class="service-item wow fadeInUp">
+                            <!-- Service Item Image Start -->
+                            <div class="service-item-image">
+                                <figure>
+                                    <a href="{% url 'facility_frontend' x.slug %}">
+                                        <img src="{{x.image.url}}" alt="">
+                                    </a>
+                                </figure>
+                            </div>
+                            <!-- Service Item Image End -->
+
+
+                            <!-- Service Body Start -->
+                            <div class="service-body">
+
+                                <!-- Service Btn Start -->
+                                <div class="service-btn mb-4">
+                                    <a href="{% url 'facility_frontend' x.slug %}"><img src="{% static 'frontend/images/arrow-readmore-btn.svg' %}" alt=""></a>
+                                </div>
+                                <!-- Service Btn End -->
+                                <!-- Service Content Start -->
+                                <div class="service-content">
+                                    <a href="{% url 'facility_frontend' x.slug %}">
+                                        <h3>{{x.title}}</h3>
+                                        <p>{{ x.small_description|truncate_text:70 }}</p>
+                                    </a>
+                                </div>
+                                <!-- Service Content End -->
+
+
+                            </div>
+                            <!-- Service Body End -->
+                        </div>
+                        <!-- Service Item End -->
+                    </div>
+                {% endfor %}
+
+                
+            </div>
+        </div>
+    </div>
+    <!-- Page Services Section End -->
+
+
+
+{% endblock content %}
+
+
+
+{% block script %}
+<script>
+    document.getElementById('facilities___link').classList.add('active')
+</script>
+{% endblock script %}
+    

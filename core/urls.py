@@ -30,11 +30,20 @@ urlpatterns = [
     path('account/banners/update/<str:pk>', views.update_banner, name='update_banner'), 
     path('account/banners/delete/<str:pk>', views.delete_banner, name='delete_banner'), 
 
-    path('account/departments/', views.departments, name='departments'), 
-    path('account/departments/create', views.create_department, name='create_department'), 
-    path('account/departments/update/<slug:slug>', views.update_department, name='update_department'), 
-    path('account/departments/delete/<slug:slug>', views.delete_department, name='delete_department'), 
+    path('account/services/', views.departments, name='departments'), 
+    path('account/services/create', views.create_department, name='create_department'), 
+    path('account/services/update/<slug:slug>', views.update_department, name='update_department'), 
+    path('account/services/delete/<slug:slug>', views.delete_department, name='delete_department'), 
 
+    path('account/facilities/', views.facilities, name='facilities'), 
+    path('account/facilities/create', views.create_facility, name='create_facility'), 
+    path('account/facilities/update/<slug:slug>', views.update_facility, name='update_facility'), 
+    path('account/facilities/delete/<slug:slug>', views.delete_facility, name='delete_facility'), 
+
+    path('account/consultation/', views.consultations, name='consultations'), 
+    path('account/consultation/create', views.create_consultation, name='create_consultation'), 
+    path('account/consultation/update/<slug:slug>', views.update_consultation, name='update_consultation'), 
+    path('account/consultation/delete/<slug:slug>', views.delete_consultation, name='delete_consultation'), 
 
     path('account/second-banner/', views.ad_banners, name='ad_banners'), 
     path('account/second-banner/create', views.create_adbanner, name='create_adbanner'), 
@@ -42,13 +51,13 @@ urlpatterns = [
     path('account/second-banner/delete/<slug:slug>', views.delete_adbanner, name='delete_adbanner'), 
 
 
-    path('account/health-checkup/', views.health_checkup_plans, name='health_checkup_plans'), 
-    path('account/health-checkup/create', views.create_health_checkup_plans, name='create_health_checkup_plans'), 
-    path('account/health-checkup/update/<slug:slug>', views.update_health_checkup_plans, name='update_health_checkup_plans'), 
-    path('account/health-checkup/appointments/<slug:slug>', views.health_checkup_appointments, name='health_checkup_appointments'), 
-    path('account/health-checkup/delete/<slug:slug>', views.delete_health_checkup_plan, name='delete_health_checkup_plan'), 
-    path('account/health-checkup/appointment/<str:pk>/', views.view_checkup_appointment, name='view_checkup_appointment'), 
-    path('account/home-sample-checkup/appointment/<str:pk>', views.view_home_sample_appointment, name='view_home_sample_appointment'), 
+    path('account/health-package/', views.health_checkup_plans, name='health_checkup_plans'), 
+    path('account/health-package/create', views.create_health_checkup_plans, name='create_health_checkup_plans'), 
+    path('account/health-package/update/<slug:slug>', views.update_health_checkup_plans, name='update_health_checkup_plans'), 
+    path('account/health-package/appointments/<slug:slug>', views.health_checkup_appointments, name='health_checkup_appointments'), 
+    path('account/health-package/delete/<slug:slug>', views.delete_health_checkup_plan, name='delete_health_checkup_plan'), 
+    path('account/health-package/appointment/<str:pk>/', views.view_checkup_appointment, name='view_checkup_appointment'), 
+    path('account/home-sample-package/appointment/<str:pk>', views.view_home_sample_appointment, name='view_home_sample_appointment'), 
 
 
     path('account/gallery/create/', views.create_gallery, name='create_gallery'),
@@ -115,7 +124,7 @@ urlpatterns = [
     path('account/home-sample-collections/', views.home_sample_dashboard, name='home_sample_dashboard'),
 
     path('account/bookings/', views.checkup_bookings, name='checkup_bookings'), 
-    path('collect-cash-checkup/<int:pk>/', collect_cash_checkup, name='collect_cash_checkup'),
+    path('collect-cash-package/<int:pk>/', collect_cash_checkup, name='collect_cash_checkup'),
     
     path('account/patients/', views.patients, name='patients'), 
     path('account/patients/<int:patient_id>/appointments/', views.patient_appointments, name='patient_appointments'),
@@ -140,12 +149,12 @@ urlpatterns = [
 
     path('api/create-timing/<slug:doctor_slug>/', create_timing_api, name='create_timing_api'),
 
-    path('account/health-checkup', views.health_checkup_plans, name='health_checkup_plans'), 
-    path('api/create-health-checkup-booking/', CreateHealthCheckupBookingAPIView.as_view(), name='create_health_checkup_booking'),
-    path('api/create-health-checkup-booking-done/', CreateHealthCheckupBookingDoneAPIView.as_view(), name='create_health_checkup_booking_done'),
-    path('api/handle-health-checkup-payment/', views.handle_health_checkup_payment, name='handle_health_checkup_payment'),
-    path('health-checkup/payment-success/<int:booking_id>/', views.health_checkup_payment_success, name='health_checkup_payment_success'),
-    path('health-checkup/payment-failure/', views.health_checkup_payment_failure, name='health_checkup_payment_failure'),
+    path('account/health-package', views.health_checkup_plans, name='health_checkup_plans'), 
+    path('api/create-health-package-booking/', CreateHealthCheckupBookingAPIView.as_view(), name='create_health_checkup_booking'),
+    path('api/create-health-package-booking-done/', CreateHealthCheckupBookingDoneAPIView.as_view(), name='create_health_checkup_booking_done'),
+    path('api/handle-health-package-payment/', views.handle_health_checkup_payment, name='handle_health_checkup_payment'),
+    path('health-package/payment-success/<int:booking_id>/', views.health_checkup_payment_success, name='health_checkup_payment_success'),
+    path('health-package/payment-failure/', views.health_checkup_payment_failure, name='health_checkup_payment_failure'),
 
     path('account/success/payment/<int:appointment_id>/', views.payment_success_account, name='payment_success_account'),
     path('account/failure/payment/', views.payment_failure_account, name='payment_failure_account'),
@@ -157,8 +166,10 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('home-sample-collection/', views.create_home_sample_collection_view, name='home_sample_collection'),
     path('gallery/', views.gallery, name='gallery'),
-    path('checkups/', views.checkups, name='checkups'),
-    path('checkups/<slug:slug>', views.single_checkup, name='single_checkup'),
+    path('packages/', views.checkups, name='checkups'),
+    path('packages/<slug:slug>', views.single_checkup, name='single_checkup'),
+    path('facilities/', views.facilities_frontend, name='facilities_frontend'),
+    path('facilities/<slug:slug>/', views.facility_frontend, name='facility_frontend'),
     path('services/', views.services, name='services'),
     path('specialities/', views.specialities, name='specialities'),
     path('specialities/<slug:slug>/', views.speciality_detail, name='speciality_detail'),

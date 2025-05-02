@@ -4,7 +4,7 @@
 
 
 {% block title %}
-    <title>Biotrexa | Login</title>
+    <title>Biotrexxa | Login</title>
     <style>
         .otp-container {
             max-width: 500px;
@@ -57,7 +57,6 @@
         <form method="post" action="{% url 'otp_verify' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="otp" class="form-label">OTP</label>
                 <input style="padding: 12px;" type="text" class="form-control" id="otp" name="otp" placeholder="Enter 6-digit OTP" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Verify OTP</button>

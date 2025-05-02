@@ -3,7 +3,7 @@
 
 
 {% block title %}
-    Biotrexa | Create Department
+    Biotrexxa | Create Department
 {% endblock title %}
     
 
@@ -33,6 +33,20 @@
                 </div>
             </div>
 
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Small Description :</label>
+                    {{ form.small_description }}
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label class="col-form-label">Description :</label>
+                    {{ form.description }}
+                </div>
+            </div>
+
 
 
 
@@ -45,24 +59,9 @@
             </div>
 
 
-
-            <div class="col-md-12 mt-2">
-                <div class="form-group">
-                    <label class="col-form-label" style="margin-top: -5px;">Show on Homepage :</label>
-                    {{form.show_on_homepage}}
-                </div>
-            </div>
-
-
-            <div class="col-md-12 mb-3">
-                <label class="col-form-label" style="margin-top: -5px;">Description :</label>
-                <div>
-                    {{form.description}}
-                </div>
-            </div>
            
 
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <ul class="radio-switch">
                     <li class="radio-switch__item">
                         <input class="radio-switch__input ri5-sr-only" type="radio" name="status" id="radio-1" value="active" {% if form.status.value == "active" %}checked{% endif %}>
@@ -93,6 +92,11 @@
 {% block script %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.9.11/tinymce.min.js"></script>
 
+<script>
+    tinymce.init({
+        selector: "textarea#id_description",
+    });
+</script>
 
 
 
@@ -119,7 +123,6 @@
     }
 
     var imgElement = document.getElementById('img-preview');
-    imgElement.classList.add('object-contain');
 
 
 

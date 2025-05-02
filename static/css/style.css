@@ -26080,6 +26080,10 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     margin-bottom: 11px;
     margin-top: 10px;
   }
+  .img__preview.object-contain{
+    border: 1px solid gray;
+    object-fit: contain;
+  }
   .submit___btns{
     display: flex;
     justify-content: flex-end;

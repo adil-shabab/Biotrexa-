@@ -5,7 +5,7 @@
 
 
 {% block title %}
-    <title>Biotrexa | Home Page</title>
+    <title>Biotrexxa | Home Page</title>
 {% endblock title %}
     
 
@@ -16,76 +16,49 @@
     <div class="swiper">
         <div class="swiper-wrapper">
             <!-- Hero Slide Start -->
-            <div class="swiper-slide">
-                <div class="hero-slide">
-                    <!-- Slider Image Start -->
-                    <div class="hero-slider-image">
-                        <img src="{% static 'frontend/images/hero-bg.jpg' %}" alt="">
-                    </div>
-                    <!-- Slider Image End -->
 
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7">
-                                <!-- Hero Content Start -->
-                                <div class="hero-content">
-                                    <!-- Section Title Start -->
-                                    <div class="section-title">
-                                        <h1 class="text-anime-style-3" data-cursor="-opaque">Next-Generation Healthcare & Diagnostics</h1>
-                                        <p class="wow fadeInUp" data-wow-delay="0.25s">Biotrexa Global Healthcare is a leading diagnostic centre and polyclinic in Bangalore, offering accurate, research-backed diagnoses and holistic patient care.</p>
+
+            
+            {% for x in banners %}                
+                <div class="swiper-slide">
+                    <div class="hero-slide">
+                        <!-- Slider Image Start -->
+                        <div class="d-md-block d-none hero-slider-image">
+                            <img src="{{x.image_for_desktop.url}}" alt="">
+                        </div>
+                        <div class="d-md-none d-block hero-slider-image">
+                            <img src="{{x.image_for_mobile.url}}" alt="">
+                        </div>
+                        <!-- Slider Image End -->
+
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-lg-7">
+                                    <!-- Hero Content Start -->
+                                    <div class="hero-content">
+                                        <!-- Section Title Start -->
+                                        <div class="section-title">
+                                            <h1 class="text-anime-style-3" data-cursor="-opaque">{{x.heading}}</h1>
+                                            <p class="wow fadeInUp" data-wow-delay="0.25s">{{x.description}}</p>
+                                        </div>
+                                        <!-- Section Title End -->
+                                
+                                        <!-- Hero Content Body Start -->
+                                        <div class="hero-content-body wow fadeInUp" data-wow-delay="0.5s">
+                                            <a href="{{x.button_url}}" class="btn-default"><span>{{x.button_text}}</span></a>
+                                        </div>
+                                        <!-- Hero Content Body End -->
                                     </div>
-                                    <!-- Section Title End -->
-                            
-                                    <!-- Hero Content Body Start -->
-                                    <div class="hero-content-body wow fadeInUp" data-wow-delay="0.5s">
-                                        <a href="#" class="btn-default"><span>Our Services</span></a>
-                                        <a href="#" class="btn-default btn-highlighted"><span>Book Appointment</span></a>
-                                    </div>
-                                    <!-- Hero Content Body End -->
+                                    <!-- Hero Content End -->
                                 </div>
-                                <!-- Hero Content End -->
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Hero Slide End -->
+                <!-- Hero Slide End -->
+            {% endfor %}
+                
 
-            <!-- Hero Slide Start -->
-            <div class="swiper-slide">
-                <div class="hero-slide">
-                    <!-- Slider Image Start -->
-                    <div class="hero-slider-image">
-                        <img src="{% static 'frontend/images/hero-bg-2.jpg' %}" alt="">
-                    </div>
-                    <!-- Slider Image End -->
-
-                    <div class="container">
-                        <div class="row align-items-center">
-                            <div class="col-lg-7">
-                                <!-- Hero Content Start -->
-                                <div class="hero-content">
-                                    <!-- Section Title Start -->
-                                    <div class="section-title">
-                                        <h1 class="text-anime-style-3" data-cursor="-opaque">Biotrexa For Health & Accuracy</h1>
-                                        <p class="wow fadeInUp" data-wow-delay="0.25s">Biotrexa provides trusted tests so our clients can depend on exact outcomes to steer their health goals using top-tier methods with emphasis on detail past typical range of assessments.</p>
-                                    </div>
-                                    <!-- Section Title End -->
-                            
-                                    <!-- Hero Content Body Start -->
-                                    <div class="hero-content-body wow fadeInUp" data-wow-delay="0.5s">
-                                        <a href="#" class="btn-default"><span>see our exams</span></a>
-                                        <a href="#" class="btn-default btn-highlighted"><span>plan a visit</span></a>
-                                    </div>
-                                    <!-- Hero Content Body End -->
-                                </div>
-                                <!-- Hero Content End -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Hero Slide End -->
         </div>
         <div class="hero-pagination"></div>
     </div>		
@@ -100,11 +73,10 @@
                 <!-- Benefits Item Start -->
                 <div class="benefits-item wow fadeInUp">
                     <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-benefits-1.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/ai.png' %}" alt="">
                     </div>
                     <div class="benefits-content">
                         <h3>AI Driven Diagnostics</h3>
-                        <p>Accurate diagnosis powered by advanced technology.</p>
                     </div>
                 </div>
                 <!-- Benefits Item End -->
@@ -114,11 +86,10 @@
                 <!-- Benefits Item Start -->
                 <div class="benefits-item wow fadeInUp" data-wow-delay="0.25s">
                     <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-benefits-2.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/doctor.png' %}" alt="">
                     </div>
                     <div class="benefits-content">
-                        <h3>Special Care</h3>
-                        <p>Specialist consultations available</p>
+                        <h3>Expert Consultation</h3>
                     </div>
                 </div>
                 <!-- Benefits Item End -->
@@ -128,11 +99,10 @@
                 <!-- Benefits Item Start -->
                 <div class="benefits-item wow fadeInUp" data-wow-delay="0.5s">
                     <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-benefits-3.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/day.png' %}" alt="">
                     </div>
                     <div class="benefits-content">
                         <h3>Daycare Services</h3>
-                        <p>Includes chemotherapy and dialysis</p>
                     </div>
                 </div>
                 <!-- Benefits Item End -->
@@ -152,7 +122,7 @@
                     <div class="section-title">
                         <h3 class="wow fadeInUp">about us</h3>
                         <h2 class="text-anime-style-3" data-cursor="-opaque">Precision Diagnostics, Personalized Care</h2>
-                        <p class="wow fadeInUp" data-wow-delay="0.25s">Biotrexa Global Healthcare is a comprehensive healthcare provider offering accurate and reliable diagnoses using state-of-the-art molecular and AI-driven diagnostic tools. As an emerging diagnostic centre in Bangalore, Biotrexa is committed to delivering personalised treatment plans for every patient</p>
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">Biotrexxa Global Health Caare is a comprehensive healthcare provider offering accurate and reliable diagnoses using state-of-the-art molecular and AI-driven diagnostic tools. As an emerging diagnostic centre in Bangalore, Biotrexxa is committed to delivering personalised treatment plans for every patient</p>
                     </div>
                     <!-- Section Title End -->
             
@@ -165,7 +135,7 @@
                                     <!-- About List Item Start -->
                                     <div class="about-list-item wow fadeInUp" data-wow-delay="0.5s">
                                         <div class="icon-box">
-                                            <img src="{% static 'frontend/images/icon-about-list-1.svg' %}" alt="">
+                                            <img src="{% static 'frontend/images/precise.png' %}" alt="">
                                         </div>
                                         <div class="about-list-content">
                                             <p>Precise Diagnosis</p>
@@ -176,7 +146,7 @@
                                     <!-- About List Item Start -->
                                     <div class="about-list-item wow fadeInUp" data-wow-delay="0.75s">
                                         <div class="icon-box">
-                                            <img src="{% static 'frontend/images/icon-about-list-2.svg' %}" alt="">
+                                            <img src="{% static 'frontend/images/personalized.png' %}" alt="">
                                         </div>
                                         <div class="about-list-content">
                                             <p>Personalised Treatment</p>
@@ -187,7 +157,7 @@
                                     <!-- About List Item Start -->
                                     <div class="about-list-item wow fadeInUp" data-wow-delay="1s">
                                         <div class="icon-box">
-                                            <img src="{% static 'frontend/images/icon-about-list-3.svg' %}" alt="">
+                                            <img src="{% static 'frontend/images/result.png' %}" alt="">
                                         </div>
                                         <div class="about-list-content">
                                             <p>rapid results</p>
@@ -198,34 +168,13 @@
                                 <!-- About Content List End -->
                             </div>
             
-                            <div class="col-md-6">
-                                <div class="about-trusted-customer wow fadeInUp" data-wow-delay="0.5s">
-                                    <div class="trusted-customer-image">
-                                        <img src="{% static 'frontend/images/about-trusted-customer-img.png' %}" alt="">
-                                    </div>
-                                    <div class="trusted-customer-rating">
-                                        <ul>
-                                            <li>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                                <i class="fa-solid fa-star"></i>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="trusted-customer-content">
-                                        <p>chosen by 4k+ patients</p>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <!-- About Content Body End -->
             
                     <!-- About Content Footer Start -->
                     <div class="about-content-footer wow fadeInUp" data-wow-delay="1.25s">
-                        <a href="#" class="btn-default"><span>get tested</span></a>
+                        <a href="{% url 'frontend_doctors' %}" class="btn-default"><span>Book an Appointment</span></a>
                     </div>
                     <!-- About Content Footer End -->
                 </div>
@@ -259,7 +208,7 @@
                     </div>
 
                     <div class="about-circle-logo">
-                        <img src="{% static 'frontend/images/about-circle-logo.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/favicon.png' %}" alt="">
                     </div>
                 </div>
                 <!-- About Us Images End -->
@@ -278,7 +227,7 @@
                 <div class="section-title">
                     <h3 class="wow fadeInUp">services</h3>
                     <h2 class="text-anime-style-3" data-cursor="-opaque">Our Services</h2>
-                    <p class="wow fadeInUp" data-wow-delay="0.25s">Biotrexa Global Healthcare is a polyclinic and diagnostic laboratory offering a wide range of services.</p>
+                    <p class="wow fadeInUp" data-wow-delay="0.25s">Biotrexxa Global Health Caare is a polyclinic and diagnostic laboratory offering a wide range of services.</p>
                 </div>
                 <!-- Section Title End -->
             </div>
@@ -313,6 +262,11 @@
                         <!-- Service Body Start -->
                         <div class="service-body">
                             <!-- Service Content Start -->
+                            <!-- Service Btn Start -->
+                            <div class="mb-4 service-btn">
+                                <a href="{% url 'single_checkup' x.slug %}"><img src="{% static 'frontend/images/arrow-readmore-btn.svg' %}" alt=""></a>
+                            </div>
+                            <!-- Service Btn End -->
                             <div class="service-content">
                                 <a href="{% url 'single_checkup' x.slug %}">
                                     <h3>{{x.title}}</h3>
@@ -321,11 +275,7 @@
                             </div>
                             <!-- Service Content End -->
 
-                            <!-- Service Btn Start -->
-                            <div class="service-btn">
-                                <a href="{% url 'single_checkup' x.slug %}"><img src="{% static 'frontend/images/arrow-readmore-btn.svg' %}" alt=""></a>
-                            </div>
-                            <!-- Service Btn End -->
+
                         </div>
                         <!-- Service Body End -->
                     </div>
@@ -357,7 +307,7 @@
                 <!-- Section Title Start -->
                 <div class="section-title">
                     <h3 class="wow fadeInUp">diagnostics</h3>
-                    <h2 class="text-anime-style-3" data-cursor="-opaque">Advanced Diagnostic Services</h2>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">Advanced Diagnostic Tools</h2>
                 </div>
                 <!-- Section Title End -->
             </div>
@@ -365,86 +315,63 @@
             <div class="col-lg-7">
                 <!-- Section Btn Start -->
                 <div class="section-btn wow fadeInUp">
-                    <a href="#" class="btn-default"><span>schedule a test</span></a>
+                    <a href="{% url 'frontend_doctors' %}" class="btn-default"><span>Make an Appointment</span></a>
                 </div>
                 <!-- Section Btn End -->
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-2 col-md-4 col-6">
-                <!-- Rehab Benefits Item Start -->
-                <div class="rehab-benefits-item wow fadeInUp">
-                    <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-rehab-benefits-1.svg' %}" alt="">
-                    </div>
-                    <div class="rehab-benefits-content">
-                        <h3>skilled specialists</h3>
-                    </div>
-                </div>
-                <!-- Rehab Benefits Item End -->
-            </div>
 
-            <div class="col-lg-2 col-md-4 col-6">
-                <!-- Rehab Benefits Item Start -->
-                <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="0.25s">
-                    <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-rehab-benefits-2.svg' %}" alt="">
-                    </div>
-                    <div class="rehab-benefits-content">
-                        <h3>Haematology</h3>
-                    </div>
-                </div>
-                <!-- Rehab Benefits Item End -->
-            </div>
 
-            <div class="col-lg-2 col-md-4 col-6">
+
+            <div class="col-lg-3 col-md-4 col-6">
                 <!-- Rehab Benefits Item Start -->
                 <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="0.5s">
                     <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-rehab-benefits-3.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/icon/doctor.png' %}" alt="">
                     </div>
                     <div class="rehab-benefits-content">
-                        <h3>Flow cytometry</h3>
+                        <h3>Minor OT</h3>
                     </div>
                 </div>
                 <!-- Rehab Benefits Item End -->
             </div>
 
-            <div class="col-lg-2 col-md-4 col-6">
+            <div class="col-lg-3 col-md-4 col-6">
                 <!-- Rehab Benefits Item Start -->
                 <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="0.75s">
                     <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-rehab-benefits-4.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/icon/medicine.png' %}" alt="">
                     </div>
                     <div class="rehab-benefits-content">
-                        <h3>Molecular Microbiology & Pathology</h3>
+                        <h3>Pharmacy</h3>
                     </div>
                 </div>
                 <!-- Rehab Benefits Item End -->
             </div>
 
-            <div class="col-lg-2 col-md-4 col-6">
+            <div class="col-lg-3 col-md-4 col-6">
                 <!-- Rehab Benefits Item Start -->
                 <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="1s">
                     <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-rehab-benefits-5.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/icon/gymnast-diet.png' %}" alt="">
                     </div>
                     <div class="rehab-benefits-content">
-                        <h3>Next-Generation Sequencing</h3>
+                        <h3>Dietetics</h3>
                     </div>
                 </div>
                 <!-- Rehab Benefits Item End -->
             </div>
 
-            <div class="col-lg-2 col-md-4 col-6">
+            <div class="col-lg-3 col-md-4 col-6">
                 <!-- Rehab Benefits Item Start -->
                 <div class="rehab-benefits-item wow fadeInUp" data-wow-delay="1.25s">
                     <div class="icon-box">
-                        <img src="{% static 'frontend/images/icon-rehab-benefits-6.svg' %}" alt="">
+                        <img src="{% static 'frontend/images/icon/physical-therapy.png' %}" alt="">
                     </div>
                     <div class="rehab-benefits-content">
-                        <h3>Histopathology</h3>
+                        <h3>Physiotherapy</h3>
                     </div>
                 </div>
                 <!-- Rehab Benefits Item End -->
@@ -455,216 +382,22 @@
 <!-- Care Diagnostics Section End -->
 
 
-<!-- Quality Treatment Section Start -->
-<div class="our-quality bg-radius-section">
-    <div class="quality-treatment">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <!-- Quality Treatment Content Start -->
-                    <div class="quality-treatment-content">
-                        <!-- Section Title Start -->
-                        <div class="section-title">
-                            <h3 class="wow fadeInUp">quality diagnostics</h3>
-                            <h2 class="text-anime-style-3" data-cursor="-opaque">We Confidently Offer Precise Diagnostics</h2>
-                            <p class="wow fadeInUp" data-wow-delay="0.25s">We recognize that symptoms and health concerns can arise suddenly. Our advanced diagnostic services are crafted to deliver swift and accurate results to support your health needs.</p>
-                        </div>
-                        <!-- Section Title End -->
-                
-                        <!-- Quality Treatment Body Start -->
-                        <div class="quality-treatment-body wow fadeInUp" data-wow-delay="0.5s">
-                            <ul>
-                                <li>We recognize that symptoms</li>
-                                <li>can emerge suddenly, Our advanced</li>
-                                <li>We ensure precise outcomes</li>
-                            </ul>
-                        </div>
-                        <!-- Quality Treatment Body End -->
-                
-                        <!-- Quality Treatment Footer Start -->
-                        <div class="quality-treatment-footer wow fadeInUp" data-wow-delay="0.75s">
-                            <a href="#" class="btn-default"><span>book a test</span></a>
-                        </div>
-                        <!-- Quality Treatment Footer End -->
-                    </div>
-                    <!-- Quality Treatment Content End -->
-                </div>
 
-                <div class="col-lg-6"></div>
-            </div>
-        </div>
-    </div>
-</div>    
-<!-- Quality Treatment Section End -->
-
-<!-- How It Work Section Start -->
-<div class="how-it-work bg-radius-section">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 order-lg-1 order-2">
-                <!-- How Work Images Start -->
-                <div class="how-work-images">
-                    <div class="row no-gutters">
-                        <div class="col-4">
-                            <!-- How Work Image Box Start -->
-                            <div class="how-work-image-box-1">
-                                <div class="how-work-img-1">
-                                    <figure class="image-anime reveal">
-                                        <img src="{% static 'frontend/images/how-work-img-1.jpg' %}" alt="">
-                                    </figure>
-                                </div>
-                                <div class="how-work-img-3">
-                                    <figure class="image-anime reveal">
-                                        <img src="{% static 'frontend/images/how-work-img-3.jpg' %}" alt="">
-                                    </figure>
-                                </div>
-                            </div>      
-                            <!-- How Work Image Box End -->                          
-                        </div>
-
-                        <div class="col-8">
-                            <!-- How Work Image Box Start -->
-                            <div class="how-work-image-box-2">
-                                <div class="how-work-img-2">
-                                    <figure class="image-anime reveal">
-                                        <img src="{% static 'frontend/images/how-work-img-2.jpg' %}" alt="">
-                                    </figure>
-                                </div>
-                                <div class="how-work-img-4">
-                                    <figure class="image-anime reveal">
-                                        <img src="{% static 'frontend/images/how-work-img-4.jpg' %}" alt="">
-                                    </figure>
-                                </div>
-                            </div>  
-                            <!-- How Work Image Box End -->                              
-                        </div>
-                    </div>
-                </div>
-                <!-- How Work Images End -->
-            </div>
-
-            <div class="col-lg-6 order-lg-2 order-1">
-                <!-- How Work Content Start -->
-                <div class="how-work-content">
-                    <!-- Section Title Start -->
-                    <div class="section-title">
-                        <h3 class="wow fadeInUp">how it works</h3>
-                        <h2 class="text-anime-style-3" data-cursor="-opaque">We Expertly Provide Accurate Diagnostics</h2>
-                    </div>
-                    <!-- Section Title End -->
-            
-                    <!-- How Work Accordion Start -->
-                    <div class="how-work-accordion" id="accordion">
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp">                                
-                            <h2 class="accordion-header" id="heading1">
-                                <span class="icon-box">
-                                    <img src="{% static 'frontend/images/icon-how-it-work-1.svg' %}" alt="">
-                                </span>
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                                    schedule a test
-                                </button>
-                            </h2>
-                            <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="heading1"
-                                data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>Biotrexa offers an easy booking system or a quick online portal for test scheduling. Submit a request with your preferred date and details.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
-            
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp" data-wow-delay="0.25s">                                
-                            <h2 class="accordion-header" id="heading2">
-                                <span class="icon-box">
-                                    <img src="{% static 'frontend/images/icon-how-it-work-2.svg' %}" alt="">
-                                </span>
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                    advanced imaging scan
-                                </button>
-                            </h2>
-                            <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2"
-                                data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>Our mission at Biotrexa is to deliver precise, reliable diagnostics with the latest technology for comprehensive, detailed results.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
-                        
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp" data-wow-delay="0.5s">
-                            <h2 class="accordion-header" id="heading3">
-                                <span class="icon-box">
-                                    <img src="{% static 'frontend/images/icon-how-it-work-2.svg' %}" alt="">
-                                </span>
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                                    lab analysis
-                                </button>
-                            </h2>
-                            <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3"
-                                data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>Our aim at Biotrexa is to ensure thorough, expert analysis using top-tier equipment for fast, dependable outcomes.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
-            
-                        <!-- FAQ Item Start -->
-                        <div class="accordion-item wow fadeInUp" data-wow-delay="0.75s">
-                            <h2 class="accordion-header" id="heading4">
-                                <span class="icon-box">
-                                    <img src="{% static 'frontend/images/icon-how-it-work-4.svg' %}" alt="">
-                                </span>
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                                    result delivery
-                                </button>
-                            </h2>
-                            <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="heading4"
-                                data-bs-parent="#accordion">
-                                <div class="accordion-body">
-                                    <p>Our focus at Biotrexa is to provide clear, timely reports with the highest standards of accuracy, efficiency, care.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- FAQ Item End -->
-                    </div>
-                    <!-- FAQ Accordion End -->
-                </div>
-                <!-- How Work Content End -->
-            </div>
-        </div>
-    </div>
-</div>
-<!-- How It Work Section End -->
 
 
 <!-- Diagnostic Team Section Start -->
 <div class="therapist-team bg-radius-section">
     <div class="container">
         <div class="row section-row align-items-center">
-            <div class="col-lg-8">
+            <div class="col-lg-12">
                 <!-- Section Title Start -->
                 <div class="section-title">
                     <h3 class="wow fadeInUp">diagnostic team</h3>
-                    <h2 class="text-anime-style-3" data-cursor="-opaque">Our skilled & expert diagnostic staff</h2>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">Our Team of Experts</h2>
                 </div>
                 <!-- Section Title End -->
             </div>
 
-            <div class="col-lg-4">
-                <!-- Section Btn Start -->
-                <div class="section-btn wow fadeInUp">
-                    <a href="#" class="btn-default"><span>meet our experts</span></a>
-                </div>
-                <!-- Section Btn End -->
-            </div>
         </div>
 
         <div class="row">
@@ -719,8 +452,8 @@
                     <!-- Section Title Start -->
                     <div class="section-title">
                         <h3 class="wow fadeInUp">patient feedback</h3>
-                        <h2 class="text-anime-style-3" data-cursor="-opaque">Our Patients’ Insights</h2>
-                        <p class="wow fadeInUp" data-wow-delay="0.25s">At Biotrexa, we excel in delivering top-notch diagnostic services that yield precise outcomes. See what our patients say about their experiences.</p>
+                        <h2 class="text-anime-style-3" data-cursor="-opaque">Patient Testimonials</h2>
+                        <p class="wow fadeInUp" data-wow-delay="0.25s">At Biotrexxa, we excel in delivering top-notch diagnostic services that yield precise outcomes. See what our patients say about their experiences.</p>
                     </div>
                     <!-- Section Title End -->
                 </div>
@@ -743,18 +476,12 @@
                                             <i class="fa-solid fa-star"></i>
                                         </div>
                                         <div class="testimonial-content">
-                                            <p>Post-surgery, Biotrexa’s quick scans gave me clear answers about my recovery. The tailored diagnostic approach was outstanding.</p>									
+                                            <p>Biotrexxa’s quick scans gave me clear answers about my recovery. The tailored diagnostic approach was outstanding.</p>									
                                         </div>
                                     </div>
-                                    <div class="testimonial-body">
-                                        <div class="author-image">
-                                            <figure class="image-anime">
-                                                <img src="{% static 'frontend/images/author-1.jpg' %}" alt="">
-                                            </figure>
-                                        </div>            
+                                    <div class="testimonial-body">       
                                         <div class="author-content">
-                                            <h3>chris w.</h3>
-                                            <p>fitness trainer</p>
+                                            <h3>Harish Reddy</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -773,18 +500,13 @@
                                             <i class="fa-solid fa-star"></i>
                                         </div>
                                         <div class="testimonial-content">
-                                            <p>I’ve visited many labs, but Biotrexa stands out. Their team is expert, efficient, and truly focused on patient needs.</p>	
+                                            <p>I’ve visited many labs, but Biotrexxa stands out. Their team is expert, efficient, and truly focused on patient needs.</p>	
                                         </div>
                                     </div>
                                     <div class="testimonial-body">
-                                        <div class="author-image">
-                                            <figure class="image-anime">
-                                                <img src="{% static 'frontend/images/author-2.jpg' %}" alt="">
-                                            </figure>
-                                        </div>            
+      
                                         <div class="author-content">
-                                            <h3>mark s.</h3>
-                                            <p>former educator</p>
+                                            <h3>Anurag</h3>
                                         </div>
                                     </div>
                                 </div>
@@ -803,53 +525,19 @@
                                             <i class="fa-solid fa-star"></i>
                                         </div>
                                         <div class="testimonial-content">
-                                            <p>Biotrexa’s precise imaging after my fall was a lifesaver for me. Post-injury, I got clarity and could resume work fast.</p>	
+                                            <p>Biotrexxa’s precise imaging after my fall was a lifesaver for me. Post-injury, I got clarity and could resume work fast.</p>	
                                         </div>
                                     </div>
-                                    <div class="testimonial-body">
-                                        <div class="author-image">
-                                            <figure class="image-anime">
-                                                <img src="{% static 'frontend/images/author-3.jpg' %}" alt="">
-                                            </figure>
-                                        </div>            
+                                    <div class="testimonial-body">          
                                         <div class="author-content">
-                                            <h3>david a.</h3>
-                                            <p>site foreman</p>
+                                            <h3>Kavitha</h3>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Testimonial Slide End -->
 
-                            <!-- Testimonial Slide Start -->
-                            <div class="swiper-slide">
-                                <div class="testimonial-item">
-                                    <div class="testimonial-header">
-                                        <div class="testimonial-rating">
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                            <i class="fa-solid fa-star"></i>
-                                        </div>
-                                        <div class="testimonial-content">
-                                            <p>The staff here is phenomenal! My ongoing fatigue was diagnosed accurately, and within days, I felt informed and relieved.</p>	
-                                        </div>
-                                    </div>
-                                    <div class="testimonial-body">
-                                        <div class="author-image">
-                                            <figure class="image-anime">
-                                                <img src="{% static 'frontend/images/author-4.jpg' %}" alt="">
-                                            </figure>
-                                        </div>            
-                                        <div class="author-content">
-                                            <h3>tom h.</h3>
-                                            <p>long-distance cyclist</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Testimonial Slide End -->
+
                         </div>
                         <div class="testimonial-btn">
                             <div class="testimonial-button-prev"></div>
@@ -872,8 +560,8 @@
             <div class="col-lg-8">
                 <!-- Section Title Start -->
                 <div class="section-title">
-                    <h3 class="wow fadeInUp">tips & news</h3>
-                    <h2 class="text-anime-style-3" data-cursor="-opaque">Our Newest Health and Updates</h2>
+                    <h3 class="wow fadeInUp">Blogs</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">Our Health Insights</h2>
                 </div>
                 <!-- Section Title End -->
             </div>
@@ -941,3 +629,13 @@
 </div>
 <!-- Our Blog End -->
 {% endblock content %}
+
+
+
+
+{% block script %}
+    <script>
+        document.getElementById('home___link').classList.add('active')
+    </script>
+{% endblock script %}
+    

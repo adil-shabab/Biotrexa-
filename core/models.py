@@ -18,21 +18,52 @@ STATUS_CHOICES = [
 
 # Create your models here.
 class Department(models.Model):
-
-
+    description = HTMLField(null=True, blank=True)
+    small_description = models.TextField(null=True, blank=True)
+    show_on_homepage = models.BooleanField(default=False)  # New field to control homepage display
     title = models.CharField(max_length=200)
     banner = models.FileField(upload_to='departments', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active')    
     slug = models.SlugField(unique=True)
-    description = models.TextField(null=True, blank=True)
-    priority = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
-    show_on_homepage = models.BooleanField(default=False)  # Control homepage display
+    priority = models.DecimalField(max_digits=4, decimal_places=0, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+# Create your models here.
+
+
+class Facility(models.Model):
+    description = HTMLField(null=True, blank=True)
+    small_description = models.TextField(null=True, blank=True)
+    show_on_homepage = models.BooleanField(default=False)  # New field to control homepage display
+    title = models.CharField(max_length=200)
+    image = models.FileField(upload_to='facilities', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active')    
+    slug = models.SlugField(unique=True)
+    priority = models.DecimalField(max_digits=4, decimal_places=0, null=True, blank=True)
 
     def __str__(self):
         return self.title
 
+
+
+class Consultation(models.Model):
+    description = models.TextField(null=True, blank=True)
+    title = models.CharField(max_length=200)
+    image = models.FileField(upload_to='consultation', null=True, blank=True)
+    icon = models.FileField(upload_to='consultation-icon', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active')    
+    slug = models.SlugField(unique=True)
+    priority = models.DecimalField(max_digits=4, decimal_places=0, null=True, blank=True)
+
+    def __str__(self):
+        return self.title
 
 
 
@@ -492,22 +523,22 @@ class HealthCheckupPlan(models.Model):
 
 
     CATEGORY = [
-        ('Health Checkup', 'Health Checkup'),
-        ('Lab Investigations', 'Lab Investigations'),
-        ('Regular Scanning', 'Regular Scanning'),
-        ('Cardiology', 'Cardiology'),
-        ('Pregnancy Scanning', 'Pregnancy Scanning'),
-        ('Vaccination', 'Vaccination'),
-        ('Digital X-Rays', 'Digital X-Rays'),
+        ('Clinical Services ', 'Clinical Services '),
+        ('Laboratory Services', 'Laboratory Services'),
+        ('Radiology Services', 'Radiology Services'),
+        ('Minor OT', 'Minor OT'),
+        ('Dietetics', 'Dietetics'),
+        ('Pharmacy', 'Pharmacy'),
+        ('Research & Innovation in Diagnostics', 'Research & Innovation in Diagnostics'),
     ]
 
-    category = models.CharField(max_length=35, choices=CATEGORY, default='health_checkup')
+    category = models.CharField(max_length=105, choices=CATEGORY, default='health_checkup')
 
     title = models.CharField(max_length=255)
     description = HTMLField()
     created_at = models.DateTimeField(auto_now_add=True)
     slug = models.SlugField(unique=True)
-    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='active')    
+    status = models.CharField(max_length=40, choices=STATUS_CHOICES, default='active')    
     is_home_sample_available = models.BooleanField(default=False)
     is_online_payment_available = models.BooleanField(default=True)
 

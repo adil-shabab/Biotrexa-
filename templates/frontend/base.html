@@ -44,7 +44,7 @@
 	<div class="preloader">
 		<div class="loading-container">
 			<div class="loading"></div>
-			<div id="loading-icon"><img src="{% static 'frontend/images/loader.svg' %}" alt=""></div>
+			<div id="loading-icon"><img src="{% static 'frontend/images/favicon-white.png' %}" alt=""></div>
 		</div>
 	</div>
 	<!-- Preloader End -->
@@ -53,30 +53,26 @@
     <div class="topbar">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-9 col-md-12">
+                <div class="col-lg-12 col-md-12 d-flex justify-content-between align-items-center py-1">
                     <!-- Topbar Contact Information Start -->
                     <div class="topbar-contact-info">
                         <ul>
-                            <li><a href="#"><img src="{% static 'frontend/images/icon-phone.svg' %}" alt=""> +91 9999999999</a></li>
-                            <li><a href="#"><img src="{% static 'frontend/images/icon-mail.svg' %}" alt=""> info@domain.com</a></li>
-                            <li class="hide-mobile"><a href="#"><img src="{% static 'frontend/images/icon-location.svg' %}" alt=""> Bangalore, Karnataka, India</a></li>
+                            <li><a href="tel:+919916799135"><img src="{% static 'frontend/images/icon-phone.svg' %}" alt=""> +91 9916799135</a></li>
+                            <li><a href="mailto:biotrexa@gmail.com"><img src="{% static 'frontend/images/icon-mail.svg' %}" alt=""> biotrexa@gmail.com</a></li>
                         </ul>
                     </div>
                     <!-- Topbar Contact Information End -->
+
+
+                    <!-- Let’s Start Button Start -->
+                    <div class="header-btn d-inline-flex">
+                        <a href="{% url 'otp_send' %}" class="btn-default"><span>Download Report</span></a>
+                    </div>
+                    <!-- Let’s Start Button End -->
+
                 </div>
 
-                <div class="col-lg-3 col-md-0">
-                    <!-- Topbar Social Links Start -->
-                    <div class="topbar-social-links">
-                        <ul>
-                            <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
-                            <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa-brands fa-youtube"></i></a></li>
-                        </ul>
-                    </div>
-                    <!-- Topbar Social Links End -->
-                </div>
+
             </div>
         </div>
     </div>
@@ -98,13 +94,16 @@
                         <div class="nav-menu-wrapper">
                             <ul class="navbar-nav mr-auto" id="menu">
                           
-                                <li class="nav-item"><a class="nav-link" href="{% url 'homepage' %}">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'checkups' %}">Services</a></li>                                                              
-                                <li class="nav-item"><a class="nav-link" href="{% url 'frontend_doctors' %}">Doctors</a></li>                                                              
-                                <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact Us</a></li>                                                               
+                                <li class="nav-item"><a class="nav-link" id="home___link" href="{% url 'homepage' %}">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" id="about___linik" href="{% url 'about' %}">About Us</a></li>
+                                <li class="nav-item"><a class="nav-link" id="services___link" href="{% url 'services' %}">Services</a></li>                                                              
+                                <li class="nav-item"><a class="nav-link" id="services___link" href="{% url 'facilities_frontend' %}">Facilities</a></li>                                                              
+                                <li class="nav-item"><a class="nav-link" id="services___link" href="#">Consultations</a></li>                                                              
+                                <li class="nav-item"><a class="nav-link" id="services___link" href="{% url 'checkups' %}">Packages</a></li>                                                              
+                                <li class="nav-item"><a class="nav-link" id="contact___link" href="{% url 'contact' %}">Contact Us</a></li>                                                               
                                 <li class="nav-item submenu"><a class="nav-link" href="#">More</a>
                                     <ul class="sub-menu">
+                                        <li class="nav-item"><a class="nav-link" id="doctors___link" href="{% url 'frontend_doctors' %}">Doctors</a></li>                                                              
                                         <li class="nav-item"><a class="nav-link" href="{% url 'frontend_blogs' %}">Blogs</a></li>                                                               
                                         <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
                                         <li class="nav-item"><a class="nav-link" href="{% url 'specialities' %}">Specialities</a></li>
@@ -112,11 +111,7 @@
                                 </li>     
                             </ul>
                         </div>
-                        <!-- Let’s Start Button Start -->
-                        <div class="header-btn d-inline-flex">
-                            <a href="{% url 'otp_send' %}" class="btn-default"><span>Download Report</span></a>
-                        </div>
-                        <!-- Let’s Start Button End -->
+
 					</div>
 					<!-- Main Menu End -->
 					<div class="navbar-toggle"></div>
@@ -139,125 +134,109 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <!-- About Footer Start -->
-                    <div class="about-footer">
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <!-- Footer Logo Start -->
-                                <div class="footer-logo">
-                                    <img src="{% static 'frontend/images/logo.png' %}" alt="">
-                                </div>
-                                <!-- Footer Logo End -->                        
+
+
+
+
+                    <div class="row">
+                        <div class="col-md-5">
+                            <!-- About Footer Start -->
+                            <div class="about-footer">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <!-- Footer Logo Start -->
+                                        <div class="footer-logo">
+                                            <img src="{% static 'frontend/images/logo.png' %}" alt="">
+                                        </div>
+                                        <!-- Footer Logo End -->                        
+                                    </div>
+
+                                    <div class="col-lg-12 mt-4">
+                                        <!-- About Footer Content Start -->
+                                        <div class="about-footer-content">
+                                            <p>At Biotrexxa Diagnostic Center, we know that health concerns can arise at any moment. Our advanced diagnostic services are designed to provide accurate and timely results to support your well-being.</p>
+                                        </div>
+                                        <!-- About Footer Content End -->
+                                    </div>
+
+                                    <ul class="social___media">
+                                        <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
+                                        <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>                                                                
+                                    </ul>
+                                </div>                        
                             </div>
-
-                            <div class="col-lg-8">
-                                <!-- About Footer Content Start -->
-                                <div class="about-footer-content">
-                                    <h3>#1 Diagnostic Center in the Town</h3>
-                                    <p>At Biotrexa Diagnostic Center, we know that health concerns can arise at any moment. Our advanced diagnostic services are designed to provide accurate and timely results to support your well-being.</p>
-                                </div>
-                                <!-- About Footer Content End -->
+                            <!-- About Footer End -->
+                        </div>
+                        <div class="col-md-3">
+                            <div class="qucik__link_section">
+                                <h3 class="footer___title">quick links</h3>
+                                <ul>
+                                    <li><a href="{% url 'homepage' %}">Home</a></li>
+                                    <li><a href="{% url 'about' %}">About Us</a></li>
+                                    <li><a href="{% url 'checkups' %}">Our Services</a></li>
+                                    <li><a href="{% url 'frontend_blogs' %}">Latest Blogs</a></li>
+                                    <li><a href="{% url 'gallery' %}">Our Gallery</a></li>
+                                    <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                                    <li><a href="{% url 'specialities' %}">Our Specialities</a></li>
+                                </ul>
                             </div>
-                        </div>                        
-                     </div>
-                    <!-- About Footer End -->
-
-                    <!-- About Footer List Start -->
-                    <div class="about-footer-list">
-                        <!-- Footer Quick Links Start -->
-                        <div class="footer-links quick-links">
-                            <h3>quick links</h3>
-                            <ul>
-                                <li><a href="{% url 'homepage' %}">Home</a></li>
-                                <li><a href="{% url 'about' %}">About Us</a></li>
-                                <li><a href="{% url 'checkups' %}">Services</a></li>
-                                <li><a href="{% url 'frontend_blogs' %}">Blogs</a></li>
-                                <li><a href="{% url 'gallery' %}">Gallery</a></li>
-                                <li><a href="#">Careers</a></li>
-                                <li><a href="#">Testimonials</a></li>
-                                <li><a href="{% url 'contact' %}">Contact Us</a></li>
-                            </ul>
                         </div>
-                        <!-- Footer Quick Links End -->
-
-                        <!-- Footer Quick Links Start -->
-                        <div class="footer-links service-links">
-                            <h3>more services</h3>
-                            <ul>
-                                <li><a href="#">Advanced PCOD</a></li>
-                                <li><a href="#">Cardiac Care</a></li>
-                                <li><a href="#">Basic Health Checkup</a></li>
-                                <li><a href="#">Blood Investigation</a></li>
-                                <li><a href="#">Urine Test</a></li>
-                                <li><a href="#">Treadmill Test</a></li>
-                                <li><a href="#">Pregnancy Scanning</a></li>
-                                <li><a href="#">Pediatric Vaccination</a></li>
-                                <li><a href="#">Digital X-Rays</a></li>
-                            </ul>
-                        </div>
-                        <!-- Footer Quick Links End -->
-
-                        <!-- Footer Quick Links Start -->
-                        <div class="footer-links social-links">
-                            <h3>social media</h3>
-                            <ul>
-                                <li><a href="#"><i class="fa-brands fa-facebook-f"></i></a></li>
-                                <li><a href="#"><i class="fa-brands fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa-brands fa-linkedin-in"></i></a></li>
-                                <li><a href="#"><i class="fa-brands fa-instagram"></i></a></li>                                                                
-                            </ul>
-                        </div>
-                        <!-- Footer Quick Links End -->
-
-                        <!-- Footer Quick Links Start -->
-                        <div class="footer-links working-links">
-                            <h3>working hours</h3>
-                            <ul>
-                                <li>mon to fri : 10:00 to 6:00</li>
-                                <li>sat : 10:00AM to 3:00PM</li>
-                                <li>sun : closed</li>
-                            </ul>
-                        </div>
-                        <!-- Footer Quick Links End -->
-
-                        <!-- Footer Contact Details Start -->
-                        <div class="footer-links footer-contact-details">
-                            <h3>Help and Support</h3>
-                            <div class="footer-contact-box">
+                        <div class="col-md-4">
+                            <div class="contact__us__section">
+                                <h3 class="footer___title">Contact Us</h3>
                                 <!-- Footer Info Box Start -->
-                                <div class="footer-info-box">
+                                <div class="footer-info-box mb-2">
                                     <div class="icon-box">
                                         <img src="{% static 'frontend/images/icon-phone.svg' %}" alt="">
                                     </div>
                                     <div class="footer-info-box-content">
-                                        <p>+91 9999999999</p>
+                                        <p>+91 9916799135</p>
                                     </div>                                
                                 </div>
                                 <!-- Footer Info Box End -->
 
                                 <!-- Footer Info Box Start -->
-                                <div class="footer-info-box">
+                                <div class="footer-info-box mb-2">
                                     <div class="icon-box">
                                         <img src="{% static 'frontend/images/icon-mail.svg' %}" alt="">
                                     </div>
                                     <div class="footer-info-box-content">
-                                        <p>info@website.com</p>
+                                        <p>biotrexa@gmail.com</p>
+                                    </div>
+                                </div>
+                                <!-- Footer Info Box End -->
+
+                                <!-- Footer Info Box Start -->
+                                <div class="footer-info-box mb-2">
+                                    <div class="icon-box">
+                                        <img src="{% static 'frontend/images/icon-location.svg' %}" alt="">
+                                    </div>
+                                    <div class="footer-info-box-content">
+                                        <p>No, 468, Sy Nom 11/4, Byrathi Bidarahalli hobli, Kothanur, Bangalore North, Bangalore - 560077, Karnataka</p>
                                     </div>
                                 </div>
                                 <!-- Footer Info Box End -->
                             </div>
                         </div>
-                        <!-- Footer Contact Details End -->
 
+
+
+                    </div>
+
+                    <!-- About Footer List Start -->
+                    <div class="about-footer-list mt-4">
+                        
                         <!-- Footer Copyright Section Start -->
                          <div class="footer-links terms-condition-links">
                             <div class="footer-copyright-text">
-                                <p>Copyright 2025 Biotrexa. All Rights Reserved | Designed & Developed by <a href="" style="color: white; text-transform: none;">thinkB</a></p>
+                                <p>Copyright 2025 Biotrexxa. All Rights Reserved | Designed & Developed by <a href="" style="color: white; text-transform: none;">thinkB</a></p>
                             </div>
                             <div class="footer-terms-condition">
                                 <ul>
-                                    <li><a href="#">privacy policy</a></li>
-                                    <li><a href="#">terms and conditions</a></li>
+                                    <li><a href="{% url 'privacy_policy' %}">privacy policy</a></li>
+                                    <li><a href="{% url 'terms_condition' %}">terms and conditions</a></li>
                                 </ul>
                             </div>
                          </div>                        

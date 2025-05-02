@@ -4,7 +4,7 @@
 
 
 {% block title %}
-    <title>Biotrexa | My Bookings</title>
+    <title>Biotrexxa | My Bookings</title>
 {% endblock title %}
     
 
@@ -39,12 +39,12 @@
                             <div class="book__box">
                                 <div class="img___box">
                                     <img src="{{x.plan.image.url}}" alt="">
-                                    <div>
+                                    <div class="d-flex justify-content-center flex-column">
                                         <h5>{{x.plan.title}}</h5>
                                         <p class="mb-2 para">Patient : {{x.patient.name}}</p>
 
-                                        <div class="header-btn d-inline-flex">
-                                            <a href="{{x.report.url}}" download="" class="btn-default"><span>Download Report</span></a>
+                                        <div class="d-inline-flex">
+                                            <a href="{{x.report.url}}" download="" class=""><span>Download Report</span></a>
                                         </div>
                                     </div>
                                 </div>

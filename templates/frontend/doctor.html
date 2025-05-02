@@ -4,7 +4,7 @@
 
 
 {% block title %}
-    <title>Biotrexa | {{doctor.name}}</title>
+    <title>Biotrexxa | {{doctor.name}}</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
@@ -311,6 +311,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 
+<script>
+    document.getElementById('doctors___link').classList.add('active')
+</script>
 <script>
     // Function to format the date to YYYY-MM-DD
     function formatDateToYYYYMMDD(date) {

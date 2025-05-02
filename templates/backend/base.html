@@ -127,6 +127,75 @@
 
 
                     <li>
+                        <a href="{% url 'payments' %}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-networking"></i>
+                            <span class="nav-text">Payments</span>
+                        </a>
+                    </li>
+                    
+                    <li>
+						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-networking"></i>
+							<span class="nav-text">Banners</span>
+						</a>
+                        <ul aria-expanded="false">
+							<li><a href="{% url 'banners' %}">Banners</a></li>
+							<li><a href="{% url 'create_banner' %}">Create Banner</a></li>
+						</ul>
+                    </li>
+
+
+                    <li>
+						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-networking"></i>
+							<span class="nav-text">Services</span>
+						</a>
+                        <ul aria-expanded="false">
+							<li><a href="{% url 'departments' %}">Services</a></li>
+							<li><a href="{% url 'create_department' %}">Create Service</a></li>
+						</ul>
+                    </li>
+
+
+
+                    <li>
+						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-networking"></i>
+							<span class="nav-text">Consultation</span>
+						</a>
+                        <ul aria-expanded="false">
+							<li><a href="{% url 'consultations' %}">Consultations</a></li>
+							<li><a href="{% url 'create_consultation' %}">Create Consultation</a></li>
+						</ul>
+                    </li>
+
+                    <li>
+						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-networking"></i>
+							<span class="nav-text">Facilities</span>
+						</a>
+                        <ul aria-expanded="false">
+							<li><a href="{% url 'facilities' %}">Facilities</a></li>
+							<li><a href="{% url 'create_facility' %}">Create Facility</a></li>
+						</ul>
+                    </li>
+                
+
+
+                    <li>
+						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="flaticon-381-networking"></i>
+							<span class="nav-text">Packages</span>
+						</a>
+                        <ul aria-expanded="false">
+							<li><a href="{% url 'checkup_bookings' %}">View All Bookings</a></li>
+							<li><a href="{% url 'health_checkup_plans' %}">Checkup Plans</a></li>
+							<li><a href="{% url 'create_health_checkup_plans' %}">Create Checkup Plan</a></li>
+						</ul>
+                    </li>
+
+
+                    <li>
 						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-381-networking"></i>
 							<span class="nav-text">Doctors</span>
@@ -136,26 +205,12 @@
 							<li><a href="{% url 'create_doctor' %}">Create Doctor</a></li>
 						</ul>
                     </li>
-                    <li>
-						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-381-networking"></i>
-							<span class="nav-text">Departments</span>
-						</a>
-                        <ul aria-expanded="false">
-							<li><a href="{% url 'departments' %}">Departments</a></li>
-							<li><a href="{% url 'create_department' %}">Create Department</a></li>
-						</ul>
-                    </li>
 
-                    <li>
-                        <a href="{% url 'payments' %}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-networking"></i>
-                            <span class="nav-text">Payments</span>
-                        </a>
-                    </li>
                     
+
+
                     
-                    <li>
+                    <!-- <li>
 						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-381-networking"></i>
 							<span class="nav-text">Patients</span>
@@ -165,18 +220,8 @@
 							<li><a href="{% url 'create_patient' %}">Create Patient</a></li>
 						</ul>
                     </li>
-                    
-                    <li>
-						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-381-networking"></i>
-							<span class="nav-text">Checkups</span>
-						</a>
-                        <ul aria-expanded="false">
-							<li><a href="{% url 'checkup_bookings' %}">View All Bookings</a></li>
-							<li><a href="{% url 'health_checkup_plans' %}">Checkup Plans</a></li>
-							<li><a href="{% url 'create_health_checkup_plans' %}">Create Checkup Plan</a></li>
-						</ul>
-                    </li>
+                     -->
+
 
 
                     <li>
@@ -191,11 +236,11 @@
                     <li>
 						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-381-networking"></i>
-							<span class="nav-text">Banners</span>
+							<span class="nav-text">Blogs</span>
 						</a>
                         <ul aria-expanded="false">
-							<li><a href="{% url 'banners' %}">Banners</a></li>
-							<li><a href="{% url 'create_banner' %}">Create Banner</a></li>
+							<li><a href="{% url 'blogs' %}">Blogs</a></li>
+							<li><a href="{% url 'create_blog' %}">Create Blog</a></li>
 						</ul>
                     </li>
 
@@ -209,16 +254,7 @@
 							<li><a href="{% url 'create_gallery' %}">Create Gallery</a></li>
 						</ul>
                     </li>
-                    <li>
-						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
-							<i class="flaticon-381-networking"></i>
-							<span class="nav-text">Blogs</span>
-						</a>
-                        <ul aria-expanded="false">
-							<li><a href="{% url 'blogs' %}">Blogs</a></li>
-							<li><a href="{% url 'create_blog' %}">Create Blog</a></li>
-						</ul>
-                    </li>
+
                     <li>
 						<a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
 							<i class="flaticon-381-networking"></i>
@@ -231,12 +267,6 @@
                     </li>
 
 
-                    <li>
-                        <a href="{% url 'notifications' %}" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-networking"></i>
-                            <span class="nav-text">Notifications</span>
-                        </a>
-                    </li>
 
                 </ul>
             </div>

@@ -4,7 +4,7 @@
 
 
 {% block title %}
-    <title>Biotrexa | Login</title>
+    <title>Biotrexxa | Login</title>
     <style>
         .login-container {
             max-width: 500px;
@@ -56,7 +56,6 @@
         <form method="post" action="{% url 'otp_send' %}">
             {% csrf_token %}
             <div class="mb-3">
-                <label for="phone_number" class="form-label">Phone Number</label>
                 <input style="padding: 12px 12px;" type="text" class="form-control" id="phone_number" name="phone_number" placeholder="Enter 10-digit phone number" required>
             </div>
             <button type="submit" class="btn btn-primary w-100">Get OTP</button>

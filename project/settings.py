@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-9x1yu5_net%!q8b3-em&4vtdl3^&0cmndoa(hjn$t)wffc53li
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['128.199.22.180']
+ALLOWED_HOSTS = ['128.199.22.180', '127.0.0.1']
 
 
 # Application definition
@@ -111,24 +111,24 @@ CORS_ALLOW_METHODS = [
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'biotrexadb',
-        'USER': 'biotrexadbuser',
-        'PASSWORD': 'Bio#Tre12Xa@Db',
-        'HOST': 'localhost',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'biotrexadb',
+#         'USER': 'biotrexadbuser',
+#         'PASSWORD': 'Bio#Tre12Xa@Db',
+#         'HOST': 'localhost',
+#         'PORT': '',
+#     }
+# }
 
 
 # Password validation
