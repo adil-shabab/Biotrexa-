@@ -222,7 +222,7 @@
 <div class="our-services bg-radius-section">
     <div class="container">
         <div class="row section-row align-items-center">
-            <div class="col-lg-6">
+            <div class="col-lg-8">
                 <!-- Section Title Start -->
                 <div class="section-title">
                     <h3 class="wow fadeInUp">services</h3>
@@ -232,10 +232,10 @@
                 <!-- Section Title End -->
             </div>
 
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <!-- Section Btn Start -->
                 <div class="section-btn wow fadeInUp">
-                    <a href="#" class="btn-default"><span>make an appointment</span></a>
+                    <a href="{% url 'frontend_doctors' %}" class="btn-default"><span>make an appointment</span></a>
                 </div>
                 <!-- Section Btn End -->
             </div>
@@ -244,15 +244,15 @@
         <div class="row">
             
 
-            {% for x in checkups %}                        
+            {% for x in departments %}                        
                 <div class="col-lg-4 col-md-6">
                     <!-- Service Item Start -->
                     <div class="service-item wow fadeInUp">
                         <!-- Service Item Image Start -->
                         <div class="service-item-image">
                             <figure>
-                                <a href="{% url 'single_checkup' x.slug %}">
-                                    <img src="{{x.image.url}}" alt="">
+                                <a href="{% url 'service' x.slug %}">
+                                    <img src="{{x.banner.url}}" alt="">
                                 </a>
                             </figure>
                         </div>
@@ -264,13 +264,13 @@
                             <!-- Service Content Start -->
                             <!-- Service Btn Start -->
                             <div class="mb-4 service-btn">
-                                <a href="{% url 'single_checkup' x.slug %}"><img src="{% static 'frontend/images/arrow-readmore-btn.svg' %}" alt=""></a>
+                                <a href="{% url 'service' x.slug %}"><img src="{% static 'frontend/images/arrow-readmore-btn.svg' %}" alt=""></a>
                             </div>
                             <!-- Service Btn End -->
                             <div class="service-content">
-                                <a href="{% url 'single_checkup' x.slug %}">
+                                <a href="{% url 'service' x.slug %}">
                                     <h3>{{x.title}}</h3>
-                                    <p>{{ x.description|safe|truncate_text:70 }}</p>
+                                    <p>{{ x.small_description|truncate_text:60 }}</p>
                                 </a>
                             </div>
                             <!-- Service Content End -->
@@ -303,16 +303,16 @@
 <div class="care-rehabilitation bg-radius-section">
     <div class="container">
         <div class="row section-row align-items-center">
-            <div class="col-lg-5">
+            <div class="col-lg-8">
                 <!-- Section Title Start -->
                 <div class="section-title">
-                    <h3 class="wow fadeInUp">diagnostics</h3>
-                    <h2 class="text-anime-style-3" data-cursor="-opaque">Advanced Diagnostic Tools</h2>
+                    <h3 class="wow fadeInUp">facilities</h3>
+                    <h2 class="text-anime-style-3" data-cursor="-opaque">Our Facilities</h2>
                 </div>
                 <!-- Section Title End -->
             </div>
 
-            <div class="col-lg-7">
+            <div class="col-lg-4">
                 <!-- Section Btn Start -->
                 <div class="section-btn wow fadeInUp">
                     <a href="{% url 'frontend_doctors' %}" class="btn-default"><span>Make an Appointment</span></a>

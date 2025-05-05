@@ -1,0 +1,98 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load text_filters %}
+
+
+{% block title %}
+    <!-- jQuery (assuming you're already including it since you're using $) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Biotrexxa | Careers</title>
+{% endblock title %}
+    
+
+
+{% block content %}
+    <!-- Page Header Start -->
+	<div class="page-header service-page-header bg-radius-section parallaxie">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">Careers</h1>
+						<nav class="wow fadeInUp">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">home</a></li>
+								<li class="breadcrumb-item active" aria-current="page"> / careers</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+
+    
+    <div class="career_section">
+        <div class="container">
+            <h4>Open Positions</h4>
+
+            <div class="row">
+
+                
+                {% for career in careers %}
+                <div class="col-md-12">
+                    <div class="wow fadeInUp">
+                        <div class="career_box">
+                            <div class="first">
+                                <h6>{{ career.job_title }}</h6>
+                                <div class="career_flex">
+                                    
+                                    {% if career.department %}
+                                        <span class="department"><i class="fas fa-building"></i> {{ career.department }}</span>
+                                    {% else %}
+                                        <span class="department"><i class="fas fa-building"></i>Not Specified</span>
+                                    {% endif %}
+                                        
+
+                                    
+                                    {% if career.experience %}
+                                    <span class="experience"><i class="fas fa-user-clock"></i> {{career.experience}} Years</span>
+                                    {% else %}
+                                    <span class="experience"><i class="fas fa-user-clock"></i> Not Specified</span>
+                                    {% endif %}
+
+                                
+                                        
+                                        
+                                    
+                                </div>
+                            </div>
+                            <a href="{% url 'single_career' career.slug %}" class="second">
+                                <button>View Position</button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                    
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+
+
+
+{% block script %}
+
+
+{% endblock script %}
+    

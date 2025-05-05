@@ -171,6 +171,7 @@ urlpatterns = [
     path('facilities/', views.facilities_frontend, name='facilities_frontend'),
     path('facilities/<slug:slug>/', views.facility_frontend, name='facility_frontend'),
     path('services/', views.services, name='services'),
+    path('consultations/', views.consultations_frontend, name='consultations_frontend'),
     path('specialities/', views.specialities, name='specialities'),
     path('specialities/<slug:slug>/', views.speciality_detail, name='speciality_detail'),
     path('services/<slug:slug>', views.service, name='service'),

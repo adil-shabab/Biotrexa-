@@ -1,0 +1,205 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load text_filters %}
+
+
+{% block title %}
+    <!-- jQuery (assuming you're already including it since you're using $) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Biotrexxa | Careers</title>
+{% endblock title %}
+    
+
+
+{% block content %}
+    <!-- Page Header Start -->
+	<div class="page-header service-page-header bg-radius-section parallaxie">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">{{career.job_title}}</h1>
+						<nav class="wow fadeInUp">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">home</a></li>
+								<li class="breadcrumb-item active" aria-current="page"> / careers</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+
+    <div class="career_detail">
+        <div class="container">
+            <div class="details">
+                
+                {% if career.department %}
+                <span class="detail-item"><i class="fas fa-building"></i> {{ career.department.title }}</span>
+                {% else %}
+                <span class="detail-item"><i class="fas fa-building"></i> Department : Not Specified</span>
+                {% endif %}
+                {% if career.experience %}
+                <span class="detail-item"><i class="fas fa-user-clock"></i> {{ career.experience }} Years of Experience</span>
+                {% else %}
+                <span class="detail-item"><i class="fas fa-user-clock"></i> Experience : Not Specified</span>
+                {% endif %}
+                {% if career.salary %}
+                <span class="detail-item"><i class="fas fa-money-bill-wave"></i> Salary: ₹{{ career.salary|floatformat:2 }} LPA</span>
+                {% else %}
+                <span class="detail-item"><i class="fas fa-money-bill-wave"></i> Salary: Not Specified</span>
+                {% endif %}
+                {% if career.qualifications %}
+                <span class="detail-item"><i class="fas fa-graduation-cap"></i> Qualification: {{ career.qualifications }}</span>
+                {% else %}
+                <span class="detail-item"><i class="fas fa-graduation-cap"></i> Qualification: Not Specified</span>
+                {% endif %}
+                    
+                <span class="detail-item"><i class="fas fa-calendar-alt"></i> Posted on {{ career.created_at|date:"F j, Y" }}</span>
+            </div>
+
+            <h6>Job Summary</h6>
+            <div class="content_view">
+                {{ career.job_summary|safe }}
+            </div>
+
+            <h6>Responsibilities</h6>
+            <div class="content_view">
+                {{ career.responsibilities|safe }}
+            </div>
+
+            <h6>Skill Required</h6>
+            <div class="content_view">
+                {{ career.skills|safe }}
+            </div>
+        </div>
+    </div>
+
+    <div class="career_application">
+        <div class="container">
+            <form id="applicationForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <h5>Apply for this Role</h5>
+                    <div class="col-md-12">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="tel" name="number" placeholder="Phone Number" required>
+                    </div>
+                    <div class="col-md-12">
+                        <textarea name="cover-letter" placeholder="Cover Letter (Optional)"></textarea>
+                    </div>
+                    <div class="col-md-12">
+                        <span>Resume (PDF only)</span>
+                        <input type="file" name="resume" id="resume" accept=".pdf" required>
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit">Submit Application</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+
+
+
+{% block script %}
+    <!-- SweetAlert CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+    <script>
+        document.getElementById('applicationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            const email = formData.get('email').trim();
+            const number = formData.get('number').trim();
+            const resumeFile = formData.get('resume');
+
+            // Validate email using regex
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Email',
+                    text: 'Please enter a valid email address.'
+                });
+                return;
+            }
+
+            // Validate phone number to ensure it is 10 digits
+            const phoneRegex = /^[0-9]{10}$/;
+            if (!phoneRegex.test(number)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid Phone Number',
+                    text: 'Please enter a valid 10-digit phone number.'
+                });
+                return;
+            }
+
+            // Validate file type to ensure it's a PDF
+            const fileExtension = resumeFile.name.split('.').pop().toLowerCase();
+            if (fileExtension !== 'pdf') {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Invalid File Type',
+                    text: 'Please upload a PDF file for the resume.'
+                });
+                return;
+            }
+
+            fetch("{% url 'single_career' career.slug %}", {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Application Submitted',
+                        text: data.message
+                    }).then(() => {
+                        // Reset the form after successful submission
+                        document.getElementById('applicationForm').reset();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Submission Failed',
+                        text: data.error
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again later.'
+                });
+            });
+        });
+    </script>
+
+{% endblock script %}
+    

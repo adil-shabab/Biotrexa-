@@ -1446,7 +1446,7 @@ header.main-header .header-sticky.active{
 
 .care-rehabilitation{
 	background-color: var(--white-color);
-	padding: 100px 0 120px;
+	padding: 100px 0 80px;
 }
 
 .rehab-benefits-item{
@@ -3609,6 +3609,49 @@ h3.footer___title{
 	text-align: center;
 }
 
+.servi__box{
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 22px;
+}
+
+.servi__box .cons__img{
+	width: 100%;
+	height: 330px;
+	border-radius: 8px;
+	object-fit: cover;
+}
+.servi__box .txt__s__ection{
+	position: absolute;
+	width: 95%;
+	transition: 0.5s ease;
+	padding: 15px;
+	background-color: white;
+	border-radius: 5px;
+	top: 222px;
+	left: 2.5%;
+	z-index: 11;
+}
+.servi__box .txt__s__ection .icon___view{
+	padding: 15px;
+	background-color: #10455F;
+	width: fit-content;
+	margin-top: -40px;
+	margin-bottom: 15px;
+	border-radius: 5px;
+}
+.servi__box .txt__s__ection .icon___view img{
+	width: 50px;
+}
+.servi__box .txt__s__ection h5{
+	font-size: 18px;
+	font-weight: 600;
+	margin-bottom: 14px;
+}
+.servi__box:hover .txt__s__ection{
+	top: 80px;
+}
+
 /************************************/
 /*** 	 18. service Single css	  ***/
 /************************************/
@@ -4831,7 +4874,7 @@ h3.footer___title{
 }
 
 .contact-info-item{
-	width: calc(50% - 15px);
+	width: 100%;
 }
 
 .contact-info-item .icon-box{
@@ -7015,9 +7058,13 @@ h3.footer___title{
 	.contact-information-box{
 		gap: 20px;
 	}
+	.topbar{
+		padding: 10px 0px 50px;
+	}
+	
 
 	.contact-info-item{
-		width: calc(50% - 10px);
+		width: 100%;
 	}
 
 	.contact-info-item .icon-box img{
@@ -7218,8 +7265,174 @@ h3.footer___title{
     margin: 0;
 }
 
+.career_section{
+	padding: 80px 0px;
+}
+.career_section h4{
+	font-size: 28px;
+	margin-top: 10px;
+	margin-bottom: 50px;
+	text-align: center;
+}
+.career_section .career_box{
+	display: flex;
+	justify-content: space-between;
+	border: 1px solid #164e92;
+	align-items: center;
+	border-radius: 5px;
+	margin-bottom: 20px;
+	padding: 25px 20px;
+}
+.career_section .career_box .second button{
+	border: none;
+	outline: none;
+	padding: 10px 25px;
+	background-color: #164d92;
+	color: white;
+	font-size: 16px;
+	border-radius: 5px;
+}
+.career_section .career_box h6{
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: 18px;
+}
+.career_section .career_box .career_flex{
+	display: flex;
+	gap: 25px;
+}
+.career_section .career_box .career_flex i{
+	font-size: 15px;
+	color: #164d92;
+	margin-right: 7px;
+}
 
+.career_detail {
+	padding: 65px 0px;
+}
+.career_detail h6{
+	font-size: 22px;
+	font-weight: 600;
+	margin-bottom: -10px;
+}
+.career_detail .details{
+	padding: 35px 0px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 25px;
+}
+.career_detail .details span i{
+	font-size: 15px;
+	margin-right: 8px;
+	color: #164d92;
+}
+.career_application{
+	margin-bottom: 130px;
+}
+.career_application h5{
+	font-size: 25px;
+	font-weight: 600;
+	margin-bottom: 25px;
+}
+.career_application input{
+	width: 100%;
+	padding: 10px 20px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	border: 1px solid rgb(226, 226, 226);
+	outline: none;
+}
+.career_application textarea{
+	height: 200px;
+	width: 100%;
+	padding: 10px 20px;
+	margin-bottom: 20px;
+	font-size: 15px;
+	border: 1px solid rgb(226, 226, 226);
+	outline: none;
+}
+.career_application span{
+	margin-top: -10px;
+	display: block;
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 5px;
+	width: 100%;
+}
+.career_application button{
+	padding: 10px 30px;
+	font-size: 15px;
+	font-weight: 600;
+	background-color: #164d92;
+	color: white;
+	border: none;
+	outline: none;
+	margin-top: 2px;
+	border-radius: 5px;
+}
+.career_detail .content_view p strong{
+	font-size: 18px !important;
+}
 
+.content_view .ti_tle{
+	font-size: 28px;
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+.content_view h1, .content_view h2, .content_view h3, .content_view h4, .content_view h5, .content_view h6{
+	font-weight: 500 !important;
+	margin-top: 20px !important;
+	margin-bottom: 10px !important;
+    font-size: 24px !important;
+}
+.empty_view{
+	text-align: center;
+	font-size: 20px;
+	font-weight: 600;
+	margin-top: 15px;
+	margin-bottom: 20px;
+}
+.content_view{
+	margin-top: 30px;
+	padding-bottom: 25px;
+}
+.content_view p strong{
+    font-weight: 700 !important;
+    font-size: 17px;
+}
+.content_view ul li strong{
+	font-weight: 500 !important;
+	font-size: 16px;
+}
+.content_view p{
+	font-size: 16px;
+	font-weight: 400;
+	color: rgb(43, 43, 43);
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.content_view ul{
+	padding-left: 10px;
+	margin-bottom: 25px;
+}
+.content_view ul li{
+    position: relative;
+    padding-left: 40px;
+	margin-bottom: 10px;
+    font-size: 16px;
+	list-style: none;
+}
+.content_view ul li::before{
+    content: '';
+    background: url('../../images/icons/check-mark.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
 /* Responsive Design */
 @media (max-width: 768px) {
     .privacy-content {
@@ -7247,7 +7460,48 @@ h3.footer___title{
     .privacy-content {
         padding: 15px;
     }
-
+	.servi__box{
+		margin-bottom: 25px;
+	}
+		.career_section{
+		padding: 50px 0px;
+	}
+	.career_section h4{
+		font-size: 25px;
+	}
+	.career_section .career_box{
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.career_section .career_box h6{
+		font-size: 20px;
+		margin-bottom: 10px;
+	}
+	.career_section .career_box .career_flex{
+		flex-direction: column;
+		gap: 5px;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+	
+		
+	.career_detail {
+		padding: 45px 0px;
+	}
+	.career_detail .details{
+		padding: 15px 0px 35px 0px;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.career_application h5{
+		font-size: 22px;
+	}
+	.career_application button{
+		font-size: 14px;
+	}
+	.servi__box .txt__s__ection{
+		top: 80px;
+	}
     .privacy-content h2 {
         font-size: 1.8rem;
     }

@@ -126,7 +126,7 @@ class DepartmentForm(forms.ModelForm):
         self.fields['priority'].widget.attrs['class'] = 'form-control'
         self.fields['small_description'].widget.attrs['class'] = 'form-control'
         self.fields['priority'].widget.attrs['class'] = 'form-control'
-        self.fields['small_description'].required = True  # Make description required
+        self.fields['small_description'].widget.attrs['required'] = True  # Make description required
 
 
 

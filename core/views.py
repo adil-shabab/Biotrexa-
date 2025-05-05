@@ -1834,7 +1834,7 @@ def create_consultation(request):
             consultation.slug = unique_slug
             consultation.save()
             msg.success(request, "Consultation Created Successfully")
-            return redirect('consultation')  # Replace with your redirect URL
+            return redirect('consultations')  # Replace with your redirect URL
         else:
             for field, errors in form.errors.items():
                 for error in errors:
@@ -4019,7 +4019,8 @@ def health_checkup_payment_failure(request):
 
 
 def homepage(request):
-    departments = Department.objects.filter(status='active', show_on_homepage = True).order_by('priority')[:8]
+    departments = Department.objects.filter(status='active').order_by('priority')[:6]
+    facilities = Facility.objects.filter(status='active').order_by('priority')[:6]
     doctors = Doctor.objects.filter(show_on_homepage = True, status='active').order_by('priority')[:8]
     blogs = Blog.objects.filter(status='active', show_on_homepage = True)[:3]
     banners = Banner.objects.filter(status='active')
@@ -4029,6 +4030,7 @@ def homepage(request):
     context = {
         'departments': departments,
         'doctors': doctors,
+        'facilities' : facilities,
         'blogs': blogs,
         'ad_banners': ad_banners,
         'banners': banners,
@@ -4056,6 +4058,13 @@ def services(request):
         'departments': departments,
     }
     return render(request, 'frontend/services.html', context)
+
+def consultations_frontend(request):
+    departments = Consultation.objects.filter(status='active').order_by('priority')
+    context = {
+        'departments': departments,
+    }
+    return render(request, 'frontend/consultations.html', context)
 
 
 

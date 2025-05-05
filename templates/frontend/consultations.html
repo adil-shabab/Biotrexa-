@@ -1,0 +1,75 @@
+{% extends "frontend/base.html" %}
+{% load static %}
+{% load text_filters %}
+
+
+{% block title %}
+    <title>Biotrexxa | Consulting Services</title>
+{% endblock title %}
+    
+
+
+{% block content %}
+    <!-- Page Header Start -->
+	<div class="page-header service-page-header bg-radius-section parallaxie">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col-lg-12">
+					<!-- Page Header Box Start -->
+					<div class="page-header-box">
+						<h1 class="text-anime-style-2" data-cursor="-opaque">Consulting Services</h1>
+						<nav class="wow fadeInUp">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="#">home</a></li>
+								<li class="breadcrumb-item active" aria-current="page"> / Consulting Services</li>
+							</ol>
+						</nav>
+					</div>
+					<!-- Page Header Box End -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Page Header End -->
+
+    <!-- Page Services Section Start -->
+    <div class="page-services bg-radius-section">
+        <div class="container">
+
+
+            <div class="row">
+
+
+                
+                {% for x in departments %}                        
+                    <div class="col-lg-4 col-md-6">
+                        <div class="servi__box">
+                            <img class="cons__img" src="{{x.image.url}}" alt="">
+                            <div class="txt__s__ection">
+                                <div class="icon___view">
+                                    <img src="{{x.icon.url}}">
+                                </div>
+                                <h5>{{x.title}}</h5>
+                                <p>{{x.description|truncate_text:165}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                
+            </div>
+        </div>
+    </div>
+    <!-- Page Services Section End -->
+
+
+{% endblock content %}
+
+
+
+{% block script %}
+<script>
+    document.getElementById('consultation___link').classList.add('active')
+</script>
+{% endblock script %}
+    

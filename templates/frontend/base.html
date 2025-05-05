@@ -55,10 +55,10 @@
             <div class="row align-items-center">
                 <div class="col-lg-12 col-md-12 d-flex justify-content-between align-items-center py-1">
                     <!-- Topbar Contact Information Start -->
-                    <div class="topbar-contact-info">
+                    <div class="topbar-contact-info d-md-block d-none">
                         <ul>
                             <li><a href="tel:+919916799135"><img src="{% static 'frontend/images/icon-phone.svg' %}" alt=""> +91 9916799135</a></li>
-                            <li><a href="mailto:biotrexa@gmail.com"><img src="{% static 'frontend/images/icon-mail.svg' %}" alt=""> biotrexa@gmail.com</a></li>
+                            <li><a href="mailto:care@biotrexxa.com"><img src="{% static 'frontend/images/icon-mail.svg' %}" alt=""> care@biotrexxa.com</a></li>
                         </ul>
                     </div>
                     <!-- Topbar Contact Information End -->
@@ -97,16 +97,16 @@
                                 <li class="nav-item"><a class="nav-link" id="home___link" href="{% url 'homepage' %}">Home</a></li>
                                 <li class="nav-item"><a class="nav-link" id="about___linik" href="{% url 'about' %}">About Us</a></li>
                                 <li class="nav-item"><a class="nav-link" id="services___link" href="{% url 'services' %}">Services</a></li>                                                              
-                                <li class="nav-item"><a class="nav-link" id="services___link" href="{% url 'facilities_frontend' %}">Facilities</a></li>                                                              
-                                <li class="nav-item"><a class="nav-link" id="services___link" href="#">Consultations</a></li>                                                              
-                                <li class="nav-item"><a class="nav-link" id="services___link" href="{% url 'checkups' %}">Packages</a></li>                                                              
+                                <li class="nav-item"><a class="nav-link" id="facilities___link" href="{% url 'facilities_frontend' %}">Facilities</a></li>                                                              
+                                <li class="nav-item"><a class="nav-link" id="consultation___link" href="{% url 'consultations_frontend' %}">Consultations</a></li>                                                              
+                                <li class="nav-item"><a class="nav-link" id="packages___link" href="{% url 'checkups' %}">Packages</a></li>                                                              
                                 <li class="nav-item"><a class="nav-link" id="contact___link" href="{% url 'contact' %}">Contact Us</a></li>                                                               
                                 <li class="nav-item submenu"><a class="nav-link" href="#">More</a>
                                     <ul class="sub-menu">
                                         <li class="nav-item"><a class="nav-link" id="doctors___link" href="{% url 'frontend_doctors' %}">Doctors</a></li>                                                              
                                         <li class="nav-item"><a class="nav-link" href="{% url 'frontend_blogs' %}">Blogs</a></li>                                                               
                                         <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="{% url 'specialities' %}">Specialities</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="{% url 'frontend_careers' %}">Careers</a></li>
                                     </ul>
                                 </li>     
                             </ul>
@@ -175,11 +175,12 @@
                                 <ul>
                                     <li><a href="{% url 'homepage' %}">Home</a></li>
                                     <li><a href="{% url 'about' %}">About Us</a></li>
-                                    <li><a href="{% url 'checkups' %}">Our Services</a></li>
+                                    <li><a href="{% url 'checkups' %}">Our Packages</a></li>
+                                    <li><a href="{% url 'services' %}">Our Services</a></li>
                                     <li><a href="{% url 'frontend_blogs' %}">Latest Blogs</a></li>
                                     <li><a href="{% url 'gallery' %}">Our Gallery</a></li>
                                     <li><a href="{% url 'contact' %}">Contact Us</a></li>
-                                    <li><a href="{% url 'specialities' %}">Our Specialities</a></li>
+                                    <li><a href="{% url 'frontend_careers' %}">Careers</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -203,7 +204,7 @@
                                         <img src="{% static 'frontend/images/icon-mail.svg' %}" alt="">
                                     </div>
                                     <div class="footer-info-box-content">
-                                        <p>biotrexa@gmail.com</p>
+                                        <p>care@biotrexxa.com</p>
                                     </div>
                                 </div>
                                 <!-- Footer Info Box End -->

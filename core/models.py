@@ -308,7 +308,7 @@ class Message(models.Model):
 class Career(models.Model):
 
     job_title = models.CharField(max_length=200)
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True, blank=True)
+    department = models.CharField(max_length=200,null=True, blank=True)
     experience = models.PositiveIntegerField(help_text="Years of experience required")
     salary = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     responsibilities = HTMLField()
